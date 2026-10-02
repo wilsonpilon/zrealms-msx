@@ -1,0 +1,12 @@
+# Ignorar arquivos temporarios e logs
+scratch/
+debugger.ini
+*.log
+MSXgl/projects/advent/out/*.ihx
+MSXgl/projects/advent/out/*.rel
+MSXgl/projects/advent/out/*.sym
+MSXgl/projects/advent/out/*.map
+MSXgl/projects/advent/out/*.noi
+MSXgl/projects/advent/out/*.lk
+MSXgl/projects/advent/out/*.lib
+MSXgl/projects/advent/out/*.adb

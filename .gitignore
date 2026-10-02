@@ -1,0 +1,33 @@
+# Binários compilados
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+bin/
+dist/
+
+# SQLite arquivos temporários e WAL
+*.db-wal
+*.db-shm
+*.rpgproj-wal
+*.rpgproj-shm
+test_*.rpgproj
+
+# MSX / SDCC artefatos temporários
+*.ihx
+*.map
+*.noi
+*.rel
+*.sym
+*.asm
+build/
+
+# Go workspace e cache
+vendor/
+
+# IDEs e editores
+.idea/
+.vscode/
+*.swp
+*~

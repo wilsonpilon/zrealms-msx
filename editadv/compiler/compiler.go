@@ -1,0 +1,483 @@
+package compiler
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"os"
+	"path/filepath"
+	"sort"
+	"strings"
+
+	"gopkg.in/yaml.v3"
+)
+
+// Compiler processa arquivos YAML/JSON de aventura e compila para código C estático para MSX.
+type Compiler struct {
+	Game AdventureGame
+}
+
+// NewCompiler cria uma nova instância do compilador.
+func NewCompiler() *Compiler {
+	return &Compiler{}
+}
+
+// LoadFile carrega um arquivo de aventura (.yaml, .yml ou .json).
+func (c *Compiler) LoadFile(path string) error {
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return fmt.Errorf("erro ao ler arquivo: %w", err)
+	}
+
+	ext := strings.ToLower(filepath.Ext(path))
+	if ext == ".json" {
+		if err := json.Unmarshal(data, &c.Game); err != nil {
+			return fmt.Errorf("erro ao decodificar JSON: %w", err)
+		}
+	} else {
+		if err := yaml.Unmarshal(data, &c.Game); err != nil {
+			return fmt.Errorf("erro ao decodificar YAML: %w", err)
+		}
+	}
+
+	return c.Game.Validate()
+}
+
+// CompileInstructions compila as instruções resolvendo rótulos/labels para índices numéricos de PC.
+func CompileInstructions(instructions []Instruction) ([]CompiledInstruction, error) {
+	// Primeiro passo: mapear rótulos (labels) para seus índices de instrução
+	labelMap := make(map[string]int)
+	for i, inst := range instructions {
+		if inst.Label != "" {
+			labelMap[strings.ToUpper(strings.TrimSpace(inst.Label))] = i
+		}
+	}
+
+	var compiled []CompiledInstruction
+	for i, inst := range instructions {
+		ci, err := inst.ToCompiled()
+		if err != nil {
+			return nil, fmt.Errorf("instrução [%d] erro: %w", i, err)
+		}
+
+		// Se a instrução fizer desvio condicional/incondicional baseado em label textual:
+		// Em instâncias como REG=, REG>, REG<, o terceiro parâmetro é o alvo.
+		// Em GOTO, AQUI, LOCAL, TEMOS, EVD=, DNT, o segundo parâmetro é o alvo.
+		// Se o usuário especificou target numérico ou se precisarmos resolver:
+		compiled = append(compiled, ci)
+	}
+
+	return compiled, nil
+}
+
+// EscapeCStringMSX converte uma string UTF-8 para um literal C com caracteres acentuados
+// codificados no charset da fonte customizada do MSX (vram.dat) usando sequências de escape octais.
+func EscapeCStringMSX(s string) string {
+	var sb strings.Builder
+	for _, r := range s {
+		switch r {
+		case '"':
+			sb.WriteString("\\\"")
+		case '\\':
+			sb.WriteString("\\\\")
+		case '\n':
+			sb.WriteString("\\n")
+		case '\r':
+			sb.WriteString("\\r")
+		case '\t':
+			sb.WriteString("\\t")
+		// Mapeamento UTF-8 -> Códigos da Fonte SCREEN 0 (vram.dat)
+		case 'Ç':
+			sb.WriteString("\\200") // 0x80
+		case 'ç':
+			sb.WriteString("\\207") // 0x87
+		case 'é':
+			sb.WriteString("\\202") // 0x82
+		case 'É':
+			sb.WriteString("\\220") // 0x90
+		case 'á':
+			sb.WriteString("\\240") // 0xA0
+		case 'Á':
+			sb.WriteString("\\204") // 0x84
+		case 'à':
+			sb.WriteString("\\205") // 0x85
+		case 'À':
+			sb.WriteString("\\217") // 0x8F
+		case 'ã':
+			sb.WriteString("\\261") // 0xB1
+		case 'Ã':
+			sb.WriteString("\\260") // 0xB0
+		case 'â':
+			sb.WriteString("\\203") // 0x83
+		case 'Â':
+			sb.WriteString("\\214") // 0x8C
+		case 'ê':
+			sb.WriteString("\\210") // 0x88
+		case 'Ê':
+			sb.WriteString("\\215") // 0x8D
+		case 'í':
+			sb.WriteString("\\241") // 0xA1
+		case 'Í':
+			sb.WriteString("\\211") // 0x89
+		case 'ó':
+			sb.WriteString("\\242") // 0xA2
+		case 'Ó':
+			sb.WriteString("\\212") // 0x8A
+		case 'õ':
+			sb.WriteString("\\266") // 0xB6 (õ minúsculo na fonte vram.dat)
+		case 'Õ':
+			sb.WriteString("\\264") // 0xB4
+		case 'ô':
+			sb.WriteString("\\223") // 0x93
+		case 'Ô':
+			sb.WriteString("\\216") // 0x8E
+		case 'ú':
+			sb.WriteString("\\243") // 0xA3
+		case 'Ú':
+			sb.WriteString("\\213") // 0x8B
+		case '’', '‘':
+			sb.WriteString("'")
+		case '“', '”':
+			sb.WriteString("\\\"")
+		case '–', '—':
+			sb.WriteString("-")
+		case '…':
+			sb.WriteString("...")
+		case '!':
+			sb.WriteString("\\133") // 0x5B é o glifo de ponto de exclamação na fonte vram.dat (0x21 é Á)
+		default:
+			if r >= 32 && r <= 126 {
+				sb.WriteRune(r)
+			} else if r <= 255 {
+				sb.WriteString(fmt.Sprintf("\\%03o", r))
+			} else {
+				sb.WriteRune(r)
+			}
+		}
+	}
+	return sb.String()
+}
+
+// GenerateCData gera os arquivos C (game_data.h e game_data.c) para serem linkados com a Engine.
+func (c *Compiler) GenerateCData(outputDir string) error {
+	if err := os.MkdirAll(outputDir, 0755); err != nil {
+		return err
+	}
+
+	hPath := filepath.Join(outputDir, "game_data.h")
+	cPath := filepath.Join(outputDir, "game_data.c")
+
+	var hBuf bytes.Buffer
+	var cBuf bytes.Buffer
+
+	// =========================================================================
+	// Cabeçalho: game_data.h
+	// =========================================================================
+	hBuf.WriteString("// _____________________________________________________________________________\n")
+	hBuf.WriteString("//\n")
+	hBuf.WriteString("//  Autogenerated Game Database Header\n")
+	hBuf.WriteString(fmt.Sprintf("//  Title: %s (v%s)\n", c.Game.Meta.Title, c.Game.Meta.Version))
+	hBuf.WriteString("// _____________________________________________________________________________\n\n")
+	hBuf.WriteString("#ifndef GAME_DATA_H\n")
+	hBuf.WriteString("#define GAME_DATA_H\n\n")
+	hBuf.WriteString("#include \"game_types.h\"\n\n")
+	hBuf.WriteString("extern const Game_Database g_GameDatabase;\n\n")
+	hBuf.WriteString("#endif // GAME_DATA_H\n")
+
+	// =========================================================================
+	// Código Fonte: game_data.c
+	// =========================================================================
+	cBuf.WriteString("// _____________________________________________________________________________\n")
+	cBuf.WriteString("//\n")
+	cBuf.WriteString("//  Autogenerated Game Database Source\n")
+	cBuf.WriteString(fmt.Sprintf("//  Title: %s\n", c.Game.Meta.Title))
+	cBuf.WriteString(fmt.Sprintf("//  Author: %s\n", c.Game.Meta.Author))
+	cBuf.WriteString("// _____________________________________________________________________________\n\n")
+	cBuf.WriteString("#include \"game_data.h\"\n\n")
+
+	// 1. Mensagens
+	cBuf.WriteString("// --- Mensagens ---\n")
+	for i, msg := range c.Game.Messages {
+		cBuf.WriteString(fmt.Sprintf("static const Game_Message s_msg_%d = { %d, \"%s\" };\n", i, msg.ID, EscapeCStringMSX(msg.Text)))
+	}
+	cBuf.WriteString("static const Game_Message* const s_messages[] = {\n")
+	for i := range c.Game.Messages {
+		cBuf.WriteString(fmt.Sprintf("    &s_msg_%d,\n", i))
+	}
+	cBuf.WriteString("};\n\n")
+
+	// 2. Objetos
+	cBuf.WriteString("// --- Objetos ---\n")
+	for i, obj := range c.Game.Objects {
+		fullName := obj.FullName()
+		cBuf.WriteString(fmt.Sprintf("static const Game_Object s_obj_%d = { %d, %d, 0x%02X, \"%s\", \"%s\" };\n",
+			i, obj.ID, obj.InitialSituation, obj.Consistency.ToByte(), EscapeCStringMSX(fullName), EscapeCStringMSX(obj.Description)))
+	}
+	cBuf.WriteString("static const Game_Object* const s_objects[] = {\n")
+	for i := range c.Game.Objects {
+		cBuf.WriteString(fmt.Sprintf("    &s_obj_%d,\n", i))
+	}
+	cBuf.WriteString("};\n\n")
+
+	// 3. Posições (Salas - 8 Direções Cardeais)
+	cBuf.WriteString("// --- Posições ---\n")
+	for i, pos := range c.Game.Positions {
+		ex := pos.Exits.ToArray()
+		cBuf.WriteString(fmt.Sprintf("static const Game_Position s_pos_%d = { %d, { %d, %d, %d, %d, %d, %d, %d, %d }, \"%s\" };\n",
+			i, pos.ID,
+			ex[0], ex[1], ex[2], ex[3], ex[4], ex[5], ex[6], ex[7],
+			EscapeCStringMSX(pos.Description)))
+	}
+	cBuf.WriteString("static const Game_Position* const s_positions[] = {\n")
+	for i := range c.Game.Positions {
+		cBuf.WriteString(fmt.Sprintf("    &s_pos_%d,\n", i))
+	}
+	cBuf.WriteString("};\n\n")
+
+	// 4. Instruções de Funções
+	cBuf.WriteString("// --- Funções ---\n")
+	for i, fn := range c.Game.Functions {
+		compiled, err := CompileInstructions(fn.Instructions)
+		if err != nil {
+			return fmt.Errorf("função %d erro: %w", fn.ID, err)
+		}
+		cBuf.WriteString(fmt.Sprintf("static const Game_Instruction s_func_inst_%d[] = {\n", i))
+		for _, inst := range compiled {
+			cBuf.WriteString(fmt.Sprintf("    { %d, %d, %d, %d },\n", inst.Op, inst.P1, inst.P2, inst.P3))
+		}
+		if len(compiled) == 0 {
+			cBuf.WriteString("    { 0, 0, 0, 0 }\n")
+		}
+		cBuf.WriteString("};\n")
+		cBuf.WriteString(fmt.Sprintf("static const Game_Function s_func_%d = { %d, s_func_inst_%d, %d };\n\n",
+			i, fn.ID, i, len(compiled)))
+	}
+	cBuf.WriteString("static const Game_Function* const s_functions[] = {\n")
+	for i := range c.Game.Functions {
+		cBuf.WriteString(fmt.Sprintf("    &s_func_%d,\n", i))
+	}
+	cBuf.WriteString("};\n\n")
+
+	// 5. Instruções de Comandos
+	cBuf.WriteString("// --- Comandos ---\n")
+	for i, cmd := range c.Game.Commands {
+		compiled, err := CompileInstructions(cmd.Instructions)
+		if err != nil {
+			return fmt.Errorf("comando %d erro: %w", i, err)
+		}
+		cBuf.WriteString(fmt.Sprintf("static const Game_Instruction s_cmd_inst_%d[] = {\n", i))
+		for _, inst := range compiled {
+			cBuf.WriteString(fmt.Sprintf("    { %d, %d, %d, %d },\n", inst.Op, inst.P1, inst.P2, inst.P3))
+		}
+		if len(compiled) == 0 {
+			cBuf.WriteString("    { 0, 0, 0, 0 }\n")
+		}
+		cBuf.WriteString("};\n")
+		cBuf.WriteString(fmt.Sprintf("static const Game_Command s_cmd_%d = { %d, %d, %d, s_cmd_inst_%d, %d };\n\n",
+			i, cmd.Verb, cmd.Object1, cmd.Object2, i, len(compiled)))
+	}
+	cBuf.WriteString("static const Game_Command* const s_commands[] = {\n")
+	for i := range c.Game.Commands {
+		cBuf.WriteString(fmt.Sprintf("    &s_cmd_%d,\n", i))
+	}
+	cBuf.WriteString("};\n\n")
+
+	// 6. Verbos Customizados
+	cBuf.WriteString("// --- Verbos Customizados ---\n")
+	if len(c.Game.Verbs) > 0 {
+		for i, v := range c.Game.Verbs {
+			fullName := v.FullName()
+			cBuf.WriteString(fmt.Sprintf("static const Game_Verb s_verb_%d = { %d, \"%s\" };\n",
+				i, v.ID, EscapeCStringMSX(fullName)))
+		}
+		cBuf.WriteString("static const Game_Verb* const s_verbs[] = {\n")
+		for i := range c.Game.Verbs {
+			cBuf.WriteString(fmt.Sprintf("    &s_verb_%d,\n", i))
+		}
+		cBuf.WriteString("};\n\n")
+	}
+
+	// 7. Atalhos de Acentos (Top 10 mais frequentes)
+	shortcuts := c.ComputeTopAccentedShortcuts()
+	cBuf.WriteString("// --- Atalhos de Acentos (Top 10 mais frequentes) ---\n")
+	cBuf.WriteString("static const u8 s_shortcuts[10] = {\n")
+	cBuf.WriteString(fmt.Sprintf("    0x%02X, // Shift+0\n", shortcuts[0]))
+	for k := 1; k <= 9; k++ {
+		cBuf.WriteString(fmt.Sprintf("    0x%02X, // Shift+%d\n", shortcuts[k], k))
+	}
+	cBuf.WriteString("};\n\n")
+
+	// 8. Estrutura Principal: Game_Database
+	initialPos := c.Game.Config.InitialPosition
+	if initialPos == 0 {
+		initialPos = 1
+	}
+	maxCarried := c.Game.Config.MaxCarried
+	if maxCarried == 0 {
+		maxCarried = DefaultMaxCarried
+	}
+	maxInObj3 := c.Game.Config.MaxInContainer
+	if maxInObj3 == 0 {
+		maxInObj3 = DefaultMaxInContainer
+	}
+
+	cBuf.WriteString("// --- Base de Dados do Jogo ---\n")
+	cBuf.WriteString("const Game_Database g_GameDatabase = {\n")
+	cBuf.WriteString(fmt.Sprintf("    \"%s\",\n", EscapeCStringMSX(c.Game.Meta.Title)))
+	cBuf.WriteString(fmt.Sprintf("    %d, // posicao_inicial\n", initialPos))
+	cBuf.WriteString(fmt.Sprintf("    %d, // max_carregados\n", maxCarried))
+	cBuf.WriteString(fmt.Sprintf("    %d, // max_no_obj3\n", maxInObj3))
+	cBuf.WriteString("    s_positions,\n")
+	cBuf.WriteString(fmt.Sprintf("    %d,\n", len(c.Game.Positions)))
+	cBuf.WriteString("    s_objects,\n")
+	cBuf.WriteString(fmt.Sprintf("    %d,\n", len(c.Game.Objects)))
+	cBuf.WriteString("    s_commands,\n")
+	cBuf.WriteString(fmt.Sprintf("    %d,\n", len(c.Game.Commands)))
+	cBuf.WriteString("    s_functions,\n")
+	cBuf.WriteString(fmt.Sprintf("    %d,\n", len(c.Game.Functions)))
+	cBuf.WriteString("    s_messages,\n")
+	cBuf.WriteString(fmt.Sprintf("    %d,\n", len(c.Game.Messages)))
+	if len(c.Game.Verbs) > 0 {
+		cBuf.WriteString("    s_verbs,\n")
+		cBuf.WriteString(fmt.Sprintf("    %d,\n", len(c.Game.Verbs)))
+	} else {
+		cBuf.WriteString("    NULL,\n    0,\n")
+	}
+	cBuf.WriteString("    s_shortcuts\n")
+	cBuf.WriteString("};\n")
+
+	// Grava os arquivos
+	if err := os.WriteFile(hPath, hBuf.Bytes(), 0644); err != nil {
+		return err
+	}
+	return os.WriteFile(cPath, cBuf.Bytes(), 0644)
+}
+
+// ComputeTopAccentedShortcuts quantifica os 13 caracteres acentuados mais usados no jogo
+// e preenche os 10 atalhos Shift+0..9 em ordem decrescente de frequência.
+// Factory default: Shift 1..9 = Á, É, Í, Ó, Ú, Ã, Õ, Ê, Ô e Shift 0 = Ç.
+func (c *Compiler) ComputeTopAccentedShortcuts() [10]uint8 {
+	type AccentedChar struct {
+		Code    uint8
+		Name    string
+		Count   int
+		TieRank int
+	}
+
+	factoryOrder := []struct {
+		code uint8
+		name string
+	}{
+		{0x84, "Á"},
+		{0x90, "É"},
+		{0x89, "Í"},
+		{0x8A, "Ó"},
+		{0x8B, "Ú"},
+		{0xB0, "Ã"},
+		{0xB4, "Õ"},
+		{0x8D, "Ê"},
+		{0x8E, "Ô"},
+		{0x80, "Ç"},
+		{0x8F, "À"},
+		{0x8C, "Â"},
+		{0x9F, "Ü"},
+	}
+
+	counts := make(map[uint8]int)
+	for _, f := range factoryOrder {
+		counts[f.code] = 0
+	}
+
+	countRune := func(r rune) {
+		switch r {
+		case 'ç', 'Ç':
+			counts[0x80]++
+		case 'á', 'Á':
+			counts[0x84]++
+		case 'é', 'É', 'è', 'È':
+			counts[0x90]++
+		case 'í', 'Í', 'ì', 'Ì':
+			counts[0x89]++
+		case 'ó', 'Ó', 'ò', 'Ò':
+			counts[0x8A]++
+		case 'ú', 'Ú', 'ù', 'Ù':
+			counts[0x8B]++
+		case 'ã', 'Ã':
+			counts[0xB0]++
+		case 'õ', 'Õ':
+			counts[0xB4]++
+		case 'ê', 'Ê':
+			counts[0x8D]++
+		case 'ô', 'Ô':
+			counts[0x8E]++
+		case 'à', 'À':
+			counts[0x8F]++
+		case 'â', 'Â':
+			counts[0x8C]++
+		case 'ü', 'Ü':
+			counts[0x9F]++
+		}
+	}
+
+	scanText := func(s string) {
+		for _, r := range s {
+			countRune(r)
+		}
+	}
+
+	// 1. Posições
+	for _, p := range c.Game.Positions {
+		scanText(p.Description)
+	}
+	// 2. Objetos
+	for _, o := range c.Game.Objects {
+		scanText(o.Name)
+		for _, syn := range o.Synonyms {
+			scanText(syn)
+		}
+		scanText(o.Description)
+	}
+	// 3. Mensagens
+	for _, m := range c.Game.Messages {
+		scanText(m.Text)
+	}
+	// 4. Verbos
+	for _, v := range c.Game.Verbs {
+		scanText(v.Name)
+		for _, syn := range v.Synonyms {
+			scanText(syn)
+		}
+	}
+
+	var list []AccentedChar
+	for i, f := range factoryOrder {
+		list = append(list, AccentedChar{
+			Code:    f.code,
+			Name:    f.name,
+			Count:   counts[f.code],
+			TieRank: i,
+		})
+	}
+
+	// Ordena por maior frequência. Em caso de empate, mantém ordem de fábrica.
+	sort.SliceStable(list, func(i, j int) bool {
+		if list[i].Count != list[j].Count {
+			return list[i].Count > list[j].Count
+		}
+		return list[i].TieRank < list[j].TieRank
+	})
+
+	// Preenche atalhos:
+	// Top 1..9 vão para Shift 1..9 (índices 1 a 9)
+	// Top 10 vai para Shift 0 (índice 0)
+	var shortcuts [10]uint8
+	for i := 0; i < 9 && i < len(list); i++ {
+		shortcuts[i+1] = list[i].Code
+	}
+	if len(list) >= 10 {
+		shortcuts[0] = list[9].Code
+	}
+
+	return shortcuts
+}
+

@@ -1,0 +1,7126 @@
+meta:
+  titulo: "Amazônia"
+  autor: "Renato Degiovani"
+  versao: "1.0"
+  descricao: "Clássica aventura na selva amazônica após a queda de um avião (1986)."
+config:
+  posicao_inicial: 1
+  max_carregados: 5
+  max_em_recipiente: 3
+  tempo_real: false
+posicoes:
+  - id: 1
+    nome: "Clareira dos Destroços"
+    descricao: "Nós estamos numa clareira ao lado dos destroços do avião."
+    saidas:
+      norte: 128
+      sul: 0
+      leste: 0
+      oeste: 8
+  - id: 2
+    nome: "Mata Fechada (Trilha)"
+    descricao: "Nós estamos na mata."
+    saidas:
+      norte: 2
+      sul: 2
+      leste: 2
+      oeste: 4
+  - id: 3
+    nome: "Mata Fechada (Norte)"
+    descricao: "Nós estamos na mata."
+    saidas:
+      norte: 4
+      sul: 3
+      leste: 122
+      oeste: 3
+  - id: 4
+    nome: "Mata Fechada (Centro)"
+    descricao: "Nós estamos na mata."
+    saidas:
+      norte: 4
+      sul: 3
+      leste: 2
+      oeste: 5
+  - id: 5
+    nome: "Mata Fechada (Leste)"
+    descricao: "Nós estamos na mata."
+    saidas:
+      norte: 8
+      sul: 5
+      leste: 4
+      oeste: 6
+  - id: 6
+    nome: "Mata Fechada (Sul)"
+    descricao: "Nós estamos na mata."
+    saidas:
+      norte: 8
+      sul: 6
+      leste: 5
+      oeste: 6
+  - id: 7
+    nome: "Mata Fechada (Oeste)"
+    descricao: "Nós estamos na mata."
+    saidas:
+      norte: 7
+      sul: 8
+      leste: 7
+      oeste: 7
+  - id: 8
+    nome: "Mata Fechada (Borda)"
+    descricao: "Nós estamos na mata."
+    saidas:
+      norte: 7
+      sul: 5
+      leste: 1
+      oeste: 6
+  - id: 9
+    nome: "Posto da FUNAI"
+    descricao: "Nós estamos num posto da FUNAI."
+    saidas:
+      norte: 0
+      sul: 0
+      leste: 0
+      oeste: 3
+  - id: 10
+    nome: "Dentro do Avião"
+    descricao: "Nós estamos dentro do avião."
+    saidas:
+      norte: 0
+      sul: 0
+      leste: 0
+      oeste: 0
+  - id: 11
+    nome: "Esplanada da Pedra Achatada"
+    descricao: "Nós estamos numa esplanada. Aqui perto tem uma grande pedra achatada."
+    saidas:
+      norte: 50
+      sul: 1
+      leste: 0
+      oeste: 0
+  - id: 12
+    nome: "Final da Galeria"
+    descricao: "Nós estamos no final da galeria."
+    saidas:
+      norte: 62
+      sul: 0
+      leste: 0
+      oeste: 0
+  - id: 13
+    nome: "Sala ao Sul do Altar"
+    descricao: "Nós estamos na sala ao sul do altar."
+    saidas:
+      norte: 31
+      sul: 0
+      leste: 0
+      oeste: 0
+  - id: 14
+    nome: "Sala do Tesouro"
+    descricao: "Nós estamos na sala do tesouro."
+    saidas:
+      norte: 65
+      sul: 0
+      leste: 0
+      oeste: 68
+  - id: 15
+    nome: "Sala do Baú"
+    descricao: "Nós estamos na sala do baú."
+    saidas:
+      norte: 0
+      sul: 23
+      leste: 0
+      oeste: 0
+  - id: 16
+    nome: "Mirante da Serra"
+    descricao: "Nós estamos no mirante da serra."
+    saidas:
+      norte: 41
+      sul: 0
+      leste: 0
+      oeste: 0
+  - id: 17
+    nome: "Nascente do Riacho"
+    descricao: "Nós estamos na nascente de um ria cho."
+    saidas:
+      norte: 0
+      sul: 63
+      leste: 0
+      oeste: 0
+  - id: 18
+    nome: "Fundo do Fosso"
+    descricao: "Nós estamos no fundo do fosso."
+    saidas:
+      norte: 0
+      sul: 0
+      leste: 0
+      oeste: 0
+  - id: 19
+    nome: "Acampamento Abandonado"
+    descricao: "Nós estamos num acampamento, do exército, que foi abandonado há muito tempo."
+    saidas:
+      norte: 0
+      sul: 0
+      leste: 0
+      oeste: 45
+  - id: 20
+    nome: "Pântano Traiçoeiro"
+    descricao: "Nós estamos andando no pântano."
+    saidas:
+      norte: 123
+      sul: 124
+      leste: 126
+      oeste: 124
+  - id: 21
+    nome: "Rodovia BR-16"
+    descricao: "Nós estamos na BR 16."
+    saidas:
+      norte: 0
+      sul: 0
+      leste: 0
+      oeste: 127
+  - id: 22
+    nome: "Sala da Escada de Pedra"
+    descricao: "Nesta sala existe uma escada de pedra que foi esculpida na parede."
+    saidas:
+      norte: 0
+      sul: 131
+      leste: 23
+      oeste: 0
+  - id: 23
+    nome: "Sala de Torturas"
+    descricao: "Nós estamos numa antiga sala de torturas."
+    saidas:
+      norte: 133
+      sul: 0
+      leste: 0
+      oeste: 22
+  - id: 24
+    nome: "Sala do Ídolo de Pedra"
+    descricao: "Nós estamos numa sala onde há um ídolo de pedra."
+    saidas:
+      norte: 25
+      sul: 0
+      leste: 25
+      oeste: 132
+  - id: 25
+    nome: "Caverna das Passagens"
+    descricao: "Nós estamos numa caverna. Existem passagens em todas as direçÕes."
+    saidas:
+      norte: 134
+      sul: 24
+      leste: 26
+      oeste: 24
+  - id: 26
+    nome: "Sala da Porta Sul"
+    descricao: "Nesta sala existe uma porta na direção sul."
+    saidas:
+      norte: 0
+      sul: 135
+      leste: 0
+      oeste: 25
+  - id: 27
+    nome: "Corredor Estreito"
+    descricao: "Nós estamos num corredor muito estreito."
+    saidas:
+      norte: 135
+      sul: 44
+      leste: 0
+      oeste: 0
+  - id: 28
+    nome: "Beira do Abismo"
+    descricao: "Nós estamos na beira de um abismo que é mais estreito ao sul."
+    saidas:
+      norte: 54
+      sul: 155
+      leste: 0
+      oeste: 0
+  - id: 29
+    nome: "Sala do Sarcófago"
+    descricao: "Nós estamos na sala do sarcófago."
+    saidas:
+      norte: 0
+      sul: 0
+      leste: 44
+      oeste: 0
+  - id: 30
+    nome: "Sala ao Norte do Altar"
+    descricao: "Nós estamos na sala ao norte do altar."
+    saidas:
+      norte: 0
+      sul: 31
+      leste: 0
+      oeste: 0
+  - id: 31
+    nome: "Em Cima do Altar"
+    descricao: "Nós estamos em cima do altar."
+    saidas:
+      norte: 30
+      sul: 13
+      leste: 0
+      oeste: 0
+  - id: 32
+    nome: "Sala do Altar"
+    descricao: "Nós estamos numa sala onde existe um altar."
+    saidas:
+      norte: 33
+      sul: 0
+      leste: 0
+      oeste: 0
+  - id: 33
+    nome: "Gruta Subterrânea"
+    descricao: "Nós estamos numa gruta."
+    saidas:
+      norte: 0
+      sul: 32
+      leste: 0
+      oeste: 137
+  - id: 34
+    nome: "Perto da Cachoeira"
+    descricao: "Nós estamos perto de uma cachoeira."
+    saidas:
+      norte: 0
+      sul: 35
+      leste: 0
+      oeste: 36
+  - id: 35
+    nome: "Entrada da Caverna"
+    descricao: "Nós estamos na entrada de uma caverna."
+    saidas:
+      norte: 34
+      sul: 0
+      leste: 0
+      oeste: 0
+  - id: 36
+    nome: "Área de Desmatamento"
+    descricao: "Neste local houve um desmatamento. Várias árvores foram cortadas."
+    saidas:
+      norte: 0
+      sul: 69
+      leste: 34
+      oeste: 43
+  - id: 37
+    nome: "Diante da Cabana Abandonada"
+    descricao: "Nós estamos diante de uma cabana abandonada."
+    saidas:
+      norte: 0
+      sul: 0
+      leste: 41
+      oeste: 156
+  - id: 38
+    nome: "Meio do Lago"
+    descricao: "Nós estamos no meio do lago."
+    saidas:
+      norte: 143
+      sul: 144
+      leste: 145
+      oeste: 146
+  - id: 39
+    nome: "Margem Oeste do Lago"
+    descricao: "Nós estamos na margem oeste do lago."
+    saidas:
+      norte: 40
+      sul: 0
+      leste: 142
+      oeste: 42
+  - id: 40
+    nome: "Clareira da Selva"
+    descricao: "Nós estamos numa clareira."
+    saidas:
+      norte: 47
+      sul: 64
+      leste: 39
+      oeste: 149
+  - id: 41
+    nome: "Pico da Serra"
+    descricao: "Nós estamos no pico da serra."
+    saidas:
+      norte: 0
+      sul: 16
+      leste: 0
+      oeste: 37
+  - id: 42
+    nome: "Pé da Serra"
+    descricao: "Nós estamos no pé de uma serra."
+    saidas:
+      norte: 39
+      sul: 0
+      leste: 71
+      oeste: 54
+  - id: 43
+    nome: "Margem Leste do Lago"
+    descricao: "Nós estamos na margem leste do lago."
+    saidas:
+      norte: 0
+      sul: 51
+      leste: 36
+      oeste: 142
+  - id: 44
+    nome: "Antecâmara Mortuária"
+    descricao: "Nós estamos numa ante-câmara mortuária."
+    saidas:
+      norte: 27
+      sul: 0
+      leste: 0
+      oeste: 29
+  - id: 45
+    nome: "Bambuzal"
+    descricao: "Nós estamos bambuzal."
+    saidas:
+      norte: 0
+      sul: 53
+      leste: 19
+      oeste: 0
+  - id: 46
+    nome: "Dentro da Cabana"
+    descricao: "Nós estamos dentro da cabana."
+    saidas:
+      norte: 0
+      sul: 0
+      leste: 72
+      oeste: 0
+  - id: 47
+    nome: "Ao Lado do Fosso"
+    descricao: "Nós estamos ao lado de um fosso."
+    saidas:
+      norte: 0
+      sul: 40
+      leste: 0
+      oeste: 0
+  - id: 48
+    nome: "Aldeia dos Índios"
+    descricao: "Nós estamos na aldeia."
+    saidas:
+      norte: 71
+      sul: 0
+      leste: 50
+      oeste: 0
+  - id: 49
+    nome: "Oca do Cacique"
+    descricao: "Nós estamos na oca do cacique."
+    saidas:
+      norte: 0
+      sul: 0
+      leste: 0
+      oeste: 0
+  - id: 50
+    nome: "Encruzilhada na Selva"
+    descricao: "Nós estamos numa encruzilhada."
+    saidas:
+      norte: 51
+      sul: 128
+      leste: 70
+      oeste: 139
+  - id: 51
+    nome: "Margem Sul do Lago"
+    descricao: "Nós estamos na margem sul do lago."
+    saidas:
+      norte: 142
+      sul: 50
+      leste: 43
+      oeste: 0
+  - id: 52
+    nome: "Margem Norte do Lago"
+    descricao: "Nós estamos na margem norte do lago."
+    saidas:
+      norte: 53
+      sul: 142
+      leste: 0
+      oeste: 0
+  - id: 53
+    nome: "Local do Obelisco"
+    descricao: "Neste local existe um obelisco."
+    saidas:
+      norte: 45
+      sul: 52
+      leste: 55
+      oeste: 0
+  - id: 54
+    nome: "Alto da Serra"
+    descricao: "Nós estamos no alto da serra."
+    saidas:
+      norte: 0
+      sul: 28
+      leste: 42
+      oeste: 0
+  - id: 55
+    nome: "Ruínas da Cidade Antiga"
+    descricao: "Nós estamos perto das ruínas de uma antiga cidade."
+    saidas:
+      norte: 0
+      sul: 0
+      leste: 56
+      oeste: 53
+  - id: 56
+    nome: "Praça da Cidade Perdida"
+    descricao: "Nós estamos na praça da cidade."
+    saidas:
+      norte: 59
+      sul: 73
+      leste: 57
+      oeste: 55
+  - id: 57
+    nome: "Diante do Templo Religioso"
+    descricao: "Nós estamos diante de um templo religioso."
+    saidas:
+      norte: 0
+      sul: 0
+      leste: 0
+      oeste: 56
+  - id: 58
+    nome: "Dentro do Templo Religioso"
+    descricao: "Nós estamos dentro do templo."
+    saidas:
+      norte: 0
+      sul: 0
+      leste: 0
+      oeste: 0
+  - id: 59
+    nome: "Estrada de Terra Batida"
+    descricao: "Nós estamos numa estrada de terra batida."
+    saidas:
+      norte: 0
+      sul: 56
+      leste: 60
+      oeste: 0
+  - id: 60
+    nome: "Entrada da Mina"
+    descricao: "Nós estamos na entrada de uma mina."
+    saidas:
+      norte: 0
+      sul: 0
+      leste: 0
+      oeste: 59
+  - id: 61
+    nome: "Entrada do Pântano"
+    descricao: "Nós estamos na entrada de um pântano. Se entrarmos espero que você saiba como se orientar, ou poderemos ficar perdido nele para sempre."
+    saidas:
+      norte: 0
+      sul: 0
+      leste: 40
+      oeste: 127
+  - id: 62
+    nome: "Galeria da Mina"
+    descricao: "Nós estamos numa das galerias da mina."
+    saidas:
+      norte: 0
+      sul: 12
+      leste: 0
+      oeste: 138
+  - id: 63
+    nome: "Igarapé da Selva"
+    descricao: "Nós estamos num igarapé."
+    saidas:
+      norte: 17
+      sul: 63
+      leste: 63
+      oeste: 64
+  - id: 64
+    nome: "Igarapé Profundo"
+    descricao: "Nós estamos num igarapé."
+    saidas:
+      norte: 63
+      sul: 40
+      leste: 64
+      oeste: 64
+  - id: 65
+    nome: "Sala do Deus Guardião"
+    descricao: "Esta é a sala do deus guardião."
+    saidas:
+      norte: 0
+      sul: 14
+      leste: 0
+      oeste: 66
+  - id: 66
+    nome: "Sala Circular"
+    descricao: "Nós estamos numa sala circular."
+    saidas:
+      norte: 29
+      sul: 0
+      leste: 65
+      oeste: 67
+  - id: 67
+    nome: "Sala das Armas de Guerra"
+    descricao: "Nós estamos na sala das armas de guerra."
+    saidas:
+      norte: 66
+      sul: 0
+      leste: 68
+      oeste: 0
+  - id: 68
+    nome: "Sala do Trono"
+    descricao: "Nós estamos na sala do trono."
+    saidas:
+      norte: 0
+      sul: 0
+      leste: 14
+      oeste: 67
+  - id: 69
+    nome: "Barranco Íngreme"
+    descricao: "Nós estamos num barranco."
+    saidas:
+      norte: 36
+      sul: 0
+      leste: 0
+      oeste: 70
+  - id: 70
+    nome: "Trilha Sinuosa"
+    descricao: "Nós estamos numa trilha sinuosa."
+    saidas:
+      norte: 0
+      sul: 0
+      leste: 69
+      oeste: 50
+  - id: 71
+    nome: "Platô na Serra"
+    descricao: "Nós estamos num platô."
+    saidas:
+      norte: 0
+      sul: 0
+      leste: 139
+      oeste: 42
+  - id: 72
+    nome: "Quarto da Cabana"
+    descricao: "Nós estamos no quarto."
+    saidas:
+      norte: 0
+      sul: 0
+      leste: 0
+      oeste: 46
+  - id: 73
+    nome: "Rua Lateral da Cidade"
+    descricao: "Nós estamos numa rua lateral."
+    saidas:
+      norte: 56
+      sul: 0
+      leste: 0
+      oeste: 74
+  - id: 74
+    nome: "Ruínas de uma Casa"
+    descricao: "Nós estamos nas ruínas de uma casa."
+    saidas:
+      norte: 0
+      sul: 0
+      leste: 73
+      oeste: 0
+objetos:
+  - id: 1
+    nome: "LOCAL"
+    situacao: 0
+    consistencia:
+      pode_pegar: false
+      pode_guardar: false
+      pode_trocar: false
+      pode_comprar: false
+      pode_roubar: false
+      pode_tirar: false
+      pode_quebrar: false
+    descricao: ""
+  - id: 2
+    nome: "LANTERNA"
+    situacao: 1
+    consistencia:
+      pode_pegar: true
+      pode_guardar: true
+      pode_trocar: true
+      pode_comprar: false
+      pode_roubar: true
+      pode_tirar: false
+      pode_quebrar: true
+    descricao: "uma lanterna"
+  - id: 3
+    nome: "MALA"
+    situacao: 1
+    consistencia:
+      pode_pegar: true
+      pode_guardar: false
+      pode_trocar: true
+      pode_comprar: false
+      pode_roubar: true
+      pode_tirar: false
+      pode_quebrar: false
+    descricao: "uma mala"
+  - id: 4
+    nome: "AVIÃO:AVI\"O"
+    situacao: 0
+    consistencia:
+      pode_pegar: false
+      pode_guardar: false
+      pode_trocar: false
+      pode_comprar: false
+      pode_roubar: false
+      pode_tirar: false
+      pode_quebrar: false
+    descricao: "um avião"
+  - id: 5
+    nome: "ONÇA"
+    situacao: 2
+    consistencia:
+      pode_pegar: false
+      pode_guardar: false
+      pode_trocar: false
+      pode_comprar: false
+      pode_roubar: false
+      pode_tirar: false
+      pode_quebrar: false
+    descricao: "uma onça"
+  - id: 6
+    nome: "REVÓLVER:REV$LVER"
+    situacao: 10
+    consistencia:
+      pode_pegar: true
+      pode_guardar: true
+      pode_trocar: true
+      pode_comprar: false
+      pode_roubar: true
+      pode_tirar: false
+      pode_quebrar: false
+    descricao: "um revólver"
+  - id: 7
+    nome: "MUNIÇÃO:MUNIÇ\"O:BALAS"
+    situacao: 119
+    consistencia:
+      pode_pegar: true
+      pode_guardar: true
+      pode_trocar: true
+      pode_comprar: false
+      pode_roubar: true
+      pode_tirar: false
+      pode_quebrar: false
+    descricao: "munição"
+  - id: 8
+    nome: "ESPINGARDA"
+    situacao: 9
+    consistencia:
+      pode_pegar: true
+      pode_guardar: true
+      pode_trocar: true
+      pode_comprar: false
+      pode_roubar: true
+      pode_tirar: false
+      pode_quebrar: true
+    descricao: "uma espingarda"
+  - id: 9
+    nome: "CORDA"
+    situacao: 9
+    consistencia:
+      pode_pegar: true
+      pode_guardar: true
+      pode_trocar: true
+      pode_comprar: false
+      pode_roubar: true
+      pode_tirar: false
+      pode_quebrar: true
+    descricao: "uma corda"
+  - id: 10
+    nome: "MACHADO"
+    situacao: 130
+    consistencia:
+      pode_pegar: true
+      pode_guardar: true
+      pode_trocar: true
+      pode_comprar: false
+      pode_roubar: true
+      pode_tirar: false
+      pode_quebrar: true
+    descricao: "um machado"
+  - id: 11
+    nome: "ESPELHO"
+    situacao: 10
+    consistencia:
+      pode_pegar: true
+      pode_guardar: true
+      pode_trocar: true
+      pode_comprar: false
+      pode_roubar: true
+      pode_tirar: false
+      pode_quebrar: true
+    descricao: "um espelho"
+  - id: 12
+    nome: "RäDIO:R!DIO"
+    situacao: 10
+    consistencia:
+      pode_pegar: true
+      pode_guardar: true
+      pode_trocar: true
+      pode_comprar: false
+      pode_roubar: true
+      pode_tirar: false
+      pode_quebrar: true
+    descricao: "um rádio"
+  - id: 13
+    nome: "PILHAS"
+    situacao: 0
+    consistencia:
+      pode_pegar: true
+      pode_guardar: true
+      pode_trocar: true
+      pode_comprar: false
+      pode_roubar: true
+      pode_tirar: false
+      pode_quebrar: false
+    descricao: "pilhas"
+  - id: 14
+    nome: "LÂMPADA:L*MPADA"
+    situacao: 0
+    consistencia:
+      pode_pegar: true
+      pode_guardar: true
+      pode_trocar: true
+      pode_comprar: false
+      pode_roubar: true
+      pode_tirar: false
+      pode_quebrar: true
+    descricao: "uma lâmpada"
+  - id: 15
+    nome: "FACÃO:FAC\"O"
+    situacao: 49
+    consistencia:
+      pode_pegar: true
+      pode_guardar: true
+      pode_trocar: true
+      pode_comprar: false
+      pode_roubar: true
+      pode_tirar: false
+      pode_quebrar: true
+    descricao: "um facão"
+  - id: 16
+    nome: "BÚSSOLA:B%SSOLA"
+    situacao: 110
+    consistencia:
+      pode_pegar: true
+      pode_guardar: true
+      pode_trocar: true
+      pode_comprar: false
+      pode_roubar: true
+      pode_tirar: false
+      pode_quebrar: true
+    descricao: "uma bússola"
+  - id: 17
+    nome: "BALDE"
+    situacao: 19
+    consistencia:
+      pode_pegar: true
+      pode_guardar: true
+      pode_trocar: true
+      pode_comprar: false
+      pode_roubar: true
+      pode_tirar: false
+      pode_quebrar: true
+    descricao: "um balde"
+  - id: 18
+    nome: "PEDRA"
+    situacao: 0
+    consistencia:
+      pode_pegar: false
+      pode_guardar: true
+      pode_trocar: false
+      pode_comprar: false
+      pode_roubar: false
+      pode_tirar: false
+      pode_quebrar: false
+    descricao: "uma pedra"
+  - id: 19
+    nome: "PASSAGEM"
+    situacao: 0
+    consistencia:
+      pode_pegar: false
+      pode_guardar: false
+      pode_trocar: false
+      pode_comprar: false
+      pode_roubar: false
+      pode_tirar: false
+      pode_quebrar: false
+    descricao: "uma passagem"
+  - id: 20
+    nome: "ESCADA"
+    situacao: 122
+    consistencia:
+      pode_pegar: false
+      pode_guardar: false
+      pode_trocar: false
+      pode_comprar: false
+      pode_roubar: false
+      pode_tirar: false
+      pode_quebrar: false
+    descricao: "uma escada"
+  - id: 21
+    nome: "POSTO"
+    situacao: 109
+    consistencia:
+      pode_pegar: false
+      pode_guardar: false
+      pode_trocar: false
+      pode_comprar: false
+      pode_roubar: false
+      pode_tirar: false
+      pode_quebrar: false
+    descricao: "um posto"
+  - id: 22
+    nome: "CRISTAL"
+    situacao: 0
+    consistencia:
+      pode_pegar: true
+      pode_guardar: true
+      pode_trocar: true
+      pode_comprar: false
+      pode_roubar: true
+      pode_tirar: false
+      pode_quebrar: true
+    descricao: "um cristal"
+  - id: 23
+    nome: "DOCUMENTOS"
+    situacao: 110
+    consistencia:
+      pode_pegar: true
+      pode_guardar: true
+      pode_trocar: true
+      pode_comprar: false
+      pode_roubar: true
+      pode_tirar: false
+      pode_quebrar: true
+    descricao: "os documentos"
+  - id: 24
+    nome: "PÂNTANO:P*NTANO"
+    situacao: 0
+    consistencia:
+      pode_pegar: false
+      pode_guardar: false
+      pode_trocar: false
+      pode_comprar: false
+      pode_roubar: false
+      pode_tirar: false
+      pode_quebrar: false
+    descricao: "o pâtano"
+  - id: 25
+    nome: "ëDOLO:#DOLO"
+    situacao: 24
+    consistencia:
+      pode_pegar: true
+      pode_guardar: false
+      pode_trocar: false
+      pode_comprar: false
+      pode_roubar: false
+      pode_tirar: false
+      pode_quebrar: false
+    descricao: "um ídolo"
+  - id: 26
+    nome: "OLHO"
+    situacao: 0
+    consistencia:
+      pode_pegar: false
+      pode_guardar: false
+      pode_trocar: false
+      pode_comprar: false
+      pode_roubar: false
+      pode_tirar: false
+      pode_quebrar: false
+    descricao: "um olho"
+  - id: 27
+    nome: "CAVERNA"
+    situacao: 0
+    consistencia:
+      pode_pegar: false
+      pode_guardar: false
+      pode_trocar: false
+      pode_comprar: false
+      pode_roubar: false
+      pode_tirar: false
+      pode_quebrar: false
+    descricao: "uma caverna"
+  - id: 28
+    nome: "BAÚ:BA%"
+    situacao: 15
+    consistencia:
+      pode_pegar: false
+      pode_guardar: false
+      pode_trocar: false
+      pode_comprar: false
+      pode_roubar: false
+      pode_tirar: false
+      pode_quebrar: false
+    descricao: "um baú"
+  - id: 29
+    nome: "LIVRO"
+    situacao: 0
+    consistencia:
+      pode_pegar: true
+      pode_guardar: true
+      pode_trocar: true
+      pode_comprar: false
+      pode_roubar: true
+      pode_tirar: false
+      pode_quebrar: true
+    descricao: "um livro"
+  - id: 30
+    nome: "GARRAFA"
+    situacao: 0
+    consistencia:
+      pode_pegar: true
+      pode_guardar: true
+      pode_trocar: true
+      pode_comprar: false
+      pode_roubar: true
+      pode_tirar: false
+      pode_quebrar: true
+    descricao: "uma garrafa"
+  - id: 31
+    nome: "MEDALHA"
+    situacao: 0
+    consistencia:
+      pode_pegar: true
+      pode_guardar: true
+      pode_trocar: true
+      pode_comprar: false
+      pode_roubar: true
+      pode_tirar: false
+      pode_quebrar: true
+    descricao: "uma medalha"
+  - id: 32
+    nome: "VASO"
+    situacao: 58
+    consistencia:
+      pode_pegar: true
+      pode_guardar: true
+      pode_trocar: true
+      pode_comprar: false
+      pode_roubar: true
+      pode_tirar: false
+      pode_quebrar: true
+    descricao: "um vaso"
+  - id: 33
+    nome: "CHAVE"
+    situacao: 0
+    consistencia:
+      pode_pegar: true
+      pode_guardar: true
+      pode_trocar: true
+      pode_comprar: false
+      pode_roubar: true
+      pode_tirar: false
+      pode_quebrar: true
+    descricao: "uma chave"
+  - id: 34
+    nome: "PORTA"
+    situacao: 126
+    consistencia:
+      pode_pegar: false
+      pode_guardar: false
+      pode_trocar: false
+      pode_comprar: false
+      pode_roubar: false
+      pode_tirar: false
+      pode_quebrar: false
+    descricao: "uma porta"
+  - id: 35
+    nome: "SARCÓFAGO:SARC$FAGO"
+    situacao: 29
+    consistencia:
+      pode_pegar: false
+      pode_guardar: false
+      pode_trocar: false
+      pode_comprar: false
+      pode_roubar: false
+      pode_tirar: false
+      pode_quebrar: false
+    descricao: "um sarcófago"
+  - id: 36
+    nome: "CACHOEIRA"
+    situacao: 134
+    consistencia:
+      pode_pegar: false
+      pode_guardar: false
+      pode_trocar: false
+      pode_comprar: false
+      pode_roubar: false
+      pode_tirar: false
+      pode_quebrar: false
+    descricao: "uma cachoeira"
+  - id: 37
+    nome: "AMPOLA"
+    situacao: 46
+    consistencia:
+      pode_pegar: true
+      pode_guardar: true
+      pode_trocar: true
+      pode_comprar: false
+      pode_roubar: true
+      pode_tirar: false
+      pode_quebrar: true
+    descricao: "uma ampola"
+  - id: 38
+    nome: "SORO"
+    situacao: 0
+    consistencia:
+      pode_pegar: false
+      pode_guardar: false
+      pode_trocar: false
+      pode_comprar: false
+      pode_roubar: false
+      pode_tirar: false
+      pode_quebrar: false
+    descricao: "soro"
+  - id: 39
+    nome: "ALTAR"
+    situacao: 32
+    consistencia:
+      pode_pegar: false
+      pode_guardar: false
+      pode_trocar: false
+      pode_comprar: false
+      pode_roubar: false
+      pode_tirar: false
+      pode_quebrar: false
+    descricao: "um altar"
+  - id: 40
+    nome: "OBELISCO"
+    situacao: 53
+    consistencia:
+      pode_pegar: false
+      pode_guardar: false
+      pode_trocar: false
+      pode_comprar: false
+      pode_roubar: false
+      pode_tirar: false
+      pode_quebrar: false
+    descricao: "um obelisco"
+  - id: 41
+    nome: "INSCRIÇõES:INSCRIÇ&ES"
+    situacao: 0
+    consistencia:
+      pode_pegar: false
+      pode_guardar: false
+      pode_trocar: false
+      pode_comprar: false
+      pode_roubar: false
+      pode_tirar: false
+      pode_quebrar: false
+    descricao: "inscriçÕes"
+  - id: 42
+    nome: "TEMPLO"
+    situacao: 0
+    consistencia:
+      pode_pegar: false
+      pode_guardar: false
+      pode_trocar: false
+      pode_comprar: false
+      pode_roubar: false
+      pode_tirar: false
+      pode_quebrar: false
+    descricao: "um templo"
+  - id: 43
+    nome: "MINA"
+    situacao: 0
+    consistencia:
+      pode_pegar: false
+      pode_guardar: false
+      pode_trocar: false
+      pode_comprar: false
+      pode_roubar: false
+      pode_tirar: false
+      pode_quebrar: false
+    descricao: "uma mina"
+  - id: 44
+    nome: "MATA"
+    situacao: 0
+    consistencia:
+      pode_pegar: false
+      pode_guardar: false
+      pode_trocar: false
+      pode_comprar: false
+      pode_roubar: false
+      pode_tirar: false
+      pode_quebrar: false
+    descricao: "uma mata"
+  - id: 45
+    nome: "JEEP"
+    situacao: 19
+    consistencia:
+      pode_pegar: false
+      pode_guardar: false
+      pode_trocar: false
+      pode_comprar: false
+      pode_roubar: false
+      pode_tirar: false
+      pode_quebrar: false
+    descricao: "um jeep"
+  - id: 46
+    nome: "LAGO"
+    situacao: 0
+    consistencia:
+      pode_pegar: false
+      pode_guardar: false
+      pode_trocar: false
+      pode_comprar: false
+      pode_roubar: false
+      pode_tirar: false
+      pode_quebrar: false
+    descricao: "um lago"
+  - id: 47
+    nome: "CANOA"
+    situacao: 148
+    consistencia:
+      pode_pegar: true
+      pode_guardar: false
+      pode_trocar: true
+      pode_comprar: false
+      pode_roubar: true
+      pode_tirar: false
+      pode_quebrar: true
+    descricao: "uma canoa"
+  - id: 48
+    nome: "JANGADA"
+    situacao: 0
+    consistencia:
+      pode_pegar: true
+      pode_guardar: false
+      pode_trocar: true
+      pode_comprar: false
+      pode_roubar: true
+      pode_tirar: false
+      pode_quebrar: true
+    descricao: "uma jangada"
+  - id: 49
+    nome: "TRONCO"
+    situacao: 0
+    consistencia:
+      pode_pegar: true
+      pode_guardar: true
+      pode_trocar: true
+      pode_comprar: false
+      pode_roubar: true
+      pode_tirar: false
+      pode_quebrar: false
+    descricao: "um tronco"
+  - id: 50
+    nome: "äRVORE:!RVORE"
+    situacao: 0
+    consistencia:
+      pode_pegar: false
+      pode_guardar: false
+      pode_trocar: false
+      pode_comprar: false
+      pode_roubar: false
+      pode_tirar: false
+      pode_quebrar: false
+    descricao: "uma árvore"
+  - id: 51
+    nome: "CACIQUE"
+    situacao: 48
+    consistencia:
+      pode_pegar: false
+      pode_guardar: false
+      pode_trocar: false
+      pode_comprar: false
+      pode_roubar: false
+      pode_tirar: false
+      pode_quebrar: false
+    descricao: "o cacique"
+  - id: 52
+    nome: "OCA"
+    situacao: 148
+    consistencia:
+      pode_pegar: false
+      pode_guardar: false
+      pode_trocar: false
+      pode_comprar: false
+      pode_roubar: false
+      pode_tirar: false
+      pode_quebrar: false
+    descricao: "uma oca"
+  - id: 53
+    nome: "MAPA"
+    situacao: 14
+    consistencia:
+      pode_pegar: true
+      pode_guardar: true
+      pode_trocar: true
+      pode_comprar: false
+      pode_roubar: true
+      pode_tirar: false
+      pode_quebrar: true
+    descricao: "um mapa"
+  - id: 54
+    nome: "RELÓGIO:REL$GIO"
+    situacao: 10
+    consistencia:
+      pode_pegar: true
+      pode_guardar: true
+      pode_trocar: true
+      pode_comprar: false
+      pode_roubar: true
+      pode_tirar: false
+      pode_quebrar: true
+    descricao: "um relógio"
+  - id: 55
+    nome: "CHÃO:CH\"O"
+    situacao: 0
+    consistencia:
+      pode_pegar: false
+      pode_guardar: false
+      pode_trocar: false
+      pode_comprar: false
+      pode_roubar: false
+      pode_tirar: false
+      pode_quebrar: false
+    descricao: "chão"
+  - id: 56
+    nome: "ESQUELETO"
+    situacao: 30
+    consistencia:
+      pode_pegar: true
+      pode_guardar: true
+      pode_trocar: true
+      pode_comprar: false
+      pode_roubar: true
+      pode_tirar: false
+      pode_quebrar: true
+    descricao: "um esqueleto"
+  - id: 57
+    nome: "GRUTA"
+    situacao: 0
+    consistencia:
+      pode_pegar: false
+      pode_guardar: false
+      pode_trocar: false
+      pode_comprar: false
+      pode_roubar: false
+      pode_tirar: false
+      pode_quebrar: false
+    descricao: "uma gruta"
+  - id: 58
+    nome: "COLAR"
+    situacao: 14
+    consistencia:
+      pode_pegar: true
+      pode_guardar: true
+      pode_trocar: true
+      pode_comprar: false
+      pode_roubar: true
+      pode_tirar: false
+      pode_quebrar: true
+    descricao: "um colar"
+  - id: 59
+    nome: "GALERIA"
+    situacao: 0
+    consistencia:
+      pode_pegar: false
+      pode_guardar: false
+      pode_trocar: false
+      pode_comprar: false
+      pode_roubar: false
+      pode_tirar: false
+      pode_quebrar: false
+    descricao: "uma galeria"
+  - id: 60
+    nome: "SERRA"
+    situacao: 142
+    consistencia:
+      pode_pegar: false
+      pode_guardar: false
+      pode_trocar: false
+      pode_comprar: false
+      pode_roubar: false
+      pode_tirar: false
+      pode_quebrar: false
+    descricao: "uma serra"
+  - id: 61
+    nome: "TäBUA:T!BUA"
+    situacao: 12
+    consistencia:
+      pode_pegar: true
+      pode_guardar: true
+      pode_trocar: true
+      pode_comprar: false
+      pode_roubar: true
+      pode_tirar: false
+      pode_quebrar: true
+    descricao: "uma tábua"
+  - id: 62
+    nome: "TRILHA"
+    situacao: 0
+    consistencia:
+      pode_pegar: false
+      pode_guardar: false
+      pode_trocar: false
+      pode_comprar: false
+      pode_roubar: false
+      pode_tirar: false
+      pode_quebrar: false
+    descricao: "uma trilha"
+  - id: 63
+    nome: "COBRA"
+    situacao: 0
+    consistencia:
+      pode_pegar: false
+      pode_guardar: false
+      pode_trocar: false
+      pode_comprar: false
+      pode_roubar: false
+      pode_tirar: false
+      pode_quebrar: false
+    descricao: "uma cobra"
+  - id: 64
+    nome: "FOSSO"
+    situacao: 0
+    consistencia:
+      pode_pegar: false
+      pode_guardar: false
+      pode_trocar: false
+      pode_comprar: false
+      pode_roubar: false
+      pode_tirar: false
+      pode_quebrar: false
+    descricao: "um fosso"
+  - id: 65
+    nome: "PINGUELA"
+    situacao: 0
+    consistencia:
+      pode_pegar: false
+      pode_guardar: false
+      pode_trocar: false
+      pode_comprar: false
+      pode_roubar: false
+      pode_tirar: false
+      pode_quebrar: false
+    descricao: "uma pinguela"
+  - id: 66
+    nome: "ABISMO"
+    situacao: 128
+    consistencia:
+      pode_pegar: false
+      pode_guardar: false
+      pode_trocar: false
+      pode_comprar: false
+      pode_roubar: false
+      pode_tirar: false
+      pode_quebrar: false
+    descricao: "um abismo"
+  - id: 67
+    nome: "BAMBU"
+    situacao: 0
+    consistencia:
+      pode_pegar: true
+      pode_guardar: true
+      pode_trocar: true
+      pode_comprar: false
+      pode_roubar: true
+      pode_tirar: false
+      pode_quebrar: true
+    descricao: "um bambu"
+  - id: 68
+    nome: "äGUA:!GUA"
+    situacao: 0
+    consistencia:
+      pode_pegar: false
+      pode_guardar: false
+      pode_trocar: false
+      pode_comprar: false
+      pode_roubar: false
+      pode_tirar: false
+      pode_quebrar: false
+    descricao: "água"
+  - id: 69
+    nome: "TUDO"
+    situacao: 0
+    consistencia:
+      pode_pegar: false
+      pode_guardar: false
+      pode_trocar: false
+      pode_comprar: false
+      pode_roubar: false
+      pode_tirar: false
+      pode_quebrar: false
+    descricao: "tudo"
+  - id: 70
+    nome: "CABANA"
+    situacao: 137
+    consistencia:
+      pode_pegar: false
+      pode_guardar: false
+      pode_trocar: false
+      pode_comprar: false
+      pode_roubar: false
+      pode_tirar: false
+      pode_quebrar: false
+    descricao: "uma cabana"
+verbos:
+  - id: 35
+    nome: "ACENDA"
+    sinonimos:
+      - "LIGUE"
+  - id: 36
+    nome: "APAGUE"
+    sinonimos:
+      - "DESLIGUE"
+  - id: 37
+    nome: "ABRA"
+  - id: 38
+    nome: "FECHE"
+  - id: 39
+    nome: "DISPARE"
+  - id: 40
+    nome: "MATE"
+  - id: 41
+    nome: "AMARRE"
+  - id: 42
+    nome: "DESAMARRE"
+  - id: 43
+    nome: "PUXE"
+  - id: 44
+    nome: "EMPURRE"
+  - id: 45
+    nome: "LEIA"
+  - id: 46
+    nome: "BEBA"
+    sinonimos:
+      - "TOME"
+  - id: 47
+    nome: "SALTE"
+    sinonimos:
+      - "PULE"
+  - id: 48
+    nome: "CORTE"
+  - id: 49
+    nome: "DESCARREGUE"
+  - id: 50
+    nome: "INSTRUÇÕES"
+    sinonimos:
+      - "INSTRUCAO"
+      - "INSTRUÇÃO"
+      - "INSTRUCOES"
+      - "INSTRUÇõES"
+      - "INSTRUÇ&ES"
+      - "AJUDA"
+  - id: 51
+    nome: "VERBOS"
+    sinonimos:
+      - "VERBO"
+  - id: 52
+    nome: "DICAS"
+    sinonimos:
+      - "DICA"
+      - "PENSE"
+      - "PENSAR"
+comandos:
+  - verbo: 28
+    instrucoes:
+      - op: "LLIST"
+    objeto1: 1
+  - verbo: 13
+    instrucoes:
+      - op: "CLIST"
+  - verbo: 14
+    instrucoes:
+      - op: "MSG"
+        p1: 177
+      - op: "PAUSA"
+        p1: 20
+      - op: "FLAG"
+        p1: 0
+      - op: "NOP"
+      - op: "NEU"
+  - verbo: 7
+    instrucoes:
+      - op: "LOCAL"
+        p1: 1
+        p2: 8
+      - op: "LOCAL"
+        p1: 10
+        p2: 6
+      - op: "MSG"
+        p1: 18
+      - op: "OBJ"
+        p1: 4
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "MSG"
+        p1: 23
+      - op: "NVC"
+      - op: "LDR"
+        p1: 1
+        p2: 10
+      - op: "DESC"
+    objeto1: 4
+  - verbo: 7
+    instrucoes:
+      - op: "MSG"
+        p1: 40
+      - op: "NVC"
+  - verbo: 9
+    instrucoes:
+      - op: "MSG"
+        p1: 39
+      - op: "NVC"
+  - verbo: 9
+    instrucoes:
+      - op: "LOCAL"
+        p1: 10
+        p2: 3
+      - op: "MSG"
+        p1: 24
+      - op: "NVC"
+      - op: "LDR"
+        p1: 1
+        p2: 1
+      - op: "DESC"
+    objeto1: 4
+  - verbo: 28
+    instrucoes:
+      - op: "LOCAL"
+        p1: 1
+        p2: 7
+      - op: "LOCAL"
+        p1: 10
+        p2: 6
+      - op: "MSG"
+        p1: 18
+      - op: "OBJ"
+        p1: 4
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "LLIST"
+      - op: "MSG"
+        p1: 25
+      - op: "NVC"
+    objeto1: 4
+  - verbo: 26
+    instrucoes:
+      - op: "LOCAL"
+        p1: 1
+        p2: 6
+      - op: "LOCAL"
+        p1: 10
+        p2: 6
+      - op: "MSG"
+        p1: 18
+      - op: "OBJ"
+        p1: 4
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "MSG"
+        p1: 25
+      - op: "NVC"
+    objeto1: 4
+  - verbo: 29
+    instrucoes:
+      - op: "LOCAL"
+        p1: 1
+        p2: 8
+      - op: "LOCAL"
+        p1: 10
+        p2: 6
+      - op: "MSG"
+        p1: 18
+      - op: "OBJ"
+        p1: 4
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "MSG"
+        p1: 23
+      - op: "NVC"
+      - op: "MSG"
+        p1: 29
+      - op: "NVC"
+    objeto1: 4
+  - verbo: 28
+    instrucoes:
+      - op: "LOCAL"
+        p1: 9
+        p2: 3
+      - op: "MSG"
+        p1: 15
+      - op: "NVC"
+      - op: "MSG"
+        p1: 25
+      - op: "NVC"
+    objeto1: 21
+  - verbo: 10
+    instrucoes:
+      - op: "LOCAL"
+        p1: 54
+        p2: 3
+      - op: "MSG"
+        p1: 15
+      - op: "NVC"
+      - op: "LDR"
+        p1: 1
+        p2: 42
+      - op: "DESC"
+    objeto1: 60
+  - verbo: 11
+    instrucoes:
+      - op: "TEMOS"
+        p1: 54
+        p2: 5
+      - op: "MSG"
+        p1: 16
+      - op: "OBJ"
+        p1: 54
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "REG="
+        p1: 43
+        p2: 1
+        p3: 14
+      - op: "MSG"
+        p1: 171
+      - op: "REGN"
+        p1: 12
+      - op: "CHRS"
+        p1: 58
+      - op: "REGN"
+        p1: 11
+      - op: "MSG"
+        p1: 173
+      - op: "REGN"
+        p1: 13
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "MSG"
+        p1: 174
+      - op: "NVC"
+  - verbo: 28
+    instrucoes:
+      - op: "GOSUB"
+        p1: 21
+      - op: "REG="
+        p1: 10
+        p2: 1
+        p3: 7
+      - op: "REG="
+        p1: 22
+        p2: 0
+        p3: 9
+      - op: "MSG"
+        p1: 19
+      - op: "OBJ"
+        p1: 2
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "MSG"
+        p1: 30
+      - op: "NVC"
+      - op: "MSG"
+        p1: 34
+      - op: "NVC"
+    objeto1: 2
+  - verbo: 35
+    instrucoes:
+      - op: "GOSUB"
+        p1: 21
+      - op: "REG="
+        p1: 10
+        p2: 1
+        p3: 16
+      - op: "REG="
+        p1: 17
+        p2: 1
+        p3: 4
+      - op: "REG="
+        p1: 22
+        p2: 1
+        p3: 6
+      - op: "MSG"
+        p1: 31
+      - op: "NVC"
+      - op: "INC"
+        p1: 23
+      - op: "REG="
+        p1: 23
+        p2: 4
+        p3: 13
+      - op: "LDR"
+        p1: 10
+        p2: 1
+      - op: "LDR"
+        p1: 24
+        p2: 1
+      - op: "FLAG"
+        p1: 0
+      - op: "NOP"
+      - op: "OK"
+      - op: "MSG"
+        p1: 44
+      - op: "LDR"
+        p1: 17
+        p2: 1
+      - op: "NVC"
+      - op: "MSG"
+        p1: 32
+      - op: "NVC"
+    objeto1: 2
+  - verbo: 36
+    instrucoes:
+      - op: "GOSUB"
+        p1: 21
+      - op: "REG="
+        p1: 10
+        p2: 1
+        p3: 4
+      - op: "MSG"
+        p1: 33
+      - op: "NVC"
+      - op: "LDR"
+        p1: 10
+        p2: 0
+      - op: "LDR"
+        p1: 24
+        p2: 0
+      - op: "OK"
+    objeto1: 2
+  - verbo: 21
+    instrucoes:
+      - op: "GOSUB"
+        p1: 21
+      - op: "TEMOS"
+        p1: 13
+        p2: 6
+      - op: "MSG"
+        p1: 16
+      - op: "OBJ"
+        p1: 13
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "APAG"
+        p1: 13
+      - op: "LDR"
+        p1: 22
+        p2: 1
+      - op: "OK"
+    objeto1: 13
+    objeto2: 2
+  - verbo: 25
+    instrucoes:
+      - op: "GOSUB"
+        p1: 60
+    objeto1: 13
+    objeto2: 2
+  - verbo: 20
+    instrucoes:
+      - op: "GOSUB"
+        p1: 60
+    objeto1: 13
+    objeto2: 2
+  - verbo: 37
+    instrucoes:
+      - op: "GOSUB"
+        p1: 21
+      - op: "OK"
+    objeto1: 2
+  - verbo: 38
+    instrucoes:
+      - op: "GOSUB"
+        p1: 21
+      - op: "OK"
+    objeto1: 2
+  - verbo: 26
+    instrucoes:
+      - op: "GOSUB"
+        p1: 67
+      - op: "REG="
+        p1: 18
+        p2: 0
+        p3: 4
+      - op: "MSG"
+        p1: 25
+      - op: "NVC"
+      - op: "LDR"
+        p1: 18
+        p2: 1
+      - op: "CRIA"
+        p1: 13
+      - op: "SOLTA"
+        p1: 12
+      - op: "OK"
+    objeto1: 12
+  - verbo: 37
+    instrucoes:
+      - op: "GOSUB"
+        p1: 67
+      - op: "MSG"
+        p1: 35
+      - op: "NVC"
+    objeto1: 12
+  - verbo: 38
+    instrucoes:
+      - op: "GOSUB"
+        p1: 67
+      - op: "MSG"
+        p1: 35
+      - op: "NVC"
+    objeto1: 12
+  - verbo: 28
+    instrucoes:
+      - op: "GOSUB"
+        p1: 67
+      - op: "REG="
+        p1: 18
+        p2: 0
+        p3: 4
+      - op: "MSG"
+        p1: 41
+      - op: "NVC"
+      - op: "MSG"
+        p1: 36
+      - op: "NVC"
+    objeto1: 12
+  - verbo: 25
+    instrucoes:
+      - op: "GOSUB"
+        p1: 59
+    objeto1: 13
+    objeto2: 12
+  - verbo: 25
+    instrucoes:
+      - op: "MSG"
+        p1: 39
+      - op: "NVC"
+    objeto1: 13
+  - verbo: 21
+    instrucoes:
+      - op: "TEMOS"
+        p1: 13
+        p2: 5
+      - op: "MSG"
+        p1: 16
+      - op: "OBJ"
+        p1: 13
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "MSG"
+        p1: 40
+      - op: "NVC"
+    objeto1: 13
+  - verbo: 35
+    instrucoes:
+      - op: "GOSUB"
+        p1: 67
+      - op: "REG="
+        p1: 18
+        p2: 0
+        p3: 4
+      - op: "MSG"
+        p1: 41
+      - op: "NVC"
+      - op: "MSG"
+        p1: 42
+      - op: "NVC"
+    objeto1: 12
+  - verbo: 36
+    instrucoes:
+      - op: "GOSUB"
+        p1: 67
+      - op: "OK"
+    objeto1: 12
+  - verbo: 33
+    instrucoes:
+      - op: "GOSUB"
+        p1: 67
+      - op: "MSG"
+        p1: 43
+      - op: "NVC"
+    objeto1: 12
+  - verbo: 28
+    instrucoes:
+      - op: "GOSUB"
+        p1: 21
+      - op: "REG="
+        p1: 17
+        p2: 0
+        p3: 4
+      - op: "MSG"
+        p1: 45
+      - op: "NVC"
+      - op: "MSG"
+        p1: 46
+      - op: "NVC"
+    objeto1: 14
+    objeto2: 2
+  - verbo: 25
+    instrucoes:
+      - op: "GOSUB"
+        p1: 21
+      - op: "MSG"
+        p1: 35
+      - op: "NVC"
+    objeto1: 14
+    objeto2: 2
+  - verbo: 15
+    instrucoes:
+      - op: "GOSUB"
+        p1: 21
+      - op: "REG="
+        p1: 22
+        p2: 0
+        p3: 4
+      - op: "MSG"
+        p1: 49
+      - op: "NVC"
+      - op: "MSG"
+        p1: 50
+      - op: "NVC"
+    objeto1: 13
+    objeto2: 2
+  - verbo: 28
+    instrucoes:
+      - op: "GOSUB"
+        p1: 21
+      - op: "REG="
+        p1: 22
+        p2: 0
+        p3: 4
+      - op: "MSG"
+        p1: 46
+      - op: "NVC"
+      - op: "MSG"
+        p1: 34
+      - op: "NVC"
+    objeto1: 13
+    objeto2: 2
+  - verbo: 29
+    instrucoes:
+      - op: "GOSUB"
+        p1: 21
+      - op: "REG="
+        p1: 22
+        p2: 0
+        p3: 4
+      - op: "MSG"
+        p1: 11
+      - op: "NVC"
+      - op: "MSG"
+        p1: 34
+      - op: "NVC"
+    objeto1: 13
+    objeto2: 2
+  - verbo: 15
+    instrucoes:
+      - op: "GOSUB"
+        p1: 67
+      - op: "REG="
+        p1: 18
+        p2: 0
+        p3: 4
+      - op: "MSG"
+        p1: 50
+      - op: "NVC"
+      - op: "MSG"
+        p1: 49
+      - op: "NVC"
+    objeto1: 13
+    objeto2: 12
+  - verbo: 47
+    instrucoes:
+      - op: "LOCAL"
+        p1: 28
+        p2: 6
+      - op: "LOCAL"
+        p1: 37
+        p2: 6
+      - op: "MSG"
+        p1: 18
+      - op: "OBJ"
+        p1: 66
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "MSG"
+        p1: 162
+      - op: "NVC"
+    objeto1: 66
+  - verbo: 21
+    instrucoes:
+      - op: "GOSUB"
+        p1: 67
+      - op: "TEMOS"
+        p1: 13
+        p2: 6
+      - op: "MSG"
+        p1: 16
+      - op: "OBJ"
+        p1: 13
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "MSG"
+        p1: 41
+      - op: "NVC"
+    objeto1: 13
+    objeto2: 12
+  - verbo: 40
+    instrucoes:
+      - op: "AQUI"
+        p1: 5
+        p2: 5
+      - op: "MSG"
+        p1: 18
+      - op: "OBJ"
+        p1: 5
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "TEMOS"
+        p1: 6
+        p2: 8
+      - op: "MSG"
+        p1: 54
+      - op: "NVC"
+      - op: "REG="
+        p1: 16
+        p2: 0
+        p3: 14
+      - op: "REG="
+        p1: 16
+        p2: 1
+        p3: 13
+      - op: "DEC"
+        p1: 16
+      - op: "MSG"
+        p1: 70
+      - op: "NVC"
+      - op: "GOSUB"
+        p1: 66
+      - op: "MSG"
+        p1: 61
+      - op: "NVC"
+    objeto1: 5
+  - verbo: 40
+    instrucoes:
+      - op: "GOSUB"
+        p1: 64
+    objeto1: 5
+    objeto2: 15
+  - verbo: 40
+    instrucoes:
+      - op: "GOSUB"
+        p1: 64
+    objeto1: 5
+    objeto2: 10
+  - verbo: 40
+    instrucoes:
+      - op: "TEMOS"
+        p1: 15
+        p2: 5
+      - op: "MSG"
+        p1: 16
+      - op: "OBJ"
+        p1: 15
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "GOSUB"
+        p1: 53
+    objeto1: 63
+    objeto2: 15
+  - verbo: 41
+    instrucoes:
+      - op: "MSG"
+        p1: 24
+      - op: "NVC"
+    objeto1: 5
+  - verbo: 28
+    instrucoes:
+      - op: "TEMOS"
+        p1: 6
+        p2: 5
+      - op: "MSG"
+        p1: 16
+      - op: "OBJ"
+        p1: 6
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "REG="
+        p1: 16
+        p2: 0
+        p3: 10
+      - op: "MSG"
+        p1: 60
+      - op: "REGN"
+        p1: 16
+      - op: "MSG"
+        p1: 59
+      - op: "NVC"
+      - op: "MSG"
+        p1: 61
+      - op: "NVC"
+    objeto1: 6
+  - verbo: 32
+    instrucoes:
+      - op: "TEMOS"
+        p1: 6
+        p2: 5
+      - op: "MSG"
+        p1: 16
+      - op: "OBJ"
+        p1: 6
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "SOLTA"
+        p1: 6
+      - op: "OK"
+    objeto1: 6
+  - verbo: 39
+    instrucoes:
+      - op: "TEMOS"
+        p1: 6
+        p2: 5
+      - op: "MSG"
+        p1: 16
+      - op: "OBJ"
+        p1: 6
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "REG>"
+        p1: 16
+        p2: 0
+        p3: 8
+      - op: "MSG"
+        p1: 55
+      - op: "NVC"
+      - op: "DEC"
+        p1: 16
+      - op: "MSG"
+        p1: 62
+      - op: "NVC"
+    objeto1: 6
+  - verbo: 32
+    instrucoes:
+      - op: "MSG"
+        p1: 63
+      - op: "NVC"
+  - verbo: 32
+    instrucoes:
+      - op: "AQUI"
+        p1: 5
+        p2: 5
+      - op: "MSG"
+        p1: 18
+      - op: "OBJ"
+        p1: 5
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "TEMOS"
+        p1: 6
+        p2: 10
+      - op: "MSG"
+        p1: 16
+      - op: "OBJ"
+        p1: 6
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "REG="
+        p1: 16
+        p2: 1
+        p3: 17
+      - op: "REG>"
+        p1: 16
+        p2: 1
+        p3: 14
+      - op: "MSG"
+        p1: 55
+      - op: "NVC"
+      - op: "DEC"
+        p1: 16
+      - op: "MSG"
+        p1: 70
+      - op: "NVC"
+      - op: "GOSUB"
+        p1: 66
+    objeto1: 5
+  - verbo: 21
+    instrucoes:
+      - op: "GOSUB"
+        p1: 63
+    objeto1: 7
+    objeto2: 6
+  - verbo: 20
+    instrucoes:
+      - op: "GOSUB"
+        p1: 63
+    objeto1: 6
+    objeto2: 7
+  - verbo: 21
+    instrucoes:
+      - op: "GOSUB"
+        p1: 65
+    objeto1: 7
+    objeto2: 8
+  - verbo: 20
+    instrucoes:
+      - op: "GOSUB"
+        p1: 65
+    objeto1: 8
+    objeto2: 7
+  - verbo: 21
+    instrucoes:
+      - op: "TEMOS"
+        p1: 7
+        p2: 5
+      - op: "MSG"
+        p1: 16
+      - op: "OBJ"
+        p1: 7
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "MSG"
+        p1: 40
+      - op: "NVC"
+    objeto1: 7
+  - verbo: 25
+    instrucoes:
+      - op: "TEMOS"
+        p1: 6
+        p2: 5
+      - op: "MSG"
+        p1: 16
+      - op: "OBJ"
+        p1: 6
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "REG="
+        p1: 16
+        p2: 0
+        p3: 9
+      - op: "LDR"
+        p1: 16
+        p2: 0
+      - op: "MSG"
+        p1: 65
+      - op: "NVC"
+      - op: "MSG"
+        p1: 61
+      - op: "NVC"
+    objeto1: 7
+    objeto2: 6
+  - verbo: 25
+    instrucoes:
+      - op: "MSG"
+        p1: 39
+      - op: "NVC"
+    objeto1: 7
+  - verbo: 21
+    instrucoes:
+      - op: "TEMOS"
+        p1: 30
+        p2: 5
+      - op: "MSG"
+        p1: 16
+      - op: "OBJ"
+        p1: 30
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "LOCAL"
+        p1: 52
+        p2: 14
+      - op: "LOCAL"
+        p1: 38
+        p2: 14
+      - op: "LOCAL"
+        p1: 43
+        p2: 14
+      - op: "LOCAL"
+        p1: 51
+        p2: 14
+      - op: "LOCAL"
+        p1: 39
+        p2: 14
+      - op: "LOCAL"
+        p1: 17
+        p2: 14
+      - op: "LOCAL"
+        p1: 34
+        p2: 14
+      - op: "MSG"
+        p1: 15
+      - op: "NVC"
+      - op: "LDR"
+        p1: 42
+        p2: 1
+      - op: "OK"
+    objeto1: 68
+    objeto2: 30
+  - verbo: 21
+    instrucoes:
+      - op: "GOSUB"
+        p1: 68
+    objeto1: 3
+  - verbo: 25
+    instrucoes:
+      - op: "GOSUB"
+        p1: 68
+    objeto1: 3
+  - verbo: 37
+    instrucoes:
+      - op: "AQUI"
+        p1: 3
+        p2: 6
+      - op: "TEMOS"
+        p1: 3
+        p2: 6
+      - op: "MSG"
+        p1: 18
+      - op: "OBJ"
+        p1: 3
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "REG="
+        p1: 19
+        p2: 0
+        p3: 9
+      - op: "MSG"
+        p1: 67
+      - op: "NVC"
+      - op: "LDR"
+        p1: 19
+        p2: 1
+      - op: "LIBR"
+      - op: "AQUI"
+        p1: 3
+        p2: 15
+      - op: "ESV"
+      - op: "MSG"
+        p1: 181
+      - op: "NVC"
+      - op: "OK"
+    objeto1: 3
+  - verbo: 38
+    instrucoes:
+      - op: "AQUI"
+        p1: 3
+        p2: 6
+      - op: "TEMOS"
+        p1: 3
+        p2: 6
+      - op: "MSG"
+        p1: 18
+      - op: "OBJ"
+        p1: 3
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "REG="
+        p1: 19
+        p2: 1
+        p3: 9
+      - op: "MSG"
+        p1: 68
+      - op: "NVC"
+      - op: "LDR"
+        p1: 19
+        p2: 0
+      - op: "TRC"
+      - op: "OK"
+    objeto1: 3
+  - verbo: 28
+    instrucoes:
+      - op: "AQUI"
+        p1: 3
+        p2: 6
+      - op: "TEMOS"
+        p1: 3
+        p2: 6
+      - op: "MSG"
+        p1: 18
+      - op: "OBJ"
+        p1: 3
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "REG="
+        p1: 19
+        p2: 1
+        p3: 9
+      - op: "MSG"
+        p1: 68
+      - op: "NVC"
+      - op: "MSG"
+        p1: 69
+      - op: "DLIST"
+    objeto1: 3
+  - verbo: 40
+    instrucoes:
+      - op: "AQUI"
+        p1: 5
+        p2: 5
+      - op: "MSG"
+        p1: 18
+      - op: "OBJ"
+        p1: 5
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "TEMOS"
+        p1: 6
+        p2: 10
+      - op: "MSG"
+        p1: 16
+      - op: "OBJ"
+        p1: 6
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "GOSUB"
+        p1: 66
+    objeto1: 5
+    objeto2: 6
+  - verbo: 49
+    instrucoes:
+      - op: "TEMOS"
+        p1: 6
+        p2: 5
+      - op: "MSG"
+        p1: 16
+      - op: "OBJ"
+        p1: 6
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "REG="
+        p1: 16
+        p2: 0
+        p3: 14
+      - op: "DEC"
+        p1: 16
+      - op: "MSG"
+        p1: 62
+      - op: "CHRS"
+        p1: 32
+      - op: "PAUSA"
+        p1: 2
+      - op: "REG>"
+        p1: 16
+        p2: 0
+        p3: 6
+      - op: "MSG"
+        p1: 185
+      - op: "MSG"
+        p1: 55
+      - op: "NVC"
+      - op: "MSG"
+        p1: 61
+      - op: "NVC"
+    objeto1: 6
+  - verbo: 32
+    instrucoes:
+      - op: "AQUI"
+        p1: 5
+        p2: 5
+      - op: "MSG"
+        p1: 18
+      - op: "OBJ"
+        p1: 5
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "TEMOS"
+        p1: 6
+        p2: 10
+      - op: "MSG"
+        p1: 16
+      - op: "OBJ"
+        p1: 6
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "GOSUB"
+        p1: 66
+    objeto1: 5
+    objeto2: 6
+  - verbo: 7
+    instrucoes:
+      - op: "GOSUB"
+        p1: 27
+    objeto1: 24
+  - verbo: 21
+    instrucoes:
+      - op: "TEMOS"
+        p1: 22
+        p2: 5
+      - op: "MSG"
+        p1: 16
+      - op: "OBJ"
+        p1: 22
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "AQUI"
+        p1: 25
+        p2: 10
+      - op: "MSG"
+        p1: 18
+      - op: "OBJ"
+        p1: 25
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "APAG"
+        p1: 22
+      - op: "LDR"
+        p1: 25
+        p2: 1
+      - op: "MSG"
+        p1: 75
+      - op: "NVC"
+    objeto1: 22
+    objeto2: 25
+  - verbo: 46
+    instrucoes:
+      - op: "LOCAL"
+        p1: 17
+        p2: 14
+      - op: "LOCAL"
+        p1: 34
+        p2: 14
+      - op: "LOCAL"
+        p1: 38
+        p2: 14
+      - op: "LOCAL"
+        p1: 52
+        p2: 14
+      - op: "LOCAL"
+        p1: 39
+        p2: 14
+      - op: "LOCAL"
+        p1: 51
+        p2: 14
+      - op: "LOCAL"
+        p1: 43
+        p2: 14
+      - op: "LOCAL"
+        p1: 20
+        p2: 17
+      - op: "TEMOS"
+        p1: 30
+        p2: 10
+      - op: "GOTO"
+        p1: 11
+      - op: "REG="
+        p1: 42
+        p2: 1
+        p3: 13
+      - op: "MSG"
+        p1: 169
+      - op: "NVC"
+      - op: "LDR"
+        p1: 42
+        p2: 0
+      - op: "MSG"
+        p1: 170
+      - op: "LDR"
+        p1: 4
+        p2: 1
+      - op: "NVC"
+      - op: "MSG"
+        p1: 160
+      - op: "MSG"
+        p1: 51
+      - op: "FIM"
+    objeto1: 68
+  - verbo: 28
+    instrucoes:
+      - op: "AQUI"
+        p1: 22
+        p2: 8
+      - op: "TEMOS"
+        p1: 22
+        p2: 8
+      - op: "LOCAL"
+        p1: 24
+        p2: 7
+      - op: "MSG"
+        p1: 18
+      - op: "OBJ"
+        p1: 22
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "REG="
+        p1: 25
+        p2: 0
+        p3: 3
+      - op: "MSG"
+        p1: 76
+      - op: "NVC"
+    objeto1: 22
+  - verbo: 8
+    instrucoes:
+      - op: "LOCAL"
+        p1: 42
+        p2: 3
+      - op: "MSG"
+        p1: 15
+      - op: "NVC"
+      - op: "LDR"
+        p1: 1
+        p2: 54
+      - op: "DESC"
+    objeto1: 60
+  - verbo: 28
+    instrucoes:
+      - op: "LOCAL"
+        p1: 24
+        p2: 5
+      - op: "MSG"
+        p1: 18
+      - op: "OBJ"
+        p1: 25
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "REG="
+        p1: 25
+        p2: 1
+        p3: 8
+      - op: "MSG"
+        p1: 80
+      - op: "NVC"
+      - op: "MSG"
+        p1: 75
+      - op: "NVC"
+    objeto1: 25
+  - verbo: 28
+    instrucoes:
+      - op: "LOCAL"
+        p1: 24
+        p2: 5
+      - op: "MSG"
+        p1: 18
+      - op: "OBJ"
+        p1: 25
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "REG="
+        p1: 25
+        p2: 1
+        p3: 8
+      - op: "MSG"
+        p1: 81
+      - op: "NVC"
+      - op: "MSG"
+        p1: 75
+      - op: "NVC"
+    objeto1: 26
+    objeto2: 25
+  - verbo: 28
+    instrucoes:
+      - op: "MSG"
+        p1: 83
+      - op: "NVC"
+    objeto1: 26
+  - verbo: 37
+    instrucoes:
+      - op: "GOSUB"
+        p1: 51
+    objeto1: 53
+  - verbo: 26
+    instrucoes:
+      - op: "LOCAL"
+        p1: 11
+        p2: 8
+      - op: "TEMOS"
+        p1: 18
+        p2: 6
+      - op: "MSG"
+        p1: 16
+      - op: "OBJ"
+        p1: 18
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "MSG"
+        p1: 15
+      - op: "NVC"
+      - op: "MSG"
+        p1: 85
+      - op: "NVC"
+    objeto1: 18
+  - verbo: 28
+    instrucoes:
+      - op: "LOCAL"
+        p1: 11
+        p2: 8
+      - op: "TEMOS"
+        p1: 18
+        p2: 6
+      - op: "MSG"
+        p1: 16
+      - op: "OBJ"
+        p1: 18
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "MSG"
+        p1: 19
+      - op: "GOTO"
+        p1: 3
+      - op: "MSG"
+        p1: 86
+      - op: "NVC"
+    objeto1: 18
+  - verbo: 41
+    instrucoes:
+      - op: "LOCAL"
+        p1: 11
+        p2: 13
+      - op: "TEMOS"
+        p1: 9
+        p2: 6
+      - op: "MSG"
+        p1: 16
+      - op: "OBJ"
+        p1: 9
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "TEMOS"
+        p1: 18
+        p2: 11
+      - op: "MSG"
+        p1: 16
+      - op: "OBJ"
+        p1: 18
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "MSG"
+        p1: 15
+      - op: "NVC"
+      - op: "REG="
+        p1: 20
+        p2: 0
+        p3: 16
+      - op: "MSG"
+        p1: 87
+      - op: "NVC"
+      - op: "TEMOS"
+        p1: 9
+        p2: 18
+      - op: "GOTO"
+        p1: 2
+      - op: "SOLTA"
+        p1: 9
+      - op: "LDR"
+        p1: 20
+        p2: 1
+      - op: "OK"
+    objeto1: 9
+    objeto2: 18
+  - verbo: 42
+    instrucoes:
+      - op: "LOCAL"
+        p1: 11
+        p2: 3
+      - op: "MSG"
+        p1: 26
+      - op: "NVC"
+      - op: "REG="
+        p1: 20
+        p2: 1
+        p3: 6
+      - op: "MSG"
+        p1: 87
+      - op: "NVC"
+      - op: "LDR"
+        p1: 20
+        p2: 0
+      - op: "OK"
+    objeto1: 9
+    objeto2: 18
+  - verbo: 20
+    instrucoes:
+      - op: "AQUI"
+        p1: 9
+        p2: 8
+      - op: "TEMOS"
+        p1: 9
+        p2: 6
+      - op: "MSG"
+        p1: 18
+      - op: "OBJ"
+        p1: 9
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "MSG"
+        p1: 17
+      - op: "GOTO"
+        p1: 3
+      - op: "REG="
+        p1: 20
+        p2: 1
+        p3: 11
+      - op: "PEGA"
+        p1: 9
+      - op: "OK"
+      - op: "MSG"
+        p1: 88
+      - op: "NVC"
+    objeto1: 9
+  - verbo: 43
+    instrucoes:
+      - op: "LOCAL"
+        p1: 11
+        p2: 8
+      - op: "TEMOS"
+        p1: 9
+        p2: 6
+      - op: "MSG"
+        p1: 16
+      - op: "OBJ"
+        p1: 9
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "MSG"
+        p1: 26
+      - op: "NVC"
+      - op: "REG="
+        p1: 20
+        p2: 1
+        p3: 13
+      - op: "TEMOS"
+        p1: 9
+        p2: 11
+      - op: "GOTO"
+        p1: 2
+      - op: "MSG"
+        p1: 89
+      - op: "NVC"
+      - op: "LDR"
+        p1: 21
+        p2: 1
+      - op: "CRIA"
+        p1: 19
+      - op: "MSG"
+        p1: 90
+      - op: "NVC"
+    objeto1: 9
+  - verbo: 44
+    instrucoes:
+      - op: "LOCAL"
+        p1: 11
+        p2: 3
+      - op: "MSG"
+        p1: 89
+      - op: "NVC"
+      - op: "MSG"
+        p1: 85
+      - op: "NVC"
+    objeto1: 18
+  - verbo: 41
+    instrucoes:
+      - op: "TEMOS"
+        p1: 9
+        p2: 5
+      - op: "MSG"
+        p1: 16
+      - op: "OBJ"
+        p1: 9
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "MSG"
+        p1: 40
+      - op: "NVC"
+    objeto1: 9
+  - verbo: 7
+    instrucoes:
+      - op: "LOCAL"
+        p1: 11
+        p2: 5
+      - op: "MSG"
+        p1: 16
+      - op: "OBJ"
+        p1: 19
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "GOSUB"
+        p1: 29
+    objeto1: 19
+  - verbo: 10
+    instrucoes:
+      - op: "LOCAL"
+        p1: 11
+        p2: 5
+      - op: "MSG"
+        p1: 16
+      - op: "OBJ"
+        p1: 19
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "GOSUB"
+        p1: 29
+    objeto1: 19
+  - verbo: 8
+    instrucoes:
+      - op: "LOCAL"
+        p1: 22
+        p2: 5
+      - op: "MSG"
+        p1: 18
+      - op: "OBJ"
+        p1: 20
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "REG="
+        p1: 21
+        p2: 1
+        p3: 8
+      - op: "MSG"
+        p1: 91
+      - op: "NVC"
+      - op: "LDR"
+        p1: 9
+        p2: 0
+      - op: "FLAG"
+        p1: 0
+      - op: "NOP"
+      - op: "GOSUB"
+        p1: 28
+    objeto1: 20
+  - verbo: 28
+    instrucoes:
+      - op: "LOCAL"
+        p1: 11
+        p2: 5
+      - op: "MSG"
+        p1: 18
+      - op: "OBJ"
+        p1: 19
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "REG="
+        p1: 21
+        p2: 1
+        p3: 7
+      - op: "GOTO"
+        p1: 1
+      - op: "MSG"
+        p1: 93
+      - op: "NVC"
+    objeto1: 19
+  - verbo: 45
+    instrucoes:
+      - op: "GOSUB"
+        p1: 51
+    objeto1: 53
+  - verbo: 7
+    instrucoes:
+      - op: "LOCAL"
+        p1: 35
+        p2: 5
+      - op: "MSG"
+        p1: 18
+      - op: "OBJ"
+        p1: 27
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "LDR"
+        p1: 1
+        p2: 25
+      - op: "GOSUB"
+        p1: 30
+    objeto1: 27
+  - verbo: 28
+    instrucoes:
+      - op: "LOCAL"
+        p1: 35
+        p2: 3
+      - op: "MSG"
+        p1: 89
+      - op: "NVC"
+      - op: "MSG"
+        p1: 97
+      - op: "NVC"
+    objeto1: 27
+  - verbo: 7
+    instrucoes:
+      - op: "GOSUB"
+        p1: 54
+    objeto1: 64
+  - verbo: 10
+    instrucoes:
+      - op: "GOSUB"
+        p1: 64
+    objeto1: 64
+  - verbo: 28
+    instrucoes:
+      - op: "AQUI"
+        p1: 28
+        p2: 5
+      - op: "MSG"
+        p1: 18
+      - op: "OBJ"
+        p1: 28
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "MSG"
+        p1: 99
+      - op: "REG="
+        p1: 30
+        p2: 0
+        p3: 9
+      - op: "MSG"
+        p1: 100
+      - op: "NVC"
+      - op: "MSG"
+        p1: 101
+      - op: "NVC"
+    objeto1: 28
+  - verbo: 37
+    instrucoes:
+      - op: "AQUI"
+        p1: 28
+        p2: 5
+      - op: "MSG"
+        p1: 18
+      - op: "OBJ"
+        p1: 28
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "REG="
+        p1: 30
+        p2: 1
+        p3: 12
+      - op: "CRIA"
+        p1: 29
+      - op: "CRIA"
+        p1: 30
+      - op: "CRIA"
+        p1: 31
+      - op: "MSG"
+        p1: 102
+      - op: "LDR"
+        p1: 30
+        p2: 1
+      - op: "NVC"
+      - op: "MSG"
+        p1: 87
+      - op: "NVC"
+    objeto1: 28
+  - verbo: 37
+    instrucoes:
+      - op: "GOSUB"
+        p1: 41
+    objeto1: 29
+  - verbo: 38
+    instrucoes:
+      - op: "TEMOS"
+        p1: 29
+        p2: 5
+      - op: "MSG"
+        p1: 16
+      - op: "OBJ"
+        p1: 29
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "OK"
+    objeto1: 29
+  - verbo: 10
+    instrucoes:
+      - op: "MSG"
+        p1: 40
+      - op: "NVC"
+  - verbo: 38
+    instrucoes:
+      - op: "AQUI"
+        p1: 28
+        p2: 5
+      - op: "MSG"
+        p1: 18
+      - op: "OBJ"
+        p1: 28
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "REG="
+        p1: 30
+        p2: 0
+        p3: 8
+      - op: "MSG"
+        p1: 103
+      - op: "NVC"
+      - op: "OBJ"
+        p1: 43
+      - op: "NVC"
+    objeto1: 28
+  - verbo: 45
+    instrucoes:
+      - op: "TEMOS"
+        p1: 29
+        p2: 5
+      - op: "MSG"
+        p1: 16
+      - op: "OBJ"
+        p1: 29
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "MSG"
+        p1: 104
+      - op: "NVC"
+    objeto1: 29
+  - verbo: 28
+    instrucoes:
+      - op: "AQUI"
+        p1: 34
+        p2: 5
+      - op: "MSG"
+        p1: 18
+      - op: "OBJ"
+        p1: 34
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "REG="
+        p1: 32
+        p2: 0
+        p3: 11
+      - op: "REG="
+        p1: 32
+        p2: 1
+        p3: 9
+      - op: "MSG"
+        p1: 106
+      - op: "NVC"
+      - op: "MSG"
+        p1: 67
+      - op: "NVC"
+      - op: "MSG"
+        p1: 68
+      - op: "NVC"
+    objeto1: 34
+  - verbo: 37
+    instrucoes:
+      - op: "GOSUB"
+        p1: 58
+      - op: "TEMOS"
+        p1: 33
+        p2: 6
+      - op: "MSG"
+        p1: 16
+      - op: "OBJ"
+        p1: 33
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "SOLTA"
+        p1: 33
+      - op: "LDR"
+        p1: 31
+        p2: 1
+      - op: "LDR"
+        p1: 32
+        p2: 1
+      - op: "OK"
+    objeto1: 34
+    objeto2: 33
+  - verbo: 9
+    instrucoes:
+      - op: "LOCAL"
+        p1: 18
+        p2: 3
+      - op: "MSG"
+        p1: 15
+      - op: "NVC"
+      - op: "LDR"
+        p1: 1
+        p2: 47
+      - op: "FLAG"
+        p1: 0
+      - op: "NOP"
+      - op: "LDR"
+        p1: 9
+        p2: 0
+      - op: "DESC"
+    objeto1: 64
+  - verbo: 26
+    instrucoes:
+      - op: "AQUI"
+        p1: 34
+        p2: 5
+      - op: "MSG"
+        p1: 18
+      - op: "OBJ"
+        p1: 34
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "MSG"
+        p1: 54
+      - op: "NVC"
+    objeto1: 34
+  - verbo: 26
+    instrucoes:
+      - op: "LOCAL"
+        p1: 26
+        p2: 12
+      - op: "LOCAL"
+        p1: 27
+        p2: 6
+      - op: "MSG"
+        p1: 18
+      - op: "OBJ"
+        p1: 34
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "GOSUB"
+        p1: 62
+      - op: "LDR"
+        p1: 32
+        p2: 2
+      - op: "REG="
+        p1: 31
+        p2: 1
+        p3: 10
+      - op: "OK"
+      - op: "LDR"
+        p1: 31
+        p2: 0
+      - op: "OK"
+      - op: "GOSUB"
+        p1: 62
+      - op: "APAG"
+        p1: 10
+      - op: "MSG"
+        p1: 144
+      - op: "NVC"
+    objeto1: 34
+    objeto2: 10
+  - verbo: 37
+    instrucoes:
+      - op: "GOSUB"
+        p1: 58
+      - op: "REG="
+        p1: 31
+        p2: 1
+        p3: 3
+      - op: "GOTO"
+        p1: 4
+      - op: "AQUI"
+        p1: 33
+        p2: 6
+      - op: "MSG"
+        p1: 107
+      - op: "NVC"
+      - op: "LDR"
+        p1: 32
+        p2: 1
+      - op: "OK"
+    objeto1: 34
+  - verbo: 48
+    instrucoes:
+      - op: "TEMOS"
+        p1: 67
+        p2: 13
+      - op: "LOCAL"
+        p1: 45
+        p2: 6
+      - op: "MSG"
+        p1: 16
+      - op: "OBJ"
+        p1: 67
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "TEMOS"
+        p1: 15
+        p2: 11
+      - op: "MSG"
+        p1: 16
+      - op: "OBJ"
+        p1: 15
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "PEGA"
+        p1: 67
+      - op: "OK"
+      - op: "MSG"
+        p1: 17
+      - op: "GOTO"
+        p1: 3
+    objeto1: 67
+  - verbo: 21
+    instrucoes:
+      - op: "TEMOS"
+        p1: 33
+        p2: 5
+      - op: "MSG"
+        p1: 16
+      - op: "OBJ"
+        p1: 33
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "AQUI"
+        p1: 34
+        p2: 10
+      - op: "MSG"
+        p1: 18
+      - op: "OBJ"
+        p1: 34
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "SOLTA"
+        p1: 33
+      - op: "LDR"
+        p1: 31
+        p2: 1
+      - op: "OK"
+    objeto1: 33
+    objeto2: 34
+  - verbo: 21
+    instrucoes:
+      - op: "MSG"
+        p1: 108
+      - op: "NVC"
+    objeto1: 34
+  - verbo: 38
+    instrucoes:
+      - op: "AQUI"
+        p1: 34
+        p2: 5
+      - op: "MSG"
+        p1: 18
+      - op: "OBJ"
+        p1: 34
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "REG="
+        p1: 32
+        p2: 2
+        p3: 11
+      - op: "REG="
+        p1: 32
+        p2: 1
+        p3: 9
+      - op: "MSG"
+        p1: 105
+      - op: "NVC"
+      - op: "LDR"
+        p1: 32
+        p2: 0
+      - op: "OK"
+      - op: "MSG"
+        p1: 28
+      - op: "NVC"
+    objeto1: 34
+  - verbo: 28
+    instrucoes:
+      - op: "AQUI"
+        p1: 35
+        p2: 5
+      - op: "MSG"
+        p1: 18
+      - op: "OBJ"
+        p1: 35
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "MSG"
+        p1: 109
+      - op: "REG="
+        p1: 33
+        p2: 0
+        p3: 9
+      - op: "MSG"
+        p1: 100
+      - op: "NVC"
+      - op: "MSG"
+        p1: 101
+      - op: "NVC"
+    objeto1: 35
+  - verbo: 37
+    instrucoes:
+      - op: "AQUI"
+        p1: 35
+        p2: 5
+      - op: "MSG"
+        p1: 18
+      - op: "OBJ"
+        p1: 35
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "REG="
+        p1: 33
+        p2: 1
+        p3: 13
+      - op: "LDR"
+        p1: 33
+        p2: 1
+      - op: "REG="
+        p1: 32
+        p2: 1
+        p3: 10
+      - op: "MSG"
+        p1: 110
+      - op: "NVC"
+      - op: "LDR"
+        p1: 32
+        p2: 0
+      - op: "MSG"
+        p1: 111
+      - op: "NVC"
+      - op: "MSG"
+        p1: 87
+      - op: "NVC"
+    objeto1: 35
+  - verbo: 26
+    instrucoes:
+      - op: "TEMOS"
+        p1: 54
+        p2: 5
+      - op: "MSG"
+        p1: 16
+      - op: "OBJ"
+        p1: 54
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "LDR"
+        p1: 43
+        p2: 1
+      - op: "OK"
+    objeto1: 54
+  - verbo: 7
+    instrucoes:
+      - op: "AQUI"
+        p1: 35
+        p2: 5
+      - op: "MSG"
+        p1: 18
+      - op: "OBJ"
+        p1: 35
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "REG="
+        p1: 33
+        p2: 1
+        p3: 8
+      - op: "MSG"
+        p1: 112
+      - op: "NVC"
+      - op: "LDR"
+        p1: 1
+        p2: 66
+      - op: "MSG"
+        p1: 113
+      - op: "NVC"
+    objeto1: 35
+  - verbo: 7
+    instrucoes:
+      - op: "LOCAL"
+        p1: 34
+        p2: 5
+      - op: "MSG"
+        p1: 16
+      - op: "OBJ"
+        p1: 34
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "LDR"
+        p1: 1
+        p2: 33
+      - op: "GOSUB"
+        p1: 30
+    objeto1: 36
+  - verbo: 8
+    instrucoes:
+      - op: "LOCAL"
+        p1: 32
+        p2: 8
+      - op: "LOCAL"
+        p1: 31
+        p2: 6
+      - op: "MSG"
+        p1: 18
+      - op: "OBJ"
+        p1: 39
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "MSG"
+        p1: 73
+      - op: "NVC"
+      - op: "LDR"
+        p1: 1
+        p2: 31
+      - op: "DESC"
+    objeto1: 39
+  - verbo: 10
+    instrucoes:
+      - op: "LOCAL"
+        p1: 31
+        p2: 8
+      - op: "LOCAL"
+        p1: 32
+        p2: 6
+      - op: "MSG"
+        p1: 18
+      - op: "OBJ"
+        p1: 39
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "MSG"
+        p1: 114
+      - op: "NVC"
+      - op: "LDR"
+        p1: 1
+        p2: 32
+      - op: "DESC"
+    objeto1: 39
+  - verbo: 28
+    instrucoes:
+      - op: "LOCAL"
+        p1: 32
+        p2: 6
+      - op: "LOCAL"
+        p1: 31
+        p2: 6
+      - op: "MSG"
+        p1: 18
+      - op: "OBJ"
+        p1: 39
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "MSG"
+        p1: 115
+      - op: "NVC"
+    objeto1: 39
+  - verbo: 28
+    instrucoes:
+      - op: "LOCAL"
+        p1: 53
+        p2: 5
+      - op: "MSG"
+        p1: 18
+      - op: "OBJ"
+        p1: 41
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "MSG"
+        p1: 116
+      - op: "NVC"
+    objeto1: 41
+  - verbo: 45
+    instrucoes:
+      - op: "LOCAL"
+        p1: 53
+        p2: 5
+      - op: "MSG"
+        p1: 18
+      - op: "OBJ"
+        p1: 41
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "MSG"
+        p1: 117
+      - op: "NVC"
+    objeto1: 41
+  - verbo: 28
+    instrucoes:
+      - op: "LOCAL"
+        p1: 57
+        p2: 6
+      - op: "LOCAL"
+        p1: 58
+        p2: 6
+      - op: "MSG"
+        p1: 18
+      - op: "OBJ"
+        p1: 42
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "MSG"
+        p1: 118
+      - op: "NVC"
+    objeto1: 42
+  - verbo: 7
+    instrucoes:
+      - op: "LOCAL"
+        p1: 57
+        p2: 3
+      - op: "MSG"
+        p1: 28
+      - op: "NVC"
+      - op: "LDR"
+        p1: 1
+        p2: 58
+      - op: "DESC"
+    objeto1: 42
+  - verbo: 9
+    instrucoes:
+      - op: "LOCAL"
+        p1: 58
+        p2: 3
+      - op: "MSG"
+        p1: 28
+      - op: "NVC"
+      - op: "LDR"
+        p1: 1
+        p2: 57
+      - op: "DESC"
+    objeto1: 42
+  - verbo: 28
+    instrucoes:
+      - op: "TEMOS"
+        p1: 32
+        p2: 6
+      - op: "AQUI"
+        p1: 32
+        p2: 6
+      - op: "MSG"
+        p1: 18
+      - op: "OBJ"
+        p1: 32
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "MSG"
+        p1: 119
+      - op: "NVC"
+    objeto1: 32
+  - verbo: 26
+    instrucoes:
+      - op: "TEMOS"
+        p1: 32
+        p2: 6
+      - op: "AQUI"
+        p1: 32
+        p2: 6
+      - op: "MSG"
+        p1: 18
+      - op: "OBJ"
+        p1: 32
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "CRIA"
+        p1: 33
+      - op: "APAG"
+        p1: 32
+      - op: "OK"
+    objeto1: 32
+  - verbo: 28
+    instrucoes:
+      - op: "AQUI"
+        p1: 51
+        p2: 5
+      - op: "MSG"
+        p1: 18
+      - op: "OBJ"
+        p1: 51
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "MSG"
+        p1: 131
+      - op: "NVC"
+    objeto1: 51
+  - verbo: 28
+    instrucoes:
+      - op: "LOCAL"
+        p1: 60
+        p2: 3
+      - op: "MSG"
+        p1: 28
+      - op: "NVC"
+      - op: "MSG"
+        p1: 120
+      - op: "NVC"
+    objeto1: 43
+  - verbo: 7
+    instrucoes:
+      - op: "LOCAL"
+        p1: 60
+        p2: 5
+      - op: "MSG"
+        p1: 18
+      - op: "OBJ"
+        p1: 43
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "LDR"
+        p1: 1
+        p2: 62
+      - op: "GOSUB"
+        p1: 30
+    objeto1: 43
+  - verbo: 28
+    instrucoes:
+      - op: "TEMOS"
+        p1: 37
+        p2: 5
+      - op: "MSG"
+        p1: 16
+      - op: "OBJ"
+        p1: 37
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "REG="
+        p1: 36
+        p2: 0
+        p3: 8
+      - op: "MSG"
+        p1: 67
+      - op: "NVC"
+      - op: "MSG"
+        p1: 132
+      - op: "NVC"
+    objeto1: 37
+  - verbo: 40
+    instrucoes:
+      - op: "AQUI"
+        p1: 63
+        p2: 5
+      - op: "MSG"
+        p1: 18
+      - op: "OBJ"
+        p1: 63
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "TEMOS"
+        p1: 6
+        p2: 8
+      - op: "MSG"
+        p1: 54
+      - op: "NVC"
+      - op: "GOSUB"
+        p1: 52
+    objeto1: 63
+  - verbo: 37
+    instrucoes:
+      - op: "TEMOS"
+        p1: 37
+        p2: 5
+      - op: "MSG"
+        p1: 16
+      - op: "OBJ"
+        p1: 37
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "LDR"
+        p1: 36
+        p2: 1
+      - op: "OK"
+    objeto1: 37
+  - verbo: 46
+    instrucoes:
+      - op: "TEMOS"
+        p1: 37
+        p2: 5
+      - op: "MSG"
+        p1: 16
+      - op: "OBJ"
+        p1: 37
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "APAG"
+        p1: 37
+      - op: "LDR"
+        p1: 5
+        p2: 0
+      - op: "MSG"
+        p1: 133
+      - op: "NVC"
+    objeto1: 38
+  - verbo: 7
+    instrucoes:
+      - op: "GOSUB"
+        p1: 42
+    objeto1: 46
+  - verbo: 20
+    instrucoes:
+      - op: "LOCAL"
+        p1: 48
+        p2: 2
+      - op: "GOTO"
+        p1: 3
+      - op: "AQUI"
+        p1: 51
+        p2: 13
+      - op: "AQUI"
+        p1: 47
+        p2: 11
+      - op: "TEMOS"
+        p1: 47
+        p2: 9
+      - op: "MSG"
+        p1: 18
+      - op: "OBJ"
+        p1: 47
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "MSG"
+        p1: 17
+      - op: "GOTO"
+        p1: 6
+      - op: "PEGA"
+        p1: 47
+      - op: "OK"
+      - op: "MSG"
+        p1: 123
+      - op: "NVC"
+    objeto1: 47
+  - verbo: 21
+    instrucoes:
+      - op: "TEMOS"
+        p1: 47
+        p2: 5
+      - op: "MSG"
+        p1: 16
+      - op: "OBJ"
+        p1: 47
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "GOSUB"
+        p1: 40
+      - op: "SOLTA"
+        p1: 47
+      - op: "OK"
+    objeto1: 47
+    objeto2: 46
+  - verbo: 24
+    instrucoes:
+      - op: "AQUI"
+        p1: 47
+        p2: 8
+      - op: "TEMOS"
+        p1: 47
+        p2: 6
+      - op: "MSG"
+        p1: 18
+      - op: "OBJ"
+        p1: 47
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "MSG"
+        p1: 17
+      - op: "GOTO"
+        p1: 3
+      - op: "LOCAL"
+        p1: 48
+        p2: 11
+      - op: "PEGA"
+        p1: 47
+      - op: "OK"
+      - op: "PEGA"
+        p1: 47
+      - op: "LDR"
+        p1: 34
+        p2: 1
+      - op: "MSG"
+        p1: 127
+      - op: "LDR"
+        p1: 1
+        p2: 50
+      - op: "NVC"
+    objeto1: 47
+  - verbo: 31
+    instrucoes:
+      - op: "TEMOS"
+        p1: 47
+        p2: 8
+      - op: "TEMOS"
+        p1: 10
+        p2: 6
+      - op: "MSG"
+        p1: 16
+      - op: "OBJ"
+        p1: 10
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "MSG"
+        p1: 47
+      - op: "NVC"
+      - op: "MSG"
+        p1: 17
+      - op: "OBJ"
+        p1: 47
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+    objeto1: 47
+  - verbo: 21
+    instrucoes:
+      - op: "TEMOS"
+        p1: 48
+        p2: 5
+      - op: "MSG"
+        p1: 16
+      - op: "OBJ"
+        p1: 48
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "GOSUB"
+        p1: 40
+      - op: "SOLTA"
+        p1: 48
+      - op: "OK"
+    objeto1: 48
+    objeto2: 46
+  - verbo: 31
+    instrucoes:
+      - op: "TEMOS"
+        p1: 48
+        p2: 20
+      - op: "TEMOS"
+        p1: 49
+        p2: 6
+      - op: "MSG"
+        p1: 16
+      - op: "OBJ"
+        p1: 49
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "TEMOS"
+        p1: 9
+        p2: 11
+      - op: "MSG"
+        p1: 16
+      - op: "OBJ"
+        p1: 9
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "TEMOS"
+        p1: 10
+        p2: 16
+      - op: "MSG"
+        p1: 16
+      - op: "OBJ"
+        p1: 10
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "APAG"
+        p1: 9
+      - op: "APAG"
+        p1: 49
+      - op: "CRIA"
+        p1: 48
+      - op: "OK"
+      - op: "MSG"
+        p1: 17
+      - op: "OBJ"
+        p1: 48
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+    objeto1: 48
+  - verbo: 26
+    instrucoes:
+      - op: "TEMOS"
+        p1: 48
+        p2: 5
+      - op: "MSG"
+        p1: 16
+      - op: "OBJ"
+        p1: 48
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "TEMOS"
+        p1: 10
+        p2: 10
+      - op: "MSG"
+        p1: 16
+      - op: "OBJ"
+        p1: 10
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "APAG"
+        p1: 48
+      - op: "CRIA"
+        p1: 9
+      - op: "CRIA"
+        p1: 49
+      - op: "OK"
+    objeto1: 48
+  - verbo: 28
+    instrucoes:
+      - op: "LLIST"
+    objeto1: 1
+  - verbo: 48
+    instrucoes:
+      - op: "TEMOS"
+        p1: 10
+        p2: 5
+      - op: "MSG"
+        p1: 16
+      - op: "OBJ"
+        p1: 10
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "LOCAL"
+        p1: 43
+        p2: 19
+      - op: "LOCAL"
+        p1: 39
+        p2: 19
+      - op: "LOCAL"
+        p1: 19
+        p2: 19
+      - op: "LOCAL"
+        p1: 51
+        p2: 19
+      - op: "LOCAL"
+        p1: 36
+        p2: 19
+      - op: "LOCAL"
+        p1: 34
+        p2: 19
+      - op: "LOCAL"
+        p1: 52
+        p2: 19
+      - op: "LOCAL"
+        p1: 9
+        p2: 19
+      - op: "LOCAL"
+        p1: 50
+        p2: 19
+      - op: "LOCAL"
+        p1: 47
+        p2: 19
+      - op: "LOCAL"
+        p1: 42
+        p2: 19
+      - op: "LOCAL"
+        p1: 11
+        p2: 19
+      - op: "MSG"
+        p1: 28
+      - op: "NVC"
+      - op: "TEMOS"
+        p1: 49
+        p2: 23
+      - op: "CRIA"
+        p1: 49
+      - op: "MSG"
+        p1: 129
+      - op: "NVC"
+      - op: "MSG"
+        p1: 179
+      - op: "NVC"
+    objeto1: 50
+  - verbo: 7
+    instrucoes:
+      - op: "LOCAL"
+        p1: 48
+        p2: 5
+      - op: "MSG"
+        p1: 18
+      - op: "OBJ"
+        p1: 52
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "AQUI"
+        p1: 51
+        p2: 8
+      - op: "LDR"
+        p1: 1
+        p2: 49
+      - op: "DESC"
+      - op: "LDR"
+        p1: 1
+        p2: 49
+      - op: "CRIA"
+        p1: 51
+      - op: "DESC"
+    objeto1: 52
+  - verbo: 9
+    instrucoes:
+      - op: "LOCAL"
+        p1: 49
+        p2: 5
+      - op: "MSG"
+        p1: 18
+      - op: "OBJ"
+        p1: 49
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "AQUI"
+        p1: 51
+        p2: 8
+      - op: "LDR"
+        p1: 1
+        p2: 48
+      - op: "DESC"
+      - op: "LDR"
+        p1: 1
+        p2: 48
+      - op: "CRIA"
+        p1: 51
+      - op: "DESC"
+    objeto1: 52
+  - verbo: 40
+    instrucoes:
+      - op: "AQUI"
+        p1: 51
+        p2: 5
+      - op: "MSG"
+        p1: 18
+      - op: "OBJ"
+        p1: 51
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "TEMOS"
+        p1: 6
+        p2: 8
+      - op: "MSG"
+        p1: 54
+      - op: "NVC"
+      - op: "GOSUB"
+        p1: 61
+    objeto1: 51
+  - verbo: 40
+    instrucoes:
+      - op: "AQUI"
+        p1: 51
+        p2: 5
+      - op: "MSG"
+        p1: 18
+      - op: "OBJ"
+        p1: 51
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "TEMOS"
+        p1: 6
+        p2: 10
+      - op: "MSG"
+        p1: 16
+      - op: "OBJ"
+        p1: 6
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "GOSUB"
+        p1: 61
+    objeto1: 51
+    objeto2: 6
+  - verbo: 40
+    instrucoes:
+      - op: "AQUI"
+        p1: 51
+        p2: 5
+      - op: "MSG"
+        p1: 18
+      - op: "OBJ"
+        p1: 51
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "TEMOS"
+        p1: 10
+        p2: 10
+      - op: "MSG"
+        p1: 16
+      - op: "OBJ"
+        p1: 10
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "MSG"
+        p1: 131
+      - op: "NVC"
+    objeto1: 51
+    objeto2: 10
+  - verbo: 32
+    instrucoes:
+      - op: "AQUI"
+        p1: 51
+        p2: 5
+      - op: "MSG"
+        p1: 18
+      - op: "OBJ"
+        p1: 51
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "TEMOS"
+        p1: 6
+        p2: 8
+      - op: "MSG"
+        p1: 63
+      - op: "NVC"
+      - op: "REG="
+        p1: 16
+        p2: 0
+        p3: 14
+      - op: "REG="
+        p1: 16
+        p2: 1
+        p3: 13
+      - op: "DEC"
+        p1: 16
+      - op: "MSG"
+        p1: 70
+      - op: "NVC"
+      - op: "GOSUB"
+        p1: 61
+      - op: "MSG"
+        p1: 61
+      - op: "NVC"
+    objeto1: 51
+  - verbo: 9
+    instrucoes:
+      - op: "LOCAL"
+        p1: 62
+        p2: 3
+      - op: "MSG"
+        p1: 94
+      - op: "NVC"
+      - op: "GOSUB"
+        p1: 38
+    objeto1: 59
+  - verbo: 9
+    instrucoes:
+      - op: "LOCAL"
+        p1: 25
+        p2: 3
+      - op: "MSG"
+        p1: 15
+      - op: "NVC"
+      - op: "GOSUB"
+        p1: 34
+    objeto1: 27
+  - verbo: 40
+    instrucoes:
+      - op: "TEMOS"
+        p1: 10
+        p2: 5
+      - op: "MSG"
+        p1: 16
+      - op: "OBJ"
+        p1: 10
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "GOSUB"
+        p1: 53
+    objeto1: 63
+    objeto2: 10
+  - verbo: 21
+    instrucoes:
+      - op: "TEMOS"
+        p1: 3
+        p2: 5
+      - op: "MSG"
+        p1: 16
+      - op: "OBJ"
+        p1: 3
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "SOLTA"
+        p1: 3
+      - op: "OK"
+    objeto1: 3
+    objeto2: 55
+  - verbo: 7
+    instrucoes:
+      - op: "AQUI"
+        p1: 47
+        p2: 5
+      - op: "MSG"
+        p1: 18
+      - op: "OBJ"
+        p1: 47
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "GOSUB"
+        p1: 47
+    objeto1: 47
+  - verbo: 7
+    instrucoes:
+      - op: "AQUI"
+        p1: 48
+        p2: 5
+      - op: "MSG"
+        p1: 18
+      - op: "OBJ"
+        p1: 48
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "GOSUB"
+        p1: 47
+    objeto1: 48
+  - verbo: 40
+    instrucoes:
+      - op: "AQUI"
+        p1: 63
+        p2: 5
+      - op: "MSG"
+        p1: 18
+      - op: "OBJ"
+        p1: 63
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "TEMOS"
+        p1: 6
+        p2: 10
+      - op: "MSG"
+        p1: 16
+      - op: "OBJ"
+        p1: 6
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "GOSUB"
+        p1: 52
+    objeto1: 63
+    objeto2: 6
+  - verbo: 20
+    instrucoes:
+      - op: "GOSUB"
+        p1: 48
+    objeto1: 10
+  - verbo: 25
+    instrucoes:
+      - op: "GOSUB"
+        p1: 48
+    objeto1: 10
+    objeto2: 56
+  - verbo: 9
+    instrucoes:
+      - op: "LOCAL"
+        p1: 33
+        p2: 5
+      - op: "MSG"
+        p1: 18
+      - op: "OBJ"
+        p1: 33
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "GOSUB"
+        p1: 37
+    objeto1: 57
+  - verbo: 9
+    instrucoes:
+      - op: "LOCAL"
+        p1: 33
+        p2: 5
+      - op: "MSG"
+        p1: 18
+      - op: "OBJ"
+        p1: 33
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "GOSUB"
+        p1: 37
+    objeto1: 36
+  - verbo: 9
+    instrucoes:
+      - op: "LOCAL"
+        p1: 62
+        p2: 3
+      - op: "MSG"
+        p1: 94
+      - op: "NVC"
+      - op: "GOSUB"
+        p1: 38
+    objeto1: 43
+  - verbo: 38
+    instrucoes:
+      - op: "TEMOS"
+        p1: 53
+        p2: 5
+      - op: "MSG"
+        p1: 16
+      - op: "OBJ"
+        p1: 53
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "OK"
+    objeto1: 53
+  - verbo: 42
+    instrucoes:
+      - op: "AQUI"
+        p1: 9
+        p2: 6
+      - op: "TEMOS"
+        p1: 9
+        p2: 6
+      - op: "MSG"
+        p1: 18
+      - op: "OBJ"
+        p1: 9
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "MSG"
+        p1: 39
+      - op: "NVC"
+    objeto1: 9
+  - verbo: 21
+    instrucoes:
+      - op: "TEMOS"
+        p1: 22
+        p2: 5
+      - op: "MSG"
+        p1: 16
+      - op: "OBJ"
+        p1: 22
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "AQUI"
+        p1: 25
+        p2: 10
+      - op: "MSG"
+        p1: 18
+      - op: "OBJ"
+        p1: 25
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "APAG"
+        p1: 22
+      - op: "LDR"
+        p1: 25
+        p2: 1
+      - op: "MSG"
+        p1: 75
+      - op: "NVC"
+    objeto1: 22
+    objeto2: 26
+  - verbo: 28
+    instrucoes:
+      - op: "AQUI"
+        p1: 45
+        p2: 5
+      - op: "MSG"
+        p1: 18
+      - op: "OBJ"
+        p1: 45
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "MSG"
+        p1: 149
+      - op: "NVC"
+    objeto1: 45
+  - verbo: 16
+    instrucoes:
+      - op: "TEMOS"
+        p1: 11
+        p2: 5
+      - op: "MSG"
+        p1: 16
+      - op: "OBJ"
+        p1: 11
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "MSG"
+        p1: 180
+      - op: "NVC"
+    objeto1: 11
+  - verbo: 27
+    instrucoes:
+      - op: "SOLTA"
+        p1: 100
+      - op: "OK"
+    objeto1: 69
+  - verbo: 28
+    instrucoes:
+      - op: "TEMOS"
+        p1: 13
+        p2: 5
+      - op: "MSG"
+        p1: 16
+      - op: "OBJ"
+        p1: 13
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "MSG"
+        p1: 182
+      - op: "NVC"
+    objeto1: 13
+  - verbo: 28
+    instrucoes:
+      - op: "TEMOS"
+        p1: 23
+        p2: 5
+      - op: "MSG"
+        p1: 16
+      - op: "OBJ"
+        p1: 23
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "MSG"
+        p1: 183
+      - op: "NVC"
+    objeto1: 23
+  - verbo: 28
+    instrucoes:
+      - op: "LLIST"
+    objeto1: 55
+  - verbo: 29
+    instrucoes:
+      - op: "LOCAL"
+        p1: 43
+        p2: 14
+      - op: "LOCAL"
+        p1: 39
+        p2: 14
+      - op: "LOCAL"
+        p1: 19
+        p2: 14
+      - op: "LOCAL"
+        p1: 51
+        p2: 14
+      - op: "LOCAL"
+        p1: 36
+        p2: 14
+      - op: "LOCAL"
+        p1: 34
+        p2: 14
+      - op: "LOCAL"
+        p1: 52
+        p2: 14
+      - op: "LOCAL"
+        p1: 9
+        p2: 14
+      - op: "LOCAL"
+        p1: 50
+        p2: 14
+      - op: "LOCAL"
+        p1: 47
+        p2: 14
+      - op: "LOCAL"
+        p1: 42
+        p2: 14
+      - op: "LOCAL"
+        p1: 11
+        p2: 14
+      - op: "MSG"
+        p1: 184
+      - op: "NVC"
+      - op: "MSG"
+        p1: 11
+      - op: "NVC"
+    objeto1: 50
+  - verbo: 21
+    instrucoes:
+      - op: "TEMOS"
+        p1: 61
+        p2: 5
+      - op: "MSG"
+        p1: 16
+      - op: "OBJ"
+        p1: 61
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "AQUI"
+        p1: 66
+        p2: 10
+      - op: "MSG"
+        p1: 18
+      - op: "OBJ"
+        p1: 66
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "SOLTA"
+        p1: 61
+      - op: "LDR"
+        p1: 41
+        p2: 1
+      - op: "OK"
+    objeto1: 61
+    objeto2: 66
+  - verbo: 7
+    instrucoes:
+      - op: "LOCAL"
+        p1: 37
+        p2: 3
+      - op: "MSG"
+        p1: 15
+      - op: "NVC"
+      - op: "LDR"
+        p1: 1
+        p2: 46
+      - op: "DESC"
+    objeto1: 70
+  - verbo: 9
+    instrucoes:
+      - op: "LOCAL"
+        p1: 46
+        p2: 3
+      - op: "MSG"
+        p1: 15
+      - op: "NVC"
+      - op: "LDR"
+        p1: 1
+        p2: 37
+      - op: "DESC"
+    objeto1: 70
+  - verbo: 50
+    instrucoes:
+      - op: "MSG"
+        p1: 186
+      - op: "PAUSA"
+      - op: "MSG"
+        p1: 187
+      - op: "PAUSA"
+      - op: "MSG"
+        p1: 188
+      - op: "PAUSA"
+      - op: "MSG"
+        p1: 189
+      - op: "PAUSA"
+      - op: "MSG"
+        p1: 190
+      - op: "PAUSA"
+      - op: "MSG"
+        p1: 191
+      - op: "PAUSA"
+      - op: "MSG"
+        p1: 192
+      - op: "PAUSA"
+      - op: "MSG"
+        p1: 193
+      - op: "PAUSA"
+      - op: "MSG"
+        p1: 194
+      - op: "PAUSA"
+      - op: "MSG"
+        p1: 195
+      - op: "PAUSA"
+      - op: "MSG"
+        p1: 204
+      - op: "PAUSA"
+      - op: "MSG"
+        p1: 205
+      - op: "PAUSA"
+      - op: "CLS"
+      - op: "DESC"
+  - verbo: 51
+    instrucoes:
+      - op: "MSG"
+        p1: 196
+      - op: "PAUSA"
+      - op: "CLS"
+      - op: "DESC"
+  - verbo: 52
+    instrucoes:
+      - op: "REG>"
+        p1: 91
+        p2: 0
+        p3: 17
+      - op: "LDR"
+        p1: 91
+        p2: 20
+      - op: "LOCAL"
+        p1: 24
+        p2: 21
+      - op: "LOCAL"
+        p1: 61
+        p2: 27
+      - op: "LDR"
+        p1: 90
+        p2: 0
+      - op: "RND"
+        p1: 90
+        p2: 6
+      - op: "REG="
+        p1: 90
+        p2: 0
+        p3: 14
+      - op: "REG="
+        p1: 90
+        p2: 1
+        p3: 16
+      - op: "REG="
+        p1: 90
+        p2: 2
+        p3: 23
+      - op: "REG="
+        p1: 90
+        p2: 3
+        p3: 25
+      - op: "REG="
+        p1: 90
+        p2: 4
+        p3: 30
+      - op: "REG="
+        p1: 90
+        p2: 5
+        p3: 32
+      - op: "REG="
+        p1: 90
+        p2: 6
+        p3: 34
+      - op: "GOTO"
+        p1: 17
+      - op: "MSG"
+        p1: 198
+      - op: "NVC"
+      - op: "TEMOS"
+        p1: 30
+        p2: 19
+      - op: "MSG"
+        p1: 8
+      - op: "NVC"
+      - op: "MSG"
+        p1: 199
+      - op: "NVC"
+      - op: "MSG"
+        p1: 200
+      - op: "NVC"
+      - op: "MSG"
+        p1: 201
+      - op: "NVC"
+      - op: "MSG"
+        p1: 202
+      - op: "NVC"
+      - op: "TEMOS"
+        p1: 16
+        p2: 17
+      - op: "MSG"
+        p1: 203
+      - op: "NVC"
+      - op: "MSG"
+        p1: 206
+      - op: "NVC"
+      - op: "MSG"
+        p1: 207
+      - op: "NVC"
+      - op: "MSG"
+        p1: 208
+      - op: "NVC"
+funcoes:
+  - id: 1
+    instrucoes:
+      - op: "LDR"
+        p1: 1
+        p2: 1
+      - op: "LDR"
+        p1: 163
+        p2: 40
+      - op: "RND"
+        p1: 163
+        p2: 5
+      - op: "LDR"
+        p1: 4
+        p2: 1
+      - op: "LDR"
+        p1: 13
+        p2: 5
+      - op: "LDR"
+        p1: 12
+        p2: 13
+      - op: "LDR"
+        p1: 14
+        p2: 8
+      - op: "RET"
+  - id: 2
+    instrucoes:
+      - op: "MSG"
+        p1: 155
+      - op: "MSG"
+        p1: 51
+      - op: "FIM"
+  - id: 3
+    instrucoes:
+      - op: "LDR"
+        p1: 6
+        p2: 0
+      - op: "SOLTA"
+        p1: 100
+      - op: "NVC"
+  - id: 4
+    instrucoes:
+      - op: "LOCAL"
+        p1: 21
+        p2: 2
+      - op: "GOTO"
+        p1: 7
+      - op: "TEMOS"
+        p1: 23
+        p2: 7
+      - op: "REG<"
+        p1: 11
+        p2: 5
+        p3: 7
+      - op: "MSG"
+        p1: 74
+      - op: "MSG"
+        p1: 51
+      - op: "FIM"
+      - op: "REG="
+        p1: 24
+        p2: 0
+        p3: 16
+      - op: "REG<"
+        p1: 11
+        p2: 59
+        p3: 16
+      - op: "LDR"
+        p1: 11
+        p2: 0
+      - op: "INC"
+        p1: 24
+      - op: "REG<"
+        p1: 24
+        p2: 9
+        p3: 16
+      - op: "LDR"
+        p1: 17
+        p2: 1
+      - op: "LDR"
+        p1: 10
+        p2: 0
+      - op: "LDR"
+        p1: 24
+        p2: 0
+      - op: "MSG"
+        p1: 44
+      - op: "AQUI"
+        p1: 5
+        p2: 19
+      - op: "LDR"
+        p1: 45
+        p2: 0
+      - op: "REF"
+      - op: "REG="
+        p1: 45
+        p2: 0
+        p3: 34
+      - op: "REG="
+        p1: 45
+        p2: 1
+        p3: 26
+      - op: "INC"
+        p1: 15
+      - op: "REG="
+        p1: 15
+        p2: 0
+        p3: 24
+      - op: "REF"
+      - op: "DEC"
+        p1: 45
+      - op: "REF"
+      - op: "REG>"
+        p1: 11
+        p2: 10
+        p3: 31
+      - op: "LDR"
+        p1: 105
+        p2: 2
+      - op: "RND"
+        p1: 105
+        p2: 6
+      - op: "MSG"
+        p1: 53
+      - op: "REF"
+      - op: "MSG"
+        p1: 52
+      - op: "MSG"
+        p1: 51
+      - op: "FIM"
+      - op: "LDR"
+        p1: 45
+        p2: 5
+      - op: "RND"
+        p1: 45
+        p2: 11
+      - op: "REF"
+  - id: 5
+    instrucoes:
+      - op: "REG="
+        p1: 91
+        p2: 0
+        p3: 2
+      - op: "DEC"
+        p1: 91
+      - op: "REG="
+        p1: 4
+        p2: 50
+        p3: 7
+      - op: "REG>"
+        p1: 4
+        p2: 45
+        p3: 5
+      - op: "GOTO"
+        p1: 10
+      - op: "MSG"
+        p1: 167
+      - op: "GOTO"
+        p1: 10
+      - op: "MSG"
+        p1: 168
+      - op: "MSG"
+        p1: 51
+      - op: "FIM"
+      - op: "REG="
+        p1: 5
+        p2: 0
+        p3: 13
+      - op: "REG>"
+        p1: 5
+        p2: 3
+        p3: 13
+      - op: "MSG"
+        p1: 153
+      - op: "AQUI"
+        p1: 63
+        p2: 16
+      - op: "LDR"
+        p1: 40
+        p2: 0
+      - op: "GOTO"
+        p1: 24
+      - op: "INC"
+        p1: 40
+      - op: "REG="
+        p1: 40
+        p2: 1
+        p3: 23
+      - op: "LDR"
+        p1: 5
+        p2: 10
+      - op: "MSG"
+        p1: 152
+      - op: "LDR"
+        p1: 163
+        p2: 40
+      - op: "RND"
+        p1: 163
+        p2: 5
+      - op: "GOTO"
+        p1: 24
+      - op: "MSG"
+        p1: 154
+      - op: "AQUI"
+        p1: 5
+        p2: 29
+      - op: "REG="
+        p1: 105
+        p2: 0
+        p3: 28
+      - op: "LDR"
+        p1: 105
+        p2: 2
+      - op: "RND"
+        p1: 105
+        p2: 6
+      - op: "NVF"
+      - op: "REG="
+        p1: 45
+        p2: 1
+        p3: 31
+      - op: "MSG"
+        p1: 48
+      - op: "NVF"
+  - id: 6
+    instrucoes:
+      - op: "EVID"
+        p1: 1
+      - op: "LOCAL"
+        p1: 49
+        p2: 21
+      - op: "EVD="
+        p1: 22
+        p2: 43
+      - op: "AQUI"
+        p1: 0
+        p2: 11
+      - op: "TEMOS"
+        p1: 0
+        p2: 7
+      - op: "MSG"
+        p1: 18
+      - op: "GOTO"
+        p1: 8
+      - op: "MSG"
+        p1: 17
+      - op: "OBJ"
+        p1: 0
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "EVD="
+        p1: 63
+        p2: 25
+      - op: "EVD="
+        p1: 5
+        p2: 25
+      - op: "EVD="
+        p1: 33
+        p2: 27
+      - op: "EVD="
+        p1: 28
+        p2: 30
+      - op: "EVD="
+        p1: 67
+        p2: 32
+      - op: "EVD="
+        p1: 25
+        p2: 37
+      - op: "EVD="
+        p1: 3
+        p2: 48
+      - op: "EVD="
+        p1: 61
+        p2: 52
+      - op: "PEGA"
+        p1: 0
+      - op: "OK"
+      - op: "AQUI"
+        p1: 51
+        p2: 23
+      - op: "GOTO"
+        p1: 3
+      - op: "MSG"
+        p1: 131
+      - op: "NVC"
+      - op: "MSG"
+        p1: 24
+      - op: "NVC"
+      - op: "PEGA"
+        p1: 33
+      - op: "LDR"
+        p1: 31
+        p2: 0
+      - op: "OK"
+      - op: "MSG"
+        p1: 27
+      - op: "NVC"
+      - op: "LOCAL"
+        p1: 45
+        p2: 35
+      - op: "PEGA"
+        p1: 67
+      - op: "NVC"
+      - op: "MSG"
+        p1: 176
+      - op: "NVC"
+      - op: "REG="
+        p1: 29
+        p2: 0
+        p3: 40
+      - op: "MSG"
+        p1: 27
+      - op: "NVC"
+      - op: "LDR"
+        p1: 29
+        p2: 1
+      - op: "MSG"
+        p1: 79
+      - op: "NVC"
+      - op: "LOCAL"
+        p1: 24
+        p2: 45
+      - op: "GOTO"
+        p1: 3
+      - op: "REG="
+        p1: 25
+        p2: 0
+        p3: 3
+      - op: "MSG"
+        p1: 15
+      - op: "NVC"
+      - op: "REG="
+        p1: 19
+        p2: 0
+        p3: 50
+      - op: "ESV"
+      - op: "PEGA"
+        p1: 3
+      - op: "OK"
+      - op: "LDR"
+        p1: 41
+        p2: 0
+      - op: "PEGA"
+        p1: 61
+      - op: "OK"
+  - id: 7
+    instrucoes:
+      - op: "EVID"
+        p1: 2
+      - op: "EVD="
+        p1: 3
+        p2: 4
+      - op: "MSG"
+        p1: 15
+      - op: "NVC"
+      - op: "EVID"
+        p1: 1
+      - op: "AQUI"
+        p1: 0
+        p2: 11
+      - op: "TEMOS"
+        p1: 0
+        p2: 11
+      - op: "MSG"
+        p1: 18
+      - op: "OBJ"
+        p1: 0
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "AQUI"
+        p1: 3
+        p2: 18
+      - op: "TEMOS"
+        p1: 3
+        p2: 17
+      - op: "MSG"
+        p1: 16
+      - op: "OBJ"
+        p1: 3
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "SOLTA"
+        p1: 3
+      - op: "REG="
+        p1: 19
+        p2: 1
+        p3: 21
+      - op: "LDR"
+        p1: 19
+        p2: 1
+      - op: "LIBR"
+      - op: "AQUI"
+        p1: 0
+        p2: 23
+      - op: "SOLTA"
+        p1: 0
+      - op: "EVD="
+        p1: 8
+        p2: 32
+      - op: "EVD="
+        p1: 17
+        p2: 34
+      - op: "EVD="
+        p1: 18
+        p2: 32
+      - op: "EVD="
+        p1: 49
+        p2: 34
+      - op: "EVD="
+        p1: 56
+        p2: 34
+      - op: "EVD="
+        p1: 61
+        p2: 32
+      - op: "EVD="
+        p1: 67
+        p2: 34
+      - op: "POE"
+        p1: 0
+      - op: "OK"
+      - op: "MSG"
+        p1: 77
+      - op: "NVC"
+      - op: "MSG"
+        p1: 78
+      - op: "NVC"
+  - id: 8
+    instrucoes:
+      - op: "LOCAL"
+        p1: 49
+        p2: 19
+      - op: "EVID"
+        p1: 1
+      - op: "TEMOS"
+        p1: 0
+        p2: 7
+      - op: "MSG"
+        p1: 16
+      - op: "OBJ"
+        p1: 0
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "EVID"
+        p1: 2
+      - op: "TEMOS"
+        p1: 0
+        p2: 17
+      - op: "AQUI"
+        p1: 0
+        p2: 12
+      - op: "MSG"
+        p1: 18
+      - op: "GOTO"
+        p1: 4
+      - op: "EVID"
+        p1: 1
+      - op: "SOLTA"
+        p1: 0
+      - op: "EVID"
+        p1: 2
+      - op: "PEGA"
+        p1: 0
+      - op: "OK"
+      - op: "MSG"
+        p1: 17
+      - op: "GOTO"
+        p1: 4
+      - op: "AQUI"
+        p1: 48
+        p2: 21
+      - op: "GOTO"
+        p1: 1
+      - op: "MSG"
+        p1: 131
+      - op: "NVC"
+  - id: 9
+    instrucoes:
+      - op: "MSG"
+        p1: 15
+      - op: "NVC"
+  - id: 10
+    instrucoes:
+      - op: "GOSUB"
+        p1: 6
+  - id: 11
+    instrucoes:
+      - op: "MSG"
+        p1: 15
+      - op: "NVC"
+  - id: 12
+    instrucoes:
+      - op: "EVID"
+        p1: 1
+      - op: "TEMOS"
+        p1: 0
+        p2: 7
+      - op: "AQUI"
+        p1: 0
+        p2: 7
+      - op: "MSG"
+        p1: 18
+      - op: "OBJ"
+        p1: 0
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "APAG"
+        p1: 0
+      - op: "OK"
+  - id: 13
+    instrucoes:
+      - op: "EVID"
+        p1: 1
+      - op: "TEMOS"
+        p1: 0
+        p2: 6
+      - op: "MSG"
+        p1: 16
+      - op: "OBJ"
+        p1: 0
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "SOLTA"
+        p1: 0
+      - op: "OK"
+  - id: 14
+    instrucoes:
+      - op: "EVID"
+        p1: 1
+      - op: "EVD="
+        p1: 66
+        p2: 23
+      - op: "EVD="
+        p1: 64
+        p2: 29
+      - op: "EVD="
+        p1: 50
+        p2: 54
+      - op: "EVD="
+        p1: 46
+        p2: 59
+      - op: "TEMOS"
+        p1: 0
+        p2: 11
+      - op: "AQUI"
+        p1: 0
+        p2: 11
+      - op: "MSG"
+        p1: 18
+      - op: "OBJ"
+        p1: 0
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "EVD="
+        p1: 55
+        p2: 21
+      - op: "EVD="
+        p1: 53
+        p2: 22
+      - op: "EVD="
+        p1: 63
+        p2: 35
+      - op: "EVD="
+        p1: 61
+        p2: 37
+      - op: "EVD="
+        p1: 17
+        p2: 43
+      - op: "EVD="
+        p1: 40
+        p2: 45
+      - op: "EVD="
+        p1: 47
+        p2: 47
+      - op: "EVD="
+        p1: 56
+        p2: 49
+      - op: "MSG"
+        p1: 19
+      - op: "GOTO"
+        p1: 8
+      - op: "LLIST"
+      - op: "GOSUB"
+        p1: 51
+      - op: "LOCAL"
+        p1: 28
+        p2: 27
+      - op: "LOCAL"
+        p1: 37
+        p2: 27
+      - op: "MSG"
+        p1: 18
+      - op: "GOTO"
+        p1: 8
+      - op: "MSG"
+        p1: 163
+      - op: "NVC"
+      - op: "LOCAL"
+        p1: 47
+        p2: 33
+      - op: "LOCAL"
+        p1: 18
+        p2: 33
+      - op: "MSG"
+        p1: 18
+      - op: "GOTO"
+        p1: 8
+      - op: "MSG"
+        p1: 158
+      - op: "NVC"
+      - op: "MSG"
+        p1: 24
+      - op: "NVC"
+      - op: "LOCAL"
+        p1: 12
+        p2: 40
+      - op: "MSG"
+        p1: 19
+      - op: "GOTO"
+        p1: 8
+      - op: "MSG"
+        p1: 164
+      - op: "LDR"
+        p1: 1
+        p2: 33
+      - op: "NVC"
+      - op: "MSG"
+        p1: 147
+      - op: "NVC"
+      - op: "MSG"
+        p1: 146
+      - op: "NVC"
+      - op: "MSG"
+        p1: 145
+      - op: "NVC"
+      - op: "REG="
+        p1: 35
+        p2: 0
+        p3: 52
+      - op: "MSG"
+        p1: 19
+      - op: "GOTO"
+        p1: 8
+      - op: "MSG"
+        p1: 141
+      - op: "NVC"
+      - op: "REG="
+        p1: 9
+        p2: 0
+        p3: 57
+      - op: "MSG"
+        p1: 18
+      - op: "GOTO"
+        p1: 8
+      - op: "MSG"
+        p1: 128
+      - op: "NVC"
+      - op: "LOCAL"
+        p1: 38
+        p2: 61
+      - op: "GOSUB"
+        p1: 40
+      - op: "MSG"
+        p1: 121
+      - op: "NVC"
+  - id: 15
+    instrucoes:
+      - op: "EVID"
+        p1: 1
+      - op: "EVD="
+        p1: 27
+        p2: 19
+      - op: "EVD="
+        p1: 64
+        p2: 21
+      - op: "EVD="
+        p1: 68
+        p2: 27
+      - op: "EVD="
+        p1: 66
+        p2: 29
+      - op: "EVD="
+        p1: 5
+        p2: 35
+      - op: "EVD="
+        p1: 67
+        p2: 40
+      - op: "EVD="
+        p1: 19
+        p2: 44
+      - op: "EVD="
+        p1: 13
+        p2: 46
+      - op: "AQUI"
+        p1: 0
+        p2: 17
+      - op: "TEMOS"
+        p1: 0
+        p2: 13
+      - op: "MSG"
+        p1: 18
+      - op: "GOTO"
+        p1: 14
+      - op: "MSG"
+        p1: 17
+      - op: "OBJ"
+        p1: 0
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "MSG"
+        p1: 11
+      - op: "NVC"
+      - op: "MSG"
+        p1: 98
+      - op: "NVC"
+      - op: "LOCAL"
+        p1: 47
+        p2: 17
+      - op: "LOCAL"
+        p1: 18
+        p2: 25
+      - op: "MSG"
+        p1: 18
+      - op: "GOTO"
+        p1: 14
+      - op: "MSG"
+        p1: 73
+      - op: "NVC"
+      - op: "MSG"
+        p1: 175
+      - op: "NVC"
+      - op: "LOCAL"
+        p1: 28
+        p2: 33
+      - op: "LOCAL"
+        p1: 37
+        p2: 33
+      - op: "MSG"
+        p1: 18
+      - op: "GOTO"
+        p1: 14
+      - op: "MSG"
+        p1: 73
+      - op: "NVC"
+      - op: "REG<"
+        p1: 1
+        p2: 9
+        p3: 38
+      - op: "MSG"
+        p1: 18
+      - op: "GOTO"
+        p1: 14
+      - op: "MSG"
+        p1: 148
+      - op: "NVC"
+      - op: "LOCAL"
+        p1: 45
+        p2: 42
+      - op: "GOTO"
+        p1: 9
+      - op: "MSG"
+        p1: 178
+      - op: "NVC"
+      - op: "MSG"
+        p1: 94
+      - op: "NVC"
+      - op: "REG="
+        p1: 18
+        p2: 1
+        p3: 52
+      - op: "TEMOS"
+        p1: 12
+        p2: 50
+      - op: "AQUI"
+        p1: 12
+        p2: 50
+      - op: "GOTO"
+        p1: 52
+      - op: "MSG"
+        p1: 92
+      - op: "NVC"
+      - op: "REG="
+        p1: 22
+        p2: 0
+        p3: 9
+      - op: "TEMOS"
+        p1: 2
+        p2: 56
+      - op: "AQUI"
+        p1: 2
+        p2: 56
+      - op: "GOTO"
+        p1: 9
+      - op: "MSG"
+        p1: 172
+      - op: "NVC"
+  - id: 16
+    instrucoes:
+      - op: "EVID"
+        p1: 2
+      - op: "EVD="
+        p1: 51
+        p2: 8
+      - op: "EVID"
+        p1: 1
+      - op: "EVD="
+        p1: 51
+        p2: 6
+      - op: "MSG"
+        p1: 15
+      - op: "NVC"
+      - op: "EVID"
+        p1: 2
+      - op: "GOTO"
+        p1: 9
+      - op: "EVID"
+        p1: 1
+      - op: "TEMOS"
+        p1: 0
+        p2: 14
+      - op: "MSG"
+        p1: 16
+      - op: "OBJ"
+        p1: 0
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "AQUI"
+        p1: 51
+        p2: 19
+      - op: "MSG"
+        p1: 18
+      - op: "OBJ"
+        p1: 51
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "EVD="
+        p1: 11
+        p2: 30
+      - op: "EVD="
+        p1: 54
+        p2: 34
+      - op: "EVD="
+        p1: 22
+        p2: 36
+      - op: "APAG"
+        p1: 0
+      - op: "INC"
+        p1: 37
+      - op: "REG="
+        p1: 37
+        p2: 6
+        p3: 27
+      - op: "MSG"
+        p1: 137
+      - op: "NVC"
+      - op: "MSG"
+        p1: 142
+      - op: "PEGA"
+        p1: 15
+      - op: "NVC"
+      - op: "MSG"
+        p1: 135
+      - op: "LDR"
+        p1: 1
+        p2: 50
+      - op: "LDR"
+        p1: 34
+        p2: 1
+      - op: "NVC"
+      - op: "MSG"
+        p1: 136
+      - op: "NVC"
+      - op: "APAG"
+        p1: 22
+      - op: "MSG"
+        p1: 166
+      - op: "NVC"
+  - id: 17
+    instrucoes:
+      - op: "EVID"
+        p1: 1
+      - op: "EVD="
+        p1: 62
+        p2: 5
+      - op: "EVD="
+        p1: 65
+        p2: 6
+      - op: "MSG"
+        p1: 15
+      - op: "NVC"
+      - op: "GOSUB"
+        p1: 50
+      - op: "TEMOS"
+        p1: 10
+        p2: 11
+      - op: "MSG"
+        p1: 16
+      - op: "OBJ"
+        p1: 10
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "TEMOS"
+        p1: 9
+        p2: 16
+      - op: "MSG"
+        p1: 16
+      - op: "OBJ"
+        p1: 9
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "TEMOS"
+        p1: 67
+        p2: 21
+      - op: "MSG"
+        p1: 16
+      - op: "OBJ"
+        p1: 67
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "MSG"
+        p1: 43
+      - op: "NVC"
+  - id: 18
+    instrucoes:
+      - op: "GOSUB"
+        p1: 13
+  - id: 19
+    instrucoes:
+      - op: "MSG"
+        p1: 47
+      - op: "NVC"
+  - id: 20
+    instrucoes:
+      - op: "MSG"
+        p1: 15
+      - op: "NVC"
+  - id: 21
+    instrucoes:
+      - op: "TEMOS"
+        p1: 2
+        p2: 5
+      - op: "MSG"
+        p1: 16
+      - op: "OBJ"
+        p1: 2
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "RET"
+  - id: 22
+    instrucoes:
+      - op: "MSG"
+        p1: 22
+      - op: "LDR"
+        p1: 1
+        p2: 9
+      - op: "NVC"
+  - id: 23
+    instrucoes:
+      - op: "INC"
+        p1: 26
+      - op: "GOSUB"
+        p1: 25
+      - op: "REG>"
+        p1: 26
+        p2: 12
+        p3: 4
+      - op: "DESC"
+      - op: "LDR"
+        p1: 1
+        p2: 61
+      - op: "DESC"
+  - id: 24
+    instrucoes:
+      - op: "LDR"
+        p1: 26
+        p2: 0
+      - op: "LDR"
+        p1: 27
+        p2: 0
+      - op: "LDR"
+        p1: 1
+        p2: 20
+      - op: "DESC"
+  - id: 25
+    instrucoes:
+      - op: "REG="
+        p1: 25
+        p2: 1
+        p3: 2
+      - op: "DESC"
+      - op: "TEMOS"
+        p1: 16
+        p2: 4
+      - op: "DESC"
+      - op: "REG="
+        p1: 26
+        p2: 4
+        p3: 6
+      - op: "RET"
+      - op: "REG="
+        p1: 27
+        p2: 7
+        p3: 8
+      - op: "RET"
+      - op: "REG="
+        p1: 28
+        p2: 0
+        p3: 11
+      - op: "LDR"
+        p1: 1
+        p2: 61
+      - op: "DESC"
+      - op: "LDR"
+        p1: 1
+        p2: 21
+      - op: "MSG"
+        p1: 71
+      - op: "PAUSA"
+        p1: 30
+      - op: "LDR"
+        p1: 11
+        p2: 0
+      - op: "TEMOS"
+        p1: 23
+        p2: 18
+      - op: "MSG"
+        p1: 72
+      - op: "NVC"
+      - op: "MSG"
+        p1: 51
+      - op: "FIM"
+  - id: 26
+    instrucoes:
+      - op: "INC"
+        p1: 27
+      - op: "GOSUB"
+        p1: 25
+      - op: "REG>"
+        p1: 27
+        p2: 15
+        p3: 4
+      - op: "DESC"
+      - op: "LDR"
+        p1: 1
+        p2: 61
+      - op: "DESC"
+  - id: 27
+    instrucoes:
+      - op: "LOCAL"
+        p1: 61
+        p2: 11
+      - op: "LOCAL"
+        p1: 21
+        p2: 9
+      - op: "LOCAL"
+        p1: 20
+        p2: 7
+      - op: "MSG"
+        p1: 18
+      - op: "OBJ"
+        p1: 24
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "MSG"
+        p1: 23
+      - op: "NVC"
+      - op: "LDR"
+        p1: 28
+        p2: 1
+      - op: "GOSUB"
+        p1: 24
+      - op: "LDR"
+        p1: 28
+        p2: 0
+      - op: "GOSUB"
+        p1: 24
+  - id: 28
+    instrucoes:
+      - op: "LDR"
+        p1: 1
+        p2: 11
+      - op: "REG="
+        p1: 21
+        p2: 1
+        p3: 3
+      - op: "DESC"
+      - op: "MSG"
+        p1: 84
+      - op: "NVC"
+  - id: 29
+    instrucoes:
+      - op: "REG="
+        p1: 21
+        p2: 1
+        p3: 5
+      - op: "MSG"
+        p1: 18
+      - op: "OBJ"
+        p1: 19
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "LDR"
+        p1: 1
+        p2: 22
+      - op: "GOSUB"
+        p1: 30
+  - id: 30
+    instrucoes:
+      - op: "LDR"
+        p1: 9
+        p2: 1
+      - op: "REG="
+        p1: 10
+        p2: 1
+        p3: 3
+      - op: "GOTO"
+        p1: 5
+      - op: "TEMOS"
+        p1: 2
+        p2: 212
+      - op: "AQUI"
+        p1: 2
+        p2: 212
+      - op: "FLAG"
+        p1: 0
+      - op: "MSG"
+        p1: 232
+      - op: "DESC"
+  - id: 31
+    instrucoes:
+      - op: "REG="
+        p1: 29
+        p2: 1
+        p3: 3
+      - op: "LDR"
+        p1: 1
+        p2: 24
+      - op: "DESC"
+      - op: "MSG"
+        p1: 95
+      - op: "NVC"
+  - id: 32
+    instrucoes:
+      - op: "REG="
+        p1: 29
+        p2: 1
+        p3: 3
+      - op: "LDR"
+        p1: 1
+        p2: 22
+      - op: "DESC"
+      - op: "MSG"
+        p1: 95
+      - op: "NVC"
+  - id: 33
+    instrucoes:
+      - op: "LDR"
+        p1: 1
+        p2: 15
+      - op: "MSG"
+        p1: 96
+      - op: "NVC"
+  - id: 34
+    instrucoes:
+      - op: "LDR"
+        p1: 9
+        p2: 0
+      - op: "LDR"
+        p1: 1
+        p2: 35
+      - op: "FLAG"
+        p1: 0
+      - op: "NOP"
+      - op: "DESC"
+  - id: 35
+    instrucoes:
+      - op: "REG>"
+        p1: 32
+        p2: 0
+        p3: 3
+      - op: "MSG"
+        p1: 105
+      - op: "NVC"
+      - op: "LOCAL"
+        p1: 27
+        p2: 6
+      - op: "LDR"
+        p1: 1
+        p2: 27
+      - op: "GOTO"
+        p1: 7
+      - op: "LDR"
+        p1: 1
+        p2: 26
+      - op: "CRIA"
+        p1: 34
+      - op: "SOMA"
+        p1: 134
+        p2: 100
+      - op: "DESC"
+  - id: 36
+    instrucoes:
+      - op: "NVC"
+  - id: 37
+    instrucoes:
+      - op: "LDR"
+        p1: 1
+        p2: 34
+      - op: "FLAG"
+        p1: 0
+      - op: "NOP"
+      - op: "LDR"
+        p1: 9
+        p2: 0
+      - op: "DESC"
+  - id: 38
+    instrucoes:
+      - op: "LDR"
+        p1: 1
+        p2: 60
+      - op: "FLAG"
+        p1: 0
+      - op: "NOP"
+      - op: "LDR"
+        p1: 9
+        p2: 0
+      - op: "DESC"
+  - id: 39
+    instrucoes:
+      - op: "REG="
+        p1: 34
+        p2: 0
+        p3: 3
+      - op: "MSG"
+        p1: 124
+      - op: "NVC"
+      - op: "LDR"
+        p1: 1
+        p2: 48
+      - op: "MSG"
+        p1: 125
+      - op: "AQUI"
+        p1: 51
+        p2: 7
+      - op: "NVC"
+      - op: "MSG"
+        p1: 130
+      - op: "NVC"
+  - id: 40
+    instrucoes:
+      - op: "LOCAL"
+        p1: 52
+        p2: 8
+      - op: "LOCAL"
+        p1: 43
+        p2: 8
+      - op: "LOCAL"
+        p1: 51
+        p2: 8
+      - op: "LOCAL"
+        p1: 39
+        p2: 8
+      - op: "MSG"
+        p1: 18
+      - op: "OBJ"
+        p1: 46
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "RET"
+  - id: 41
+    instrucoes:
+      - op: "TEMOS"
+        p1: 29
+        p2: 5
+      - op: "MSG"
+        p1: 16
+      - op: "OBJ"
+        p1: 29
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "MSG"
+        p1: 66
+      - op: "NVC"
+  - id: 42
+    instrucoes:
+      - op: "GOSUB"
+        p1: 40
+      - op: "AQUI"
+        p1: 48
+        p2: 14
+      - op: "AQUI"
+        p1: 47
+        p2: 11
+      - op: "TEMOS"
+        p1: 48
+        p2: 9
+      - op: "TEMOS"
+        p1: 47
+        p2: 7
+      - op: "MSG"
+        p1: 122
+      - op: "NVC"
+      - op: "MSG"
+        p1: 138
+      - op: "NVC"
+      - op: "MSG"
+        p1: 139
+      - op: "NVC"
+      - op: "MSG"
+        p1: 126
+      - op: "MSG"
+        p1: 51
+      - op: "FIM"
+      - op: "LDR"
+        p1: 1
+        p2: 38
+      - op: "CRIA"
+        p1: 48
+      - op: "DESC"
+  - id: 43
+    instrucoes:
+      - op: "LDR"
+        p1: 1
+        p2: 52
+      - op: "CRIA"
+        p1: 48
+      - op: "GOSUB"
+        p1: 57
+  - id: 44
+    instrucoes:
+      - op: "LDR"
+        p1: 1
+        p2: 51
+      - op: "CRIA"
+        p1: 48
+      - op: "GOSUB"
+        p1: 57
+  - id: 45
+    instrucoes:
+      - op: "LDR"
+        p1: 1
+        p2: 43
+      - op: "CRIA"
+        p1: 48
+      - op: "GOSUB"
+        p1: 57
+  - id: 46
+    instrucoes:
+      - op: "LDR"
+        p1: 1
+        p2: 39
+      - op: "CRIA"
+        p1: 48
+      - op: "GOSUB"
+        p1: 57
+  - id: 47
+    instrucoes:
+      - op: "LOCAL"
+        p1: 38
+        p2: 4
+      - op: "GOSUB"
+        p1: 40
+      - op: "MSG"
+        p1: 140
+      - op: "NVC"
+      - op: "MSG"
+        p1: 87
+      - op: "NVC"
+  - id: 48
+    instrucoes:
+      - op: "AQUI"
+        p1: 10
+        p2: 10
+      - op: "TEMOS"
+        p1: 10
+        p2: 13
+      - op: "AQUI"
+        p1: 56
+        p2: 8
+      - op: "TEMOS"
+        p1: 56
+        p2: 8
+      - op: "MSG"
+        p1: 18
+      - op: "OBJ"
+        p1: 10
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "REG="
+        p1: 35
+        p2: 0
+        p3: 10
+      - op: "GOTO"
+        p1: 4
+      - op: "PEGA"
+        p1: 10
+      - op: "LDR"
+        p1: 35
+        p2: 1
+      - op: "OK"
+      - op: "MSG"
+        p1: 17
+      - op: "OBJ"
+        p1: 10
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+  - id: 49
+    instrucoes:
+      - op: "REG="
+        p1: 39
+        p2: 1
+        p3: 3
+      - op: "MSG"
+        p1: 150
+      - op: "NVC"
+      - op: "LDR"
+        p1: 1
+        p2: 61
+      - op: "DESC"
+  - id: 50
+    instrucoes:
+      - op: "LOCAL"
+        p1: 40
+        p2: 3
+      - op: "MSG"
+        p1: 15
+      - op: "NVC"
+      - op: "TEMOS"
+        p1: 15
+        p2: 8
+      - op: "MSG"
+        p1: 16
+      - op: "OBJ"
+        p1: 15
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "LDR"
+        p1: 39
+        p2: 1
+      - op: "OK"
+  - id: 51
+    instrucoes:
+      - op: "TEMOS"
+        p1: 53
+        p2: 5
+      - op: "MSG"
+        p1: 16
+      - op: "OBJ"
+        p1: 53
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "MSG"
+        p1: 151
+      - op: "NVC"
+  - id: 52
+    instrucoes:
+      - op: "REG>"
+        p1: 16
+        p2: 0
+        p3: 3
+      - op: "MSG"
+        p1: 55
+      - op: "NVC"
+      - op: "DEC"
+        p1: 16
+      - op: "LDR"
+        p1: 163
+        p2: 40
+      - op: "RND"
+        p1: 163
+        p2: 5
+      - op: "MSG"
+        p1: 156
+      - op: "NVC"
+  - id: 53
+    instrucoes:
+      - op: "AQUI"
+        p1: 63
+        p2: 5
+      - op: "MSG"
+        p1: 18
+      - op: "OBJ"
+        p1: 63
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "LDR"
+        p1: 163
+        p2: 40
+      - op: "RND"
+        p1: 163
+        p2: 5
+      - op: "MSG"
+        p1: 157
+      - op: "NVC"
+  - id: 54
+    instrucoes:
+      - op: "LOCAL"
+        p1: 47
+        p2: 6
+      - op: "LOCAL"
+        p1: 18
+        p2: 6
+      - op: "MSG"
+        p1: 16
+      - op: "OBJ"
+        p1: 64
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "LDR"
+        p1: 1
+        p2: 18
+      - op: "GOSUB"
+        p1: 30
+  - id: 55
+    instrucoes:
+      - op: "REG="
+        p1: 41
+        p2: 1
+        p3: 3
+      - op: "MSG"
+        p1: 159
+      - op: "NVC"
+      - op: "AQUI"
+        p1: 61
+        p2: 5
+      - op: "GOTO"
+        p1: 1
+      - op: "LDR"
+        p1: 1
+        p2: 37
+      - op: "CRIA"
+        p1: 61
+      - op: "CRIA"
+        p1: 66
+      - op: "SOMA"
+        p1: 166
+        p2: 100
+      - op: "DESC"
+  - id: 56
+    instrucoes:
+      - op: "REG="
+        p1: 41
+        p2: 1
+        p3: 3
+      - op: "MSG"
+        p1: 159
+      - op: "NVC"
+      - op: "AQUI"
+        p1: 61
+        p2: 5
+      - op: "GOTO"
+        p1: 1
+      - op: "LDR"
+        p1: 1
+        p2: 28
+      - op: "CRIA"
+        p1: 61
+      - op: "CRIA"
+        p1: 66
+      - op: "SOMA"
+        p1: 166
+        p2: 100
+      - op: "DESC"
+  - id: 57
+    instrucoes:
+      - op: "TEMOS"
+        p1: 2
+        p2: 2
+      - op: "DESC"
+      - op: "REG="
+        p1: 10
+        p2: 1
+        p3: 4
+      - op: "DESC"
+      - op: "MSG"
+        p1: 165
+      - op: "MSG"
+        p1: 51
+      - op: "FIM"
+  - id: 58
+    instrucoes:
+      - op: "AQUI"
+        p1: 34
+        p2: 5
+      - op: "MSG"
+        p1: 18
+      - op: "OBJ"
+        p1: 34
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "REG="
+        p1: 32
+        p2: 0
+        p3: 8
+      - op: "MSG"
+        p1: 67
+      - op: "NVC"
+      - op: "RET"
+  - id: 59
+    instrucoes:
+      - op: "TEMOS"
+        p1: 12
+        p2: 5
+      - op: "MSG"
+        p1: 16
+      - op: "OBJ"
+        p1: 12
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "REG="
+        p1: 18
+        p2: 0
+        p3: 8
+      - op: "MSG"
+        p1: 37
+      - op: "NVC"
+      - op: "SOLTA"
+        p1: 12
+      - op: "LDR"
+        p1: 18
+        p2: 1
+      - op: "PEGA"
+        p1: 13
+      - op: "MSG"
+        p1: 38
+      - op: "NVC"
+  - id: 60
+    instrucoes:
+      - op: "GOSUB"
+        p1: 21
+      - op: "REG="
+        p1: 22
+        p2: 1
+        p3: 4
+      - op: "MSG"
+        p1: 34
+      - op: "NVC"
+      - op: "PEGA"
+        p1: 13
+      - op: "LDR"
+        p1: 22
+        p2: 0
+      - op: "OK"
+  - id: 61
+    instrucoes:
+      - op: "REG>"
+        p1: 16
+        p2: 0
+        p3: 3
+      - op: "MSG"
+        p1: 55
+      - op: "NVC"
+      - op: "DEC"
+        p1: 16
+      - op: "APAG"
+        p1: 51
+      - op: "MSG"
+        p1: 134
+      - op: "LDR"
+        p1: 34
+        p2: 0
+      - op: "TEMOS"
+        p1: 22
+        p2: 9
+      - op: "APAG"
+        p1: 22
+      - op: "NVC"
+  - id: 62
+    instrucoes:
+      - op: "TEMOS"
+        p1: 10
+        p2: 5
+      - op: "MSG"
+        p1: 16
+      - op: "OBJ"
+        p1: 10
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "REG>"
+        p1: 32
+        p2: 0
+        p3: 11
+      - op: "REG<"
+        p1: 38
+        p2: 4
+        p3: 8
+      - op: "RET"
+      - op: "INC"
+        p1: 38
+      - op: "MSG"
+        p1: 143
+      - op: "NVC"
+      - op: "MSG"
+        p1: 87
+      - op: "NVC"
+  - id: 63
+    instrucoes:
+      - op: "TEMOS"
+        p1: 7
+        p2: 5
+      - op: "MSG"
+        p1: 16
+      - op: "OBJ"
+        p1: 7
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "TEMOS"
+        p1: 6
+        p2: 10
+      - op: "MSG"
+        p1: 16
+      - op: "OBJ"
+        p1: 6
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "APAG"
+        p1: 7
+      - op: "LDR"
+        p1: 16
+        p2: 5
+      - op: "OK"
+  - id: 64
+    instrucoes:
+      - op: "AQUI"
+        p1: 5
+        p2: 5
+      - op: "MSG"
+        p1: 18
+      - op: "OBJ"
+        p1: 5
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "TEMOS"
+        p1: 15
+        p2: 9
+      - op: "TEMOS"
+        p1: 10
+        p2: 9
+      - op: "MSG"
+        p1: 24
+      - op: "NVC"
+      - op: "MSG"
+        p1: 57
+      - op: "MSG"
+        p1: 51
+      - op: "FIM"
+  - id: 65
+    instrucoes:
+      - op: "TEMOS"
+        p1: 7
+        p2: 5
+      - op: "MSG"
+        p1: 16
+      - op: "OBJ"
+        p1: 7
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "TEMOS"
+        p1: 8
+        p2: 10
+      - op: "MSG"
+        p1: 16
+      - op: "OBJ"
+        p1: 8
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "MSG"
+        p1: 64
+      - op: "NVC"
+  - id: 66
+    instrucoes:
+      - op: "REG>"
+        p1: 16
+        p2: 0
+        p3: 3
+      - op: "MSG"
+        p1: 55
+      - op: "NVC"
+      - op: "DEC"
+        p1: 16
+      - op: "APAG"
+        p1: 5
+      - op: "MSG"
+        p1: 56
+      - op: "LDR"
+        p1: 122
+        p2: 12
+      - op: "RND"
+        p1: 122
+        p2: 7
+      - op: "NVC"
+  - id: 67
+    instrucoes:
+      - op: "TEMOS"
+        p1: 12
+        p2: 5
+      - op: "MSG"
+        p1: 16
+      - op: "OBJ"
+        p1: 12
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "RET"
+  - id: 68
+    instrucoes:
+      - op: "AQUI"
+        p1: 3
+        p2: 6
+      - op: "TEMOS"
+        p1: 3
+        p2: 6
+      - op: "MSG"
+        p1: 18
+      - op: "OBJ"
+        p1: 3
+      - op: "CHRS"
+        p1: 46
+      - op: "NVC"
+      - op: "MSG"
+        p1: 63
+      - op: "NVC"
+mensagens:
+  - id: 1
+    texto: "Nós estamos"
+  - id: 2
+    texto: "Sinto muito mas"
+  - id: 3
+    texto: "na mata."
+  - id: 4
+    texto: "na sala"
+  - id: 5
+    texto: "Ele está"
+  - id: 6
+    texto: "Ela já está"
+  - id: 7
+    texto: "Ela está"
+  - id: 8
+    texto: "Sinto muito mas não me ocorreu nenhuma idéia interessante."
+  - id: 9
+    texto: "Msg def 9"
+  - id: 10
+    texto: "Você estava pilotando um avião e, devido a uma pane no motor, teve que fazer um pouso de emergência em plena selva amazônica. Você sobreviveu e agora precisa achar um meio de escapar das inúmeras armadilhas e surpresas que um passeio pela selva reserva a esses 'afortunados'. Boa sorte, companheiro..."
+  - id: 11
+    texto: "Achei o que você queria."
+  - id: 12
+    texto: "Está muito escuro aqui. É melhor arranjar alguma luz ou poderemos ter problemas."
+  - id: 13
+    texto: "Perdão, não entendi."
+  - id: 14
+    texto: "É impossível ir nesta direção."
+  - id: 15
+    texto: "Isto não é possível."
+  - id: 16
+    texto: "Nós não temos"
+  - id: 17
+    texto: "Nós já temos"
+  - id: 18
+    texto: "Eu não vejo"
+  - id: 19
+    texto: "É apenas"
+  - id: 20
+    texto: "Não dá para carregar mais nada."
+  - id: 21
+    texto: "A mala está lotada."
+  - id: 22
+    texto: "Chegamos num posto da FUNAI que parece estar abandonado há muito tem po. Talvez seja melhor esperar, neste lugar, por ajuda."
+  - id: 23
+    texto: "Nós já estamos nele."
+  - id: 24
+    texto: "Ficou maluco ???"
+  - id: 25
+    texto: "Ele está completamente destruido."
+  - id: 26
+    texto: "Pirou companheiro ? Não entendi a sua intensão."
+  - id: 27
+    texto: "Ele é muito pesado para isso."
+  - id: 28
+    texto: "Sinto muito mas isso não será pos sível."
+  - id: 29
+    texto: "Ele está na sua frente."
+  - id: 30
+    texto: "Ela está acesa."
+  - id: 31
+    texto: "Ela não está funcionando."
+  - id: 32
+    texto: "Ela já está acesa."
+  - id: 33
+    texto: "Ela já está apagada."
+  - id: 34
+    texto: "A lanterna está sem pilhas."
+  - id: 35
+    texto: "Eu não sei lidar com esses equipamentos eletrônicos."
+  - id: 36
+    texto: "É um desses rádios portáteis japonês."
+  - id: 37
+    texto: "Ele não tem pilhas."
+  - id: 38
+    texto: "Sinto muito mas para fazer isso tive que quebrar o rádio."
+  - id: 39
+    texto: "De onde ?"
+  - id: 40
+    texto: "Em que lugar ?"
+  - id: 41
+    texto: "Ele está quebrado."
+  - id: 42
+    texto: "Só dá para ouvir uns chiados."
+  - id: 43
+    texto: "Eu não sei como fazer isso."
+  - id: 44
+    texto: "Ih[[[ a lâmpada da lanterna acaba de queimar."
+  - id: 45
+    texto: "Ela está queimada."
+  - id: 46
+    texto: "Parece estar tudo ok."
+  - id: 47
+    texto: "Isso eu não sei fazer. Sinto muito."
+  - id: 48
+    texto: "Há uma onça nos rondando. Pense em alguma coisa."
+  - id: 49
+    texto: "Sim."
+  - id: 50
+    texto: "Não."
+  - id: 51
+    texto: "Quer jogar novamente <S/N>?"
+  - id: 52
+    texto: "Que pena... Estavamos indo muito bem porém a onça foi mais esperta e jantou um aventureiro do asfalto. Melhor sorte da próxima vez."
+  - id: 53
+    texto: "Ufa, que alívio... Ela já foi embora. Dessa vêz esca pamos por pouco."
+  - id: 54
+    texto: "Com o que ?"
+  - id: 55
+    texto: "Acabou a munição."
+  - id: 56
+    texto: "Na mosca... Que dupla de caçadores nós dois formamos heim ?"
+  - id: 57
+    texto: "Boa tentativa, porém nós não nascemos para TARZAN meu caro... A onça não tinha nenhum desejo de ser transformada em tapete e nhac[ nhac[ nhac["
+  - id: 58
+    texto: "Eu não estou segurando nenhuma on ça."
+  - id: 59
+    texto: "tiro<s>."
+  - id: 60
+    texto: "Ainda temos"
+  - id: 61
+    texto: "O revólver está descarregado."
+  - id: 62
+    texto: "BANG["
+  - id: 63
+    texto: "O que ?"
+  - id: 64
+    texto: "Sinto muito mas o calibre é diferente."
+  - id: 65
+    texto: "Que desastre... As balas cairam no chão e eu não consigo encontrá-las."
+  - id: 66
+    texto: "Há alguma coisa escrita nele."
+  - id: 67
+    texto: "Ela está aberta."
+  - id: 68
+    texto: "Ela está fechada."
+  - id: 69
+    texto: "Na mala tem:"
+  - id: 70
+    texto: "]]?[:\\'^... errei."
+  - id: 71
+    texto: "VIVAAA.... Nós estamos numa estrada asfaltada que nos levará a algum lugar civi lizado. Estou vendo um carro da polí cia federal vindo em nossa direção. Parabens companheiro. Chegar até aqui foi uma demonstração de coragem paciência e, acima de tudo, de inteligência. Você merece todos os elogios pois poucos conseguem esse feito."
+  - id: 72
+    texto: "Espere um pouco companheiro pois os guardas estão pedindo os nossos documentos que VOCê esqueceu em algum lugar. Agora nós só temos uma saída: ou voltamos para pegá-los ou iremos pre sos. Decida logo antes que eles percebam a nossa manobra."
+  - id: 73
+    texto: "Nós estamos nele."
+  - id: 74
+    texto: "Tarde demais companheiro... Iremos os dois mofar numa dessas prisÕes florestais. Triste fim para dois aventureiros das selvas."
+  - id: 75
+    texto: "Uma luz intensa irradia dos olhos do ídolo."
+  - id: 76
+    texto: "Ele se parece com um olho."
+  - id: 77
+    texto: "Impossível, ela não cabe na mala."
+  - id: 78
+    texto: "Ele é muito grande. Não vai caber."
+  - id: 79
+    texto: "Santa misericórdia... Houve um desabamento na passagem oeste. Este ídolo era uma armadilha para ladrÕes profanadores."
+  - id: 80
+    texto: "Ele é um antigo ídolo de um olho só, porém no lugar do olho parece faltar alguma coisa."
+  - id: 81
+    texto: "Há uma mensagem gravada dentro da cavidade do olho. Ela diz: OS CAMINHOS INCERTOS SERÃO ENCONTRADOS QUANDO SHANUK PUDER VER."
+  - id: 82
+    texto: "Por aqui ele não está."
+  - id: 83
+    texto: "O olho de quem ?"
+  - id: 84
+    texto: "Nós estamos numa esplanada. Há uma passagem subterrânea próxi ma a uma grande pedra achatada."
+  - id: 85
+    texto: "Ela é muito grande para isso."
+  - id: 86
+    texto: "É uma grande pedra achatada."
+  - id: 87
+    texto: "Isso já foi feito."
+  - id: 88
+    texto: "Ela está amarrada na pedra."
+  - id: 89
+    texto: "Por favor, seja mais objetivo."
+  - id: 90
+    texto: "Grande descoberta... Achamos uma passagem secreta que leva a um subterrâneo."
+  - id: 91
+    texto: "Esta escada não leva a lugar algum."
+  - id: 92
+    texto: "Elas estão no rádio."
+  - id: 93
+    texto: "É uma passagem estreita que leva a um subterrâneo muito escuro."
+  - id: 94
+    texto: "Sinto muito mas é você quem deve achar a saida desse lugar."
+  - id: 95
+    texto: "Impossível ir nesta direção pois um desabamento impede a nossa passagem."
+  - id: 96
+    texto: "Nós chegamos numa sala que deve ter sido um depósito pois há um gran de baú num dos cantos da sala."
+  - id: 97
+    texto: "É uma caverna escura e sombria."
+  - id: 98
+    texto: "Estou começando a me aborrecer com você. Pense em coisas mais práticas para fazer."
+  - id: 99
+    texto: "É um velho baú de madeira que está"
+  - id: 100
+    texto: "aberto."
+  - id: 101
+    texto: "fechado."
+  - id: 102
+    texto: "Ôpa[[[ Alguma coisa caiu no chão quando eu o abri."
+  - id: 103
+    texto: "Não consigo fechá-lo."
+  - id: 104
+    texto: "... Onde há barro e lama e o sol pouco brilha o caminho é seguro mesmo sem uma trilha..."
+  - id: 105
+    texto: "A porta está fechada."
+  - id: 106
+    texto: "Ela está toda quebrada."
+  - id: 107
+    texto: "Ela está trancada."
+  - id: 108
+    texto: "O que ???"
+  - id: 109
+    texto: "É um antigo sarcófago que está en costado numa parede. Ele está"
+  - id: 110
+    texto: "Ok, mas há algo estranho com esse sarcófago."
+  - id: 111
+    texto: "Ok, mas eu acho que ouvi um barulho estranho vindo da sala ao lado."
+  - id: 112
+    texto: "O sarcófago está fechado."
+  - id: 113
+    texto: "Grande descoberta... O sarcófago serve apenas como pas sagem secreta para uma estranha sala circular."
+  - id: 114
+    texto: "Nós não estamos em nenhum altar."
+  - id: 115
+    texto: "Ele é alto e se parece com uma me sa. Existem duas aberturas laterais no mesmo nível que o altar."
+  - id: 116
+    texto: "São inscriçÕes numa língua muito antiga."
+  - id: 117
+    texto: "- : o o- \\ -- '."
+  - id: 118
+    texto: "É um templo pré-colombiano."
+  - id: 119
+    texto: "É um bonito vaso de porcelana colorida."
+  - id: 120
+    texto: "É uma mina abandonada."
+  - id: 121
+    texto: "É um grande lago azul."
+  - id: 122
+    texto: "Eu não sei nadar."
+  - id: 123
+    texto: "Os índios não deixam ninguém pegar os seus objetos de pesca."
+  - id: 124
+    texto: "Os índios estão furiosos e não deixam ninguém passar pela sua aldeia."
+  - id: 125
+    texto: "Nós chegamos numa aldeia de índios pescadores."
+  - id: 126
+    texto: "A canoa estava furada e afundou no lago. Como nós estavamos nela... glup[ glup[ glup[ Melhor sorte da próxima vez."
+  - id: 127
+    texto: "Que idéia a sua. Os índios ficaram furiosos e tivemos que correr pa ra escaparmos deles."
+  - id: 128
+    texto: "Todas são belos exemplares da flo ra amazônica."
+  - id: 129
+    texto: "Madeeiiirrrraaaaa...."
+  - id: 130
+    texto: "O cacique nos convida para irmos até a sua oca."
+  - id: 131
+    texto: "O cacique é muito forte. Não dá para encarar."
+  - id: 132
+    texto: "Ela contém soro anti-ofídico."
+  - id: 133
+    texto: "Arg[ isso é tão ruim que quebrei a ampola."
+  - id: 134
+    texto: "Grande herói... Em homenagem a sua bravura os índios o elegeram como novo cacique."
+  - id: 135
+    texto: "O cacique ficou muito furioso com isso e nos expulsou da sua aldeia."
+  - id: 136
+    texto: "Ele diz que não é tôlo, mas que aceitaria um cristal de presente."
+  - id: 137
+    texto: "Ele agradece muito."
+  - id: 138
+    texto: "Que tal usarmos a canoa ?"
+  - id: 139
+    texto: "Que tal usarmos a nossa maravilho sa jangada ?"
+  - id: 140
+    texto: "Vamos com calma, tá legal ? Eu sei o que é preciso para atravessar o lago."
+  - id: 141
+    texto: "Ele tem um machado cravado na sua cabeça."
+  - id: 142
+    texto: "O cacique fica muito agradecido e lhe retribui os presentes com um de seus facÕes."
+  - id: 143
+    texto: "Ufa[ está muito difícil, mas continue tentando."
+  - id: 144
+    texto: "Pôxa, que porta resistente. O machado quebrou-se todinho."
+  - id: 145
+    texto: "Ela está furada."
+  - id: 146
+    texto: "Ele é comprido e possui estranhas inscriçÕes."
+  - id: 147
+    texto: "O balde está enferrujado e não tem fundo."
+  - id: 148
+    texto: "Vai ser muito difícil achar uma onça nesta mata."
+  - id: 149
+    texto: "É um velho modelo 1943."
+  - id: 150
+    texto: "Não existe nenhuma trilha nessa direção."
+  - id: 151
+    texto: "X N ^ O : L ^^^^^ S ^ ^ ^^^"
+  - id: 152
+    texto: "Diabos [\\]:?/ Ela me picou."
+  - id: 153
+    texto: "Eu estou ficando tonto."
+  - id: 154
+    texto: "CUIDADO[[[ há uma cobra aqui."
+  - id: 155
+    texto: "Desta vêz a natureza venceu... O veneno da cobra era fatal e nós morremos estupidamente."
+  - id: 156
+    texto: "Que pontaria a minha. Acertei no primeiro tiro."
+  - id: 157
+    texto: "Zap, zup... Não sobrou nadinha dela."
+  - id: 158
+    texto: "É um fosso muito escuro."
+  - id: 159
+    texto: "Não há nenhuma pinguela por onde possamos passar."
+  - id: 160
+    texto: "A água do pântano estava contaminada por diversas famílias de bactérias e vírus. Infelizmente todas letais."
+  - id: 161
+    texto: "GRANDE IDEIA[[["
+  - id: 162
+    texto: "Eu não sou nenhum atleta, companheiro."
+  - id: 163
+    texto: "Ele é muito fundo."
+  - id: 164
+    texto: "Ôpa, eu escorreguei e cai num buraco que estava encoberto pela tábua. Foi uma queda e tanto."
+  - id: 165
+    texto: "Fomos descobertos por índios cani bais que nos levaram para uma festa. Adivinhe quem será servido nela. Ainda não entendi como eles nos viram."
+  - id: 166
+    texto: "O cacique fica muito contente com o presente e nos conta que nas margens do lago existe uma tribo de canibais. Eles são atraidos principalmente por luzes na mata."
+  - id: 167
+    texto: "Hei, eu estou ficando com sede."
+  - id: 168
+    texto: "Arg[ você me deixou morrer de sede. Assim não é possível sair dessa mata."
+  - id: 169
+    texto: "Eu não sei onde tem água."
+  - id: 170
+    texto: "Ah[ que delícia... Matamos a nossa sede."
+  - id: 171
+    texto: "São"
+  - id: 172
+    texto: "Elas estão na lanterna."
+  - id: 173
+    texto: "h do dia"
+  - id: 174
+    texto: "Ele está pifado."
+  - id: 175
+    texto: "Pô, e você não sabe onde tem ?"
+  - id: 176
+    texto: "Vamos ter que cortar um."
+  - id: 177
+    texto: "R __ {{{}|{{}| {}|{ {|{}| {{|{{} Renato Degiovani Programação: CLäUDIO COSTA e RENATO DEGIOVANI Abertura: RENATO DEGIOVANI Agradecimen.: DIVINO C.R. LEITÃO e JOSÉ EDUARDO NEVES Distribuição ATI EDITORA LTDA << TODOS OS DIREITOS RESERVADOS >>"
+  - id: 178
+    texto: "Por aqui tem 'aos montes'."
+  - id: 179
+    texto: "Ih[ inventa outra coisa para fazer pois eu estou muito cansado."
+  - id: 180
+    texto: "Não posso nem dizer o que vejo."
+  - id: 181
+    texto: "Ih[ os objetos cairam no chão."
+  - id: 182
+    texto: "São pilhas alcalinas."
+  - id: 183
+    texto: "É a sua carteira de identidade e a carteira de sócio contribuinte do esporte club MAMÃO COM AÇUCAR de futebol e regatas."
+  - id: 184
+    texto: "Por aqui não há nenhuma, infelizmente."
+  - id: 185
+    texto: ""
+  - id: 186
+    texto: "zAMAZÔNIA: O destino o colocou frente a uma situação delicada: sobrevivência. Provavelmente você nunca esteve numa selva real e agora precisa escapar de uma totalmente desconhecida. Para que você tenha sucesso vou dar-lhe alguns conselhos. Andar numa selva é extremamente perigoso. Você pode encontrar animais perigosos, tais como cobras e onças. Esses animais costumam atacar os homens quando se sentem ameaçados"
+  - id: 187
+    texto: "zou quando estão famintos. Mas isto não significa que eles não possam atacar sem um motivo aparente. A onça, por exemplo, é um animal muito forte e determinado. Sua pele amarelo ouro, com grandes manchas pretas, torna este animal difícil de ser localizado numa vegetação densa. De fato, o habitat natural da onça é a mata fechada, onde ela se move com desenvoltura e sem provocar o menor ruido. Seus dentes e garras afiados tornam o seu poder destruidor algo assustador."
+  - id: 188
+    texto: "z Esses animais não se intimidam facilmente e em alguns casos não há alternativa a não ser enfrentá-los. Nesses casos um dos dois provavelmente terminará morto. Tenha todo o cuidado para não ser você. As cobras, por outro lado, habitam lugares úmidos, notadamente margens de lagos e riachos,lugares cheios de pedras - morros e serras, e lugares cuja vegetação é muito cerrada - um bambuzal, por exemplo. Elas são tão perigosas quanto as onças, porém é mais fácil lidar com elas. Apesar disto, uma picada de"
+  - id: 189
+    texto: "zcobra é morte certa se você não for medicado a tempo. Além dos animais, a selva possui também outros habitantes, como é o caso dos índios. Normalmente eles são dóceis e gentis, porém nunca provoque um índio pois eles podem se tornar perigosos. Diversos orgãos do governo brasileiro tem documentos que mencionam a existência de tribos canibais em plena selva amazônica. Tais informaçÕes nunca foram devidamente comprovadas, porém existem"
+  - id: 190
+    texto: "zlendas, contadas pelos índios,de que há um povo muito estranho que habita a selva. Tudo isto pode não passar de lenda porém é melhor não arriscar muito. Outras lendas, relativas à selva, dizem que muito antes do descobrimento do Brasil existiam povos desenvolvidos no interior do país. Diversas incursÕes na Amazônia já foram realizadas afim de se descobrir vestígios dessas civilizaçÕes. É interessante notar que a lenda do Eldorado situa a cidade de ouro"
+  - id: 191
+    texto: "zno coração da selva. E não é só isso pois há também a lenda do mundo subterrâneo que teria uma das suas entradas justamente na Amazônia. O próprio exército brasileiro já promoveu expediçÕes exploratórias e nada constatou. Dizem até que um dos acampamentos foi abandonado às pressas e que até hoje ninguém retornou desta expedição. Enfim, na selva a sua preocupação principal deverá ser sempre sobreviver e retornar à civilização. Para tanto você deverá contar com suas"
+  - id: 192
+    texto: "zhabilidades, perspicácia, bom senso e inteligência. Lembre-se que estará sempre sozinho e que um passo em falso pode significar a morte. O JOGO: O AMAZÔNIA possui um sistema de reconhecimento de frases que dispensa a digitação das palavras por inteiro. Por exemplo: EX, EXA e EXAM correspondem à palavra EXAMINE. Tal sistema funciona a partir de um buffer onde as palavras estão"
+  - id: 193
+    texto: "zarquivadas de acordo com a sua importância no jogo, ou seja, o sistema utilizará a primeira palavra que satisfaça o que foi digitado pelo jogador. Quanto mais letras forem fornecidas, mais acertadamente o sistema se manifestará. A acentuação ortográfica deverá ser respeitada, caso contrário a palavra não será reconhecida. Acentue de acordo com as regras de acentuação do seu computador e caso não obtenha o resultado esperado, utilize os caracteres alternativos"
+  - id: 194
+    texto: "zabaixo: shift 1 - ä shift 6 - Ã shift 2 - É shift 7 - õ shift 3 - ë shift 8 - Â shift 4 - Ó shift 9 - ê shift 5 - Ú shift 0 - Ô Na selva o jogador se movimentará por trilhas que podem mudar de direção abruptamente. Desta forma, quando o jogador chegar numa posição vindo pelo NORTE, por exemplo, o retorno nem sempre se dará pelo SUL."
+  - id: 195
+    texto: "z Veja, no esquema abaixo, como isto ocorre. ü_______ ü_______com ^ N ^sem ^ N ^desvio ^ ^desvio ^ ____ ^O L^ ^O L ^ ^ ^ ^ ü__ ^ ^ S ^ ^ S ^ ^ ^ __ ü__ _______ ^ ^ ^ ^ ^ ^ ü__ __ ü__ __ ^ N ^ ^ N ^ ^ ^ ^ ^ ^O L^ ^O L^ ^ ^ ^ ^ ^ S ^ ^ S ^ _______ _______"
+  - id: 196
+    texto: "RVerbos aceitos pelo sistema: NORTE GRITE ACENDA SUL CORRA APAGUE LESTE PEGUE ABRA OESTE COLOQUE FECHE GRAVE TROQUE DISPARE RECUPERE COMPRE MATE ENTRE ROUBE AMARRE SUBA TIRE DESAMARRE SAIA QUEBRE PUXE DESÇA SOLTE EMPURRE HORAS EXAMINE LEIA QUANTO PROCURE BEBA TEMOS OFEREÇA SALTE RECOMECE FAÇA CORTE Hä JOGUE DESCARREGUE OLHE CONSERTE INSTRUÇõES PENSE VENDA VERBOS"
+  - id: 197
+    texto: "Para ter instruçÕes mais detalhadas do jogo digite INSTRUÇõES. Os verbos do sistema podem ser listados com o comando VERBOS. Eventualmente você poderá pedir uma DICA para o sistema."
+  - id: 198
+    texto: "Não esqueça de beber água quando passar por regiÕes úmidas."
+  - id: 199
+    texto: "Você pode usar a garrafa para levar água."
+  - id: 200
+    texto: "Não toque no ídolo pois isto provocará um desabamento."
+  - id: 201
+    texto: "Se você encontrar índios, dê-lhes presentes, pois eles adoram isto."
+  - id: 202
+    texto: "Se uma ação não for aceita, tente um sinônimo. Por exemplo: SOLTE, LARGUE, DEIXE."
+  - id: 203
+    texto: "Para se orientar você precisará de uma bússola."
+  - id: 204
+    texto: "z Os comandos mais comuns são: EXAMINE LOCAL - lista os objetos que estão no local. HORAS - informa as horas. TEMOS - lista os objetos que estão com o jogador. GRAVE - salva a partida. RECUPERE - recupera uma partida. RECOMECE - reinicia a partida."
+  - id: 205
+    texto: "z Após uma referência a um objeto, este pode ser substituido pelo pronome correspondente. Por exemplo: PEGUE A CORDA EXAMINE-A COLOQUE-A NA MALA Os objetos que naturalmente pertencem a um lugar não são listados pelo comando EXAMINE O LOCAL. Para saber se um determinado objeto se encontra na posição do jogador use o comando PROCURE objeto."
+  - id: 206
+    texto: "Quando for cortar uma árvore, insista na ação pois é muito difícil realizar este trabalho."
+  - id: 207
+    texto: "Não ande com a lanterna acesa na mata pois, além de descarregar as pilhas, você poderá atrair animais."
+  - id: 208
+    texto: "Para atravessar o lago você pode construir uma jangada."

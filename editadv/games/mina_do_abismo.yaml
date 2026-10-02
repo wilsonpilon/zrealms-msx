@@ -1,0 +1,650 @@
+meta:
+  titulo: "A Mina do Abismo"
+  autor: "Clean-Room Engineer"
+  versao: "1.0"
+  descricao: "Expedição perigosa em uma mina abandonada com sede, escuridão e abismos."
+
+config:
+  posicao_inicial: 1
+  max_carregados: 3
+  max_em_recipiente: 2
+
+posicoes:
+  - id: 1
+    nome: "Entrada da Mina"
+    descricao: "Você está na entrada desmoronada de uma antiga mina de carvão. O calor é sufocante e o ar é seco. Rochas bloqueiam a saída para a superfície ao norte. Ao sul há uma fenda sombria, e a leste uma galeria de mineração."
+    saidas:
+      norte: 0
+      sul: 6
+      leste: 2
+      oeste: 0
+
+  - id: 2
+    nome: "Galeria de Mineração"
+    descricao: "Uma ampla galeria escavada na rocha sólida. Vigas antigas escoram o teto. Ao norte ouve-se o gotejar constante de água. Ao leste há uma passagem para o almoxarifado, e a oeste fica a entrada da mina."
+    saidas:
+      norte: 4
+      sul: 0
+      leste: 3
+      oeste: 1
+
+  - id: 3
+    nome: "Almoxarifado Abandonado"
+    descricao: "Um depósito empoeirado com prateleiras quebradas e ferramentas enferrujadas. Há uma passagem de volta para a galeria a oeste e uma porta ao sul que leva ao escritório do feitor."
+    saidas:
+      norte: 0
+      sul: 5
+      leste: 0
+      oeste: 2
+
+  - id: 4
+    nome: "Lago Subterrâneo"
+    descricao: "Uma gruta serena iluminada por musgo fosforescente no teto. Uma vertente de água cristalina brota da rocha, formando uma lagoa límpida antes de sumir no chão. A saída fica ao sul."
+    saidas:
+      norte: 0
+      sul: 2
+      leste: 0
+      oeste: 0
+
+  - id: 5
+    nome: "Escritório do Feitor"
+    descricao: "O antigo escritório da mineradora. Há uma mesa de madeira apodrecida e um baú de ferro pesado no canto. A única saída fica ao norte de volta para o almoxarifado."
+    saidas:
+      norte: 3
+      sul: 0
+      leste: 0
+      oeste: 0
+
+  - id: 6
+    nome: "Fenda dos Cristais"
+    descricao: "Uma fenda estreita cortando a rocha. As paredes refletem pequenos brilhos se houver luz, mas o ambiente é dominado por uma escuridão profunda. Há passagens ao norte e a leste."
+    saidas:
+      norte: 1
+      sul: 0
+      leste: 7
+      oeste: 0
+
+  - id: 7
+    nome: "Túnel dos Trilhos"
+    descricao: "Um longo túnel onde antigos trilhos de vagonetes enferrujam pelo chão. O ar aqui é rarefeito e escuro como breu. O túnel segue a leste para o abismo e a oeste para a fenda."
+    saidas:
+      norte: 0
+      sul: 0
+      leste: 8
+      oeste: 6
+
+  - id: 8
+    nome: "Abismo do Túnel"
+    descricao: "O túnel termina na borda de um imenso abismo vertical. Um vento fresco sopra do fundo, indicando a saída da mina sob a luz do dia lá embaixo. Ao lado da borda há um sólido pilar de pedra."
+    saidas:
+      norte: 0
+      sul: 0
+      leste: 0
+      oeste: 7
+
+objetos:
+  - id: 1
+    nome: "LOCAL"
+    descricao: "O local onde você se encontra."
+    situacao: 0
+    consistencia:
+      pode_pegar: false
+
+  - id: 2
+    nome: "VELA/VELAS"
+    descricao: "Uma vela de sebo grossa e resistente."
+    situacao: 1
+    consistencia:
+      pode_pegar: true
+      pode_guardar: true
+      pode_tirar: true
+
+  - id: 3
+    nome: "MOCHILA/SACO/BOLSA"
+    descricao: "Uma mochila de lona resistente capaz de guardar objetos."
+    situacao: 3
+    consistencia:
+      pode_pegar: true
+
+  - id: 4
+    nome: "CHAVE/CHAVES"
+    descricao: "Uma chave de ferro pesada e enferrujada."
+    situacao: 6
+    consistencia:
+      pode_pegar: true
+      pode_guardar: true
+      pode_tirar: true
+
+  - id: 5
+    nome: "PEDERNEIRA/FOSFORO"
+    descricao: "Uma pedra de pederneira capaz de produzir faíscas."
+    situacao: 2
+    consistencia:
+      pode_pegar: true
+      pode_guardar: true
+      pode_tirar: true
+
+  - id: 6
+    nome: "CANTIL/GARRAFA"
+    descricao: "Um cantil de couro com tampa de rolha."
+    situacao: 1
+    consistencia:
+      pode_pegar: true
+      pode_guardar: true
+      pode_tirar: true
+
+  - id: 7
+    nome: "CORDA/CORDAS"
+    descricao: "Uma corda de sisal trançada, longa e resistente."
+    situacao: 0
+    consistencia:
+      pode_pegar: true
+      pode_guardar: true
+      pode_tirar: true
+
+  - id: 8
+    nome: "AGUA/FONTE/LAGO"
+    descricao: "Água cristalina e fresca que brota da rocha."
+    situacao: 4
+    consistencia:
+      pode_pegar: false
+
+  - id: 9
+    nome: "BAU/COFRE"
+    descricao: "Um baú de ferro reforçado com uma fechadura antiga."
+    situacao: 5
+    consistencia:
+      pode_pegar: false
+
+  - id: 10
+    nome: "PILAR/GANCHO/BORDA"
+    descricao: "Um firme pilar de pedra talhado na rocha à beira do abismo."
+    situacao: 8
+    consistencia:
+      pode_pegar: false
+
+mensagens:
+  - id: 11
+    texto: "A Mina do Abismo - Uma expedição perigosa em uma mina abandonada."
+  - id: 30
+    texto: "Você se ajoelhou e bebeu da água cristalina da fonte. A sede foi saciada!"
+  - id: 31
+    texto: "Você encheu o cantil até a boca com a água fresca da lagoa."
+  - id: 32
+    texto: "Você abriu o cantil e bebeu goles generosos de água. Sua sede desapareceu!"
+  - id: 33
+    texto: "Com a pederneira você tirou faíscas e acendeu a vela! A chama dissipa a escuridão."
+  - id: 34
+    texto: "Você usou a chave e destrancou o baú de ferro. Dentro dele há uma corda de escalada!"
+  - id: 35
+    texto: "Você amarrou firmemente a corda no pilar de pedra. Ela desce pelo abismo até o solo!"
+  - id: 36
+    texto: "Segurando na corda, você desce pelo abismo até alcançar a saída da mina sob a luz do dia! Parabéns, você sobreviveu!"
+  - id: 37
+    texto: "O abismo tem dezenas de metros de queda livre! Descer sem uma corda seria fatal."
+  - id: 38
+    texto: "O baú já está destrancado."
+  - id: 39
+    texto: "Seu cantil está completamente vazio!"
+  - id: 40
+    texto: "A corda já está amarrada no pilar."
+  - id: 41
+    texto: "Você precisa de algo para tirar faíscas e acender a vela."
+  - id: 42
+    texto: "Não há água para encher o cantil aqui."
+  - id: 50
+    texto: "Sua garganta secou e você sucumbiu à sede implacável da mina... Fim da partida."
+  - id: 51
+    texto: "Caminhando às cegas no escuro, você despencou em um poço profundo! Fim da partida."
+  - id: 52
+    texto: "[AVISO DE SEDE] Sua boca está seca como poeira. A sede consome suas forças! Encontre água logo!"
+  - id: 53
+    texto: "Pegou."
+  - id: 54
+    texto: "Soltou no chão."
+  - id: 55
+    texto: "Guardou dentro da mochila."
+
+comandos:
+  # 1. BEBER ÁGUA NA FONTE (BEBA AGUA)
+  - verbo: 35
+    objeto1: 8
+    objeto2: 0
+    comentario: "Beber agua da fonte na sala 4"
+    instrucoes:
+      - op: LOCAL # 0
+        p1: 4
+        p2: 4
+      - op: MSG # 1
+        p1: 19 # Nao estou vendo
+      - op: NVC # 2
+      - op: RET # 3
+      - op: LDR # 4
+        p1: 5 # Reseta timer de sede para 30 turnos
+        p2: 30
+      - op: MSG # 5
+        p1: 30 # Agua cristalina saciou a sede
+      - op: NVC # 6
+      - op: RET # 7
+
+  # 2. ENCHER O CANTIL (ENCHA CANTIL na sala 4)
+  - verbo: 40
+    objeto1: 6
+    objeto2: 0
+    comentario: "Encher o cantil na fonte com verbo ENCHA"
+    instrucoes:
+      - op: TEMOS # 0: Verifica se temos o cantil
+        p1: 6
+        p2: 4
+      - op: MSG # 1: Nao temos o cantil
+        p1: 17
+      - op: NVC # 2
+      - op: RET # 3
+      - op: LOCAL # 4: Sala 4 (lago)?
+        p1: 4
+        p2: 8
+      - op: MSG # 5: Nao ha agua aqui
+        p1: 42
+      - op: NVC # 6
+      - op: RET # 7
+      - op: LDR # 8: Enche o cantil (REG 15 = 1)
+        p1: 15
+        p2: 1
+      - op: MSG # 9: Encheu o cantil ate a boca
+        p1: 31
+      - op: NVC # 10
+      - op: RET # 11
+
+  # 3. BEBER DO CANTIL (BEBA CANTIL)
+  - verbo: 35
+    objeto1: 6
+    objeto2: 0
+    comentario: "Beber do cantil"
+    instrucoes:
+      - op: TEMOS # 0: Temos o cantil?
+        p1: 6
+        p2: 4
+      - op: MSG # 1: Nao temos
+        p1: 17
+      - op: NVC # 2
+      - op: RET # 3
+      - op: REG= # 4: Cantil cheio? (REG 15 == 1)
+        p1: 15
+        p2: 1
+        p3: 8
+      - op: MSG # 5: Cantil vazio
+        p1: 39
+      - op: NVC # 6
+      - op: RET # 7
+      - op: LDR # 8: Esvazia cantil
+        p1: 15
+        p2: 0
+      - op: LDR # 9: Sacia a sede (REG 5 = 30)
+        p1: 5
+        p2: 30
+      - op: MSG # 10: Bebeu do cantil
+        p1: 32
+      - op: NVC # 11
+      - op: RET # 12
+
+  # 4. ACENDER A VELA (FACA/ACENDA VELA)
+  - verbo: 31
+    objeto1: 2
+    objeto2: 0
+    comentario: "Acender a vela com pederneira"
+    instrucoes:
+      - op: TEMOS # 0: Temos a vela?
+        p1: 2
+        p2: 4
+      - op: MSG # 1: Nao temos
+        p1: 17
+      - op: NVC # 2
+      - op: RET # 3
+      - op: TEMOS # 4: Temos pederneira?
+        p1: 5
+        p2: 8
+      - op: MSG # 5: Precisa de pederneira
+        p1: 41
+      - op: NVC # 6
+      - op: RET # 7
+      - op: LDR # 8: Acende a luz (REG 10 = 1)
+        p1: 10
+        p2: 1
+      - op: MSG # 9: Acendeu a vela
+        p1: 33
+      - op: NVC # 10
+      - op: RET # 11
+
+  # 5. ABRIR O BAÚ (ABRA/ENTRE BAU)
+  - verbo: 7
+    objeto1: 9
+    objeto2: 0
+    comentario: "Abrir bau com a chave"
+    instrucoes:
+      - op: LOCAL # 0: Sala 5 (escritorio)?
+        p1: 5
+        p2: 4
+      - op: MSG # 1: Nao possivel aqui
+        p1: 16
+      - op: NVC # 2
+      - op: RET # 3
+      - op: REG= # 4: Bau ja aberto? (REG 16 == 1)
+        p1: 16
+        p2: 1
+        p3: 8
+      - op: GOTO # 5: Nao aberto -> pula para testar a chave em 11
+        p1: 11
+      - op: RET # 6
+      - op: RET # 7
+      - op: MSG # 8: Bau ja aberto
+        p1: 38
+      - op: NVC # 9
+      - op: RET # 10
+      - op: TEMOS # 11: Temos a chave (ID 4)?
+        p1: 4
+        p2: 15
+      - op: MSG # 12: Trancado (precisa da chave)
+        p1: 16
+      - op: NVC # 13
+      - op: RET # 14
+      - op: LDR # 15: Abre o bau
+        p1: 16
+        p2: 1
+      - op: CRIA # 16: Coloca corda (ID 7) na sala 5
+        p1: 7
+      - op: MSG # 17: Destrancou o bau e revelou a corda
+        p1: 34
+      - op: NVC # 18
+      - op: RET # 19
+
+  # 6. AMARRAR A CORDA NO PILAR (AMARRE CORDA / COLOQUE CORDA)
+  - verbo: 21
+    objeto1: 7
+    objeto2: 0
+    comentario: "Amarra a corda no pilar da sala 8"
+    instrucoes:
+      - op: LOCAL # 0: Sala 8 (abismo)?
+        p1: 8
+        p2: 4
+      - op: MSG # 1: Nao e possivel aqui
+        p1: 16
+      - op: NVC # 2
+      - op: RET # 3
+      - op: REG= # 4: Corda ja amarrada? (REG 17 == 1)
+        p1: 17
+        p2: 1
+        p3: 8
+      - op: GOTO # 5: Nao amarrada -> testa corda em 11
+        p1: 11
+      - op: RET # 6
+      - op: RET # 7
+      - op: MSG # 8: Ja amarrada
+        p1: 40
+      - op: NVC # 9
+      - op: RET # 10
+      - op: TEMOS # 11: Temos a corda (ID 7)?
+        p1: 7
+        p2: 15
+      - op: MSG # 12: Nao temos a corda
+        p1: 17
+      - op: NVC # 13
+      - op: RET # 14
+      - op: LDR # 15: Fixa a corda (REG 17 = 1)
+        p1: 17
+        p2: 1
+      - op: SOLTA # 16: Solta a corda do inventario
+        p1: 7
+      - op: MSG # 17: Corda amarrada firme no pilar
+        p1: 35
+      - op: NVC # 18
+      - op: RET # 19
+
+  # 7. DESCER PELO ABISMO (DESCA)
+  - verbo: 10
+    objeto1: 0
+    objeto2: 0
+    comentario: "Descer pelo abismo"
+    instrucoes:
+      - op: LOCAL # 0: Sala 8?
+        p1: 8
+        p2: 4
+      - op: MSG # 1: Nao ha como descer aqui
+        p1: 15
+      - op: NVC # 2
+      - op: RET # 3
+      - op: REG= # 4: Corda amarrada? (REG 17 == 1)
+        p1: 17
+        p2: 1
+        p3: 8
+      - op: MSG # 5: Descer sem corda e queda fatal
+        p1: 37
+      - op: NVC # 6
+      - op: RET # 7
+      - op: MSG # 8: Venceu o jogo!
+        p1: 36
+      - op: FIM # 9
+
+  # 8. EXAMINAR A MOCHILA (EXAMINE MOCHILA)
+  - verbo: 28
+    objeto1: 3
+    objeto2: 0
+    comentario: "Ver conteudo da mochila com DLIST"
+    instrucoes:
+      - op: TEMOS # 0: Temos a mochila?
+        p1: 3
+        p2: 5
+      - op: AQUI # 1: Mochila no local?
+        p1: 3
+        p2: 5
+      - op: MSG # 2: Nao estou vendo
+        p1: 19
+      - op: NVC # 3
+      - op: RET # 4
+      - op: DLIST # 5: Lista itens guardados dentro da mochila
+      - op: RET # 6
+
+funcoes:
+  # 1. Reset inicial
+  - id: 1
+    instrucoes:
+      - op: LDR
+        p1: 1 # Posicao inicial = 1
+        p2: 1
+      - op: LDR
+        p1: 10 # Luz apagada
+        p2: 0
+      - op: LDR
+        p1: 5 # Timer de sede = 30 turnos
+        p2: 30
+      - op: LDR
+        p1: 15 # Cantil vazio
+        p2: 0
+      - op: LDR
+        p1: 16 # Bau fechado
+        p2: 0
+      - op: LDR
+        p1: 17 # Corda solta
+        p2: 0
+      - op: RET
+
+  # 2. Morte por sede (quando REG 5 chega a zero)
+  - id: 2
+    instrucoes:
+      - op: MSG
+        p1: 50
+      - op: FIM
+
+  # 3. Morte no escuro (quando passos no escuro REG 6 >= 5)
+  - id: 3
+    instrucoes:
+      - op: MSG
+        p1: 51
+      - op: FIM
+
+  # 4. Relógio do sistema / real-time
+  - id: 4
+    instrucoes:
+      - op: RET
+
+  # 5. Executada a cada frase comando
+  - id: 5
+    instrucoes:
+      # Verifica se sala atual e escura (sala 6 ou sala 7)
+      - op: REG= # 0
+        p1: 1 # Reg 1 = sala atual
+        p2: 6
+        p3: 7 # Salta para sala escura
+      - op: REG= # 1
+        p1: 1
+        p2: 7
+        p3: 7 # Salta para sala escura
+      # Sala clara: Reg 9 = 0
+      - op: LDR # 2
+        p1: 9
+        p2: 0
+        p3: 0
+      - op: GOTO # 3
+        p1: 8
+      - op: RET # 4
+      - op: RET # 5
+      - op: RET # 6
+      # Sala escura: Reg 9 = 1 (Pos 7)
+      - op: LDR # 7
+        p1: 9
+        p2: 1
+        p3: 0
+      # Verifica aviso de sede quando REG 5 < 6 (Pos 8: quando restam 5 turnos ou menos)
+      - op: REG< # 8
+        p1: 5
+        p2: 6
+        p3: 11 # Salta para aviso de sede
+      - op: RET # 9
+      - op: RET # 10
+      # Aviso de sede (Pos 11)
+      - op: MSG # 11
+        p1: 52
+      - op: RET # 12
+
+  # 6. Padrao Pegar (bit 0)
+  - id: 6
+    instrucoes:
+      - op: AQUI # 0: No chao do local?
+        p1: 0
+        p2: 5
+      - op: DNT # 1: Ou dentro da mochila?
+        p1: 0
+        p2: 5
+      - op: MSG # 2: Nao vejo isso aqui
+        p1: 19
+      - op: NVC # 3
+      - op: RET # 4
+      - op: REG> # 5: Limite de carga (max 3: se REG 8 > 2 salta para 10)
+        p1: 8
+        p2: 2
+        p3: 10
+      - op: PEGA # 6: Pega o objeto
+        p1: 0
+      - op: MSG # 7: Pegou
+        p1: 53
+      - op: NVC # 8
+      - op: RET # 9
+      - op: MSG # 10: Carga maxima atingida
+        p1: 21
+      - op: NVC # 11
+      - op: RET # 12
+
+  # 7. Padrao Guardar (bit 1)
+  - id: 7
+    instrucoes:
+      - op: TEMOS # 0: Temos a mochila (ID 3)?
+        p1: 3
+        p2: 4
+      - op: MSG # 1: E impossivel (nao tem mochila)
+        p1: 16
+      - op: NVC # 2
+      - op: RET # 3
+      - op: TEMOS # 4: Temos o objeto na mao?
+        p1: 0
+        p2: 8
+      - op: MSG # 5: Nao temos o objeto
+        p1: 17
+      - op: NVC # 6
+      - op: RET # 7
+      - op: REG> # 8: Capacidade da mochila (max 2: se REG 7 > 1 salta para 13)
+        p1: 7
+        p2: 1
+        p3: 13
+      - op: POE # 9: Guarda o objeto dentro da mochila
+        p1: 0
+      - op: MSG # 10: Guardou dentro da mochila
+        p1: 55
+      - op: NVC # 11
+      - op: RET # 12
+      - op: MSG # 13: Mochila cheia (ja tem 2 itens dentro)
+        p1: 21
+      - op: NVC # 14
+      - op: RET # 15
+
+  # 11. Padrao Tirar (bit 5)
+  - id: 11
+    instrucoes:
+      - op: DNT # 0: Objeto esta dentro da mochila?
+        p1: 0
+        p2: 4
+      - op: MSG # 1: Nao esta na mochila
+        p1: 19
+      - op: NVC # 2
+      - op: RET # 3
+      - op: REG> # 4: Limite de carga na mao (max 3: se REG 8 > 2 salta para 9)
+        p1: 8
+        p2: 2
+        p3: 9
+      - op: PEGA # 5: Tira da mochila e poe na mao
+        p1: 0
+      - op: MSG # 6: Pegou
+        p1: 53
+      - op: NVC # 7
+      - op: RET # 8
+      - op: MSG # 9: Carga maxima na mao
+        p1: 21
+      - op: NVC # 10
+      - op: RET # 11
+
+  # 13. Padrao Soltar
+  - id: 13
+    instrucoes:
+      - op: TEMOS # 0: Temos o objeto?
+        p1: 0
+        p2: 4
+      - op: MSG # 1: Nao temos
+        p1: 17
+      - op: NVC # 2
+      - op: RET # 3
+      - op: SOLTA # 4: Solta no chao
+        p1: 0
+      - op: MSG # 5: Soltou no chao
+        p1: 54
+      - op: NVC # 6
+      - op: RET # 7
+
+  # 14. Padrao Examinar
+  - id: 14
+    instrucoes:
+      - op: AQUI # 0: Esta no local?
+        p1: 0
+        p2: 5
+      - op: TEMOS # 1: Temos o objeto?
+        p1: 0
+        p2: 5
+      - op: MSG # 2: Nao vejo isso aqui
+        p1: 19
+      - op: NVC # 3
+      - op: RET # 4
+      - op: MSG # 5: Mostra descricao
+        p1: 20
+      - op: OBJ # 6
+        p1: 0
+      - op: CHRS # 7
+        p1: 46
+      - op: NVC # 8
+      - op: RET # 9

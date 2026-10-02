@@ -1,0 +1,222 @@
+meta:
+  titulo: "A Mansao Misteriosa"
+  autor: "Clean-Room Engineer"
+  versao: "1.0"
+  descricao: "Aventura classica de demonstracao para MSX"
+
+config:
+  posicao_inicial: 1
+  max_carregados: 5
+  max_em_recipiente: 3
+
+posicoes:
+  - id: 1
+    nome: "Hall de Entrada"
+    descricao: "Voce esta no grande hall de entrada de uma antiga mansao. Ao norte ha uma sala de estar. A saida ao sul esta trancada."
+    saidas:
+      norte: 2
+      sul: 0
+      leste: 0
+      oeste: 0
+
+  - id: 2
+    nome: "Sala de Estar"
+    descricao: "Voce esta em uma confortavel sala de estar com lareira apagada. Ha passagens para o sul, leste e oeste."
+    saidas:
+      norte: 0
+      sul: 1
+      leste: 3
+      oeste: 4
+
+  - id: 3
+    nome: "Biblioteca"
+    descricao: "Uma biblioteca silenciosa com estantes repletas de livros empoeirados. A saida fica a oeste."
+    saidas:
+      norte: 0
+      sul: 0
+      leste: 0
+      oeste: 2
+
+  - id: 4
+    nome: "Porao"
+    descricao: "Um porao escuro e gelado sob a mansao. A escada para a sala de estar sobe a leste."
+    saidas:
+      norte: 0
+      sul: 0
+      leste: 2
+      oeste: 0
+
+objetos:
+  - id: 1
+    nome: "LOCAL"
+    descricao: "O local onde voce se encontra."
+    situacao: 0
+    consistencia:
+      pode_pegar: false
+
+  - id: 2
+    nome: "VELA/VELAS"
+    descricao: "Uma vela de cera amarelada."
+    situacao: 1
+    consistencia:
+      pode_pegar: true
+      pode_guardar: true
+
+  - id: 3
+    nome: "MALA/BOLSA"
+    descricao: "Uma mala de couro aberta para guardar objetos."
+    situacao: 2
+    consistencia:
+      pode_pegar: true
+
+  - id: 4
+    nome: "CHAVE/CHAVES"
+    descricao: "Uma chave de bronze pesada."
+    situacao: 3
+    consistencia:
+      pode_pegar: true
+      pode_guardar: true
+
+  - id: 5
+    nome: "FOSFORO/FOSFOROS"
+    descricao: "Uma caixinha com fosforos."
+    situacao: 1
+    consistencia:
+      pode_pegar: true
+      pode_guardar: true
+
+mensagens:
+  - id: 11
+    texto: "A Mansao Misteriosa - Uma aventura em texto para MSX."
+  - id: 30
+    texto: "Voce riscou um fosforo e acendeu a vela. Uma luz suave ilumina o ambiente."
+  - id: 31
+    texto: "Voce assoprou e apagou a vela."
+  - id: 32
+    texto: "Pegou."
+  - id: 33
+    texto: "Soltou no chao."
+  - id: 34
+    texto: "Guardou dentro da mala."
+  - id: 35
+    texto: "Voce usou a chave e destrancou o portao sul! Parabens, voce venceu!"
+
+comandos:
+  # ACENDA A VELA (usando verbo 31 FACA)
+  - verbo: 31
+    objeto1: 2
+    objeto2: 0
+    comentario: "Acender a vela"
+    instrucoes:
+      - op: TEMOS
+        p1: 2
+        p2: 3
+      - op: MSG
+        p1: 17 # Nao temos
+      - op: NVC
+      - op: LDR # Pos 3
+        p1: 10 # Reg 10 = Luz acesa
+        p2: 1
+      - op: MSG
+        p1: 30
+      - op: NVC
+
+  # DESTRANCAR PORTA (usando chave na sala 1)
+  - verbo: 7 # ENTRE
+    objeto1: 0
+    objeto2: 0
+    instrucoes:
+      - op: LOCAL
+        p1: 1
+        p2: 3
+      - op: MSG
+        p1: 16
+      - op: NVC
+      - op: TEMOS # Pos 3
+        p1: 4 # Chave
+        p2: 6
+      - op: MSG
+        p1: 15 # Bloqueado
+      - op: NVC
+      - op: MSG # Pos 6
+        p1: 35 # Venceu!
+      - op: FIM
+
+funcoes:
+  - id: 1 # Reset inicial
+    instrucoes:
+      - op: LDR
+        p1: 1
+        p2: 1
+      - op: LDR
+        p1: 10
+        p2: 0
+      - op: RET
+
+  - id: 6 # Padrao Pegar (bit 0)
+    instrucoes:
+      - op: AQUI
+        p1: 0
+        p2: 3
+      - op: MSG
+        p1: 19
+      - op: NVC
+      - op: REG> # Pos 3: se carregados > 4 salta para 7
+        p1: 8
+        p2: 4
+        p3: 7
+      - op: PEGA
+        p1: 0
+      - op: MSG
+        p1: 32
+      - op: NVC
+      - op: MSG # Pos 7
+        p1: 21 # Carga maxima
+      - op: NVC
+
+  - id: 7 # Padrao Guardar (bit 1)
+    instrucoes:
+      - op: TEMOS
+        p1: 0
+        p2: 3
+      - op: MSG
+        p1: 17
+      - op: NVC
+      - op: POE # Pos 3
+        p1: 0
+      - op: MSG
+        p1: 34
+      - op: NVC
+
+  - id: 13 # Padrao Soltar
+    instrucoes:
+      - op: TEMOS
+        p1: 0
+        p2: 3
+      - op: MSG
+        p1: 17
+      - op: NVC
+      - op: SOLTA # Pos 3
+        p1: 0
+      - op: MSG
+        p1: 33
+      - op: NVC
+
+  - id: 14 # Padrao Examinar
+    instrucoes:
+      - op: AQUI
+        p1: 0
+        p2: 4
+      - op: TEMOS
+        p1: 0
+        p2: 4
+      - op: MSG
+        p1: 19
+      - op: NVC
+      - op: MSG # Pos 4
+        p1: 20 # E apenas
+      - op: OBJ
+        p1: 0
+      - op: CHRS
+        p1: 46
+      - op: NVC

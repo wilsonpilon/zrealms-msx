@@ -1,0 +1,86 @@
+# OUTLINE.md — Acompanhamento do Projeto Z-Realm (`zrealm-msx`)
+
+Este documento serve como mapa de bordo vivo do projeto, refletindo o roadmap estabelecido em [SPEC.md](SPEC.md), as fases concluídas, o trabalho em andamento e os próximos marcos a serem executados.
+
+---
+
+## Roadmap Global & Status Atual
+
+| Fase | Descrição | Status | Marco Principal |
+| :--- | :--- | :---: | :--- |
+| **Fase 1** | **Estruturação de Dados & Abstrações do Editor (Go + SQLite)** | 🟡 **80%** | Banco `.rpgproj`, Modelos de Hardware, Repositórios & Exporter |
+| **Fase 2** | **Prototipagem de Baixo Nível no MSX (C + MSXgl + SDCC)** | ⚪ *Planejado* | MSX-DOS 2, Paging Mapper (Page 2), SCREEN 4 e Sprites Modo 2 |
+| **Fase 3** | **Desenvolvimento da GUI Desktop com Fyne (O Editor Visual)** | ⚪ *Planejado* | Editores de Tilesets, Sprites, Salas 32x18, Roteiros e Regras |
+| **Fase 4** | **Gameplay Engine & Máquina de Eventos (MSX)** | ⚪ *Planejado* | Controle no Grid, VM de Eventos, HUD e Caixas de Diálogo |
+| **Fase 5** | **Pipeline Integrado de Build & Jogo de Referência** | ⚪ *Planejado* | "One-Click Run", Teste em openMSX e Jogo Demonstrador |
+
+---
+
+## Detalhamento das Subfases
+
+### Fase 1: Estruturação de Dados & Abstrações do Editor (Go + SQLite)
+- [x] **Subfase 1.1 — Schema & Database Foundation em Go:**
+  - [x] Inicialização do módulo Go (`github.com/zrealm-msx/zrealm`) e driver SQLite Pure-Go (`modernc.org/sqlite`).
+  - [x] Schema DDL relacional versionado com suporte a migrações embutidas (`embed.FS`).
+  - [x] Gerenciador `pkg/project` com criação, abertura, validação de integridade física e Foreign Keys.
+  - [x] Testes unitários cobrindo transações, WAL e integridade referencial.
+- [x] **Subfase 1.2 — Repositórios & Modelos de Domínio em Go:**
+  - [x] Constantes de hardware do V9938 (tiles 8x8, sprites 16x16, matriz 32x18, áreas de tela).
+  - [x] Structs de domínio (`Tileset`, `Tile`, `Sprite`, `Room`, `Entity`, `Script`, `HeroClass`, `Item`).
+  - [x] Métodos de cálculo de bits e scanlines de hardware V9938 (ordenação de blocos verticais do Modo 2).
+  - [x] Camada de repositórios `pkg/storage` (CRUD de todas as entidades com constraints e limites).
+  - [x] Testes unitários e de integração completos com 100% de aprovação.
+- [ ] **Subfase 1.3 — Engine de Serialização Binária (The Exporter):**
+  - [ ] Empacotador de salas em blocos lógicos alinhados a 16 KB (Página 2 / 8000h-BFFFh).
+  - [ ] Codificador de tabelas de padrões e cores para SCREEN 4 e Sprites Modo 2.
+  - [ ] Gerador da tabela mestra de cabeçalho (`HEADER.BIN` / Manifest de recursos).
+  - [ ] Testes automatizados do exportador validando bytes gerados.
+
+---
+
+### Fase 2: Prototipagem de Baixo Nível no MSX (C + MSXgl + SDCC)
+- [ ] **Subfase 2.1 — Bootstrap MSX-DOS 2 & Abstração de Mapper:**
+  - [ ] Esqueleto de aplicação `.COM` com inicialização MSXgl.
+  - [ ] Módulo `dos2_mapper.c`: interrogação via `EXTBIO`, alocação de segmentos (`ALL_SEG`) e liberação graciosa (`FRE_SEG`).
+  - [ ] Rotina de paginação segura na Página 2 (`PUT_P2` / `MAPPER_SetPage2`).
+- [ ] **Subfase 2.2 — Configuração do VDP V9938 (SCREEN 4):**
+  - [ ] Ativação de Graphic 3 com 3 bancos de padrões e paleta customizada.
+  - [ ] Configuração de Sprites Modo 2 com cores por linha.
+- [ ] **Subfase 2.3 — Teste de Carga de Sala a partir do Mapper:**
+  - [ ] Programa de prova de conceito no MSX que aloca 256 KB de Mapper e alterna salas instantaneamente na tela.
+
+---
+
+### Fase 3: Desenvolvimento da GUI Desktop com Fyne (O Editor Visual)
+- [ ] **Subfase 3.1 — Shell da Aplicação & Navegação:**
+  - [ ] Janela principal com tema retrô escuro, gerenciamento de projetos e abas de ferramentas.
+- [ ] **Subfase 3.2 — Editor de Tiles (8x8):**
+  - [ ] Grid de desenho pixel-a-pixel com paleta MSX2 e colisão física.
+- [ ] **Subfase 3.3 — Editor de Sprites (16x16):**
+  - [ ] Edição em Modo 2 com atribuição de cores por scanline e quadros de animação.
+- [ ] **Subfase 3.4 — Editor de Salas (Room Matrix View):**
+  - [ ] Matriz de pintura 32x18 com carimbo de tiles, conexões cardeais e inserção visual de entidades.
+- [ ] **Subfase 3.5 — Editor de Regras, Tabelas de RPG e Roteiros:**
+  - [ ] Formulários para classes, itens e editor textual de scripts.
+
+---
+
+### Fase 4: Gameplay Engine & Máquina de Eventos (MSX)
+- [ ] **Subfase 4.1 — Movimentação do Herói & Colisão no Grid:**
+  - [ ] Entrada de teclado/joystick com movimentação em passos de 8 pixels e troca automática de sala nas bordas.
+- [ ] **Subfase 4.2 — Sistema de Entidades e Atores:**
+  - [ ] Até 8 entidades ativas na sala, IAs simples e interação por tecla de ação.
+- [ ] **Subfase 4.3 — Máquina Virtual de Eventos (Bytecode VM):**
+  - [ ] Interpretador de instruções compactas (`OP_MSG`, `OP_GIVE_ITEM`, `OP_CHECK_FLAG`, etc.).
+- [ ] **Subfase 4.4 — Caixa de Diálogos & HUD:**
+  - [ ] Renderizador de texto nas linhas 20-23 e mostrador de HP/MP nas linhas 18-19.
+
+---
+
+### Fase 5: Pipeline Integrado de Build & Jogo de Referência
+- [ ] **Subfase 5.1 — Automação "One-Click Run":**
+  - [ ] Disparo automático de exportação, compilação e execução no openMSX.
+- [ ] **Subfase 5.2 — Backend MegaROM (Cartucho):**
+  - [ ] Geração de arquivo `.ROM` unificado com chaveador de banco em cartucho.
+- [ ] **Subfase 5.3 — Jogo de Referência:**
+  - [ ] Mini-cRPG demonstrador com masmorra de 20 salas, enigmas, NPCs e combate simples.

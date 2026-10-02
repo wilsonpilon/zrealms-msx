@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Relatório da Sessão de Desenvolvimento — Editor de Adventures MSX</title>
+<style>
+  @page {
+    size: A4;
+    margin: 20mm 15mm 20mm 15mm;
+  }
+  body {
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+    color: #1e293b;
+    background-color: #ffffff;
+    line-height: 1.5;
+    font-size: 10.5pt;
+  }
+  .header {
+    border-bottom: 3px solid #2563eb;
+    padding-bottom: 12px;
+    margin-bottom: 20px;
+  }
+  .title {
+    font-size: 20pt;
+    font-weight: 800;
+    color: #0f172a;
+    margin: 0;
+  }
+  .subtitle {
+    font-size: 11pt;
+    color: #475569;
+    margin-top: 4px;
+    font-weight: 500;
+  }
+  .meta-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 10px 14px;
+    margin-top: 12px;
+    font-size: 9pt;
+  }
+  .meta-item strong {
+    color: #0f172a;
+  }
+  h2 {
+    font-size: 13pt;
+    color: #1e3a8a;
+    border-left: 4px solid #3b82f6;
+    padding-left: 8px;
+    margin-top: 22px;
+    margin-bottom: 10px;
+    page-break-after: avoid;
+  }
+  h3 {
+    font-size: 11pt;
+    color: #1e293b;
+    margin-top: 14px;
+    margin-bottom: 6px;
+    page-break-after: avoid;
+  }
+  p {
+    margin: 6px 0;
+  }
+  ul, ol {
+    margin: 6px 0 10px 20px;
+    padding: 0;
+  }
+  li {
+    margin-bottom: 4px;
+  }
+  code {
+    background-color: #f1f5f9;
+    color: #0f172a;
+    padding: 1px 4px;
+    border-radius: 3px;
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 9.5pt;
+  }
+  pre {
+    background-color: #0f172a;
+    color: #f8fafc;
+    padding: 10px;
+    border-radius: 6px;
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 8.5pt;
+    overflow-x: auto;
+    margin: 8px 0;
+    page-break-inside: avoid;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 10px 0;
+    font-size: 9pt;
+    page-break-inside: avoid;
+  }
+  th, td {
+    border: 1px solid #cbd5e1;
+    padding: 6px 8px;
+    text-align: left;
+  }
+  th {
+    background-color: #f1f5f9;
+    color: #0f172a;
+    font-weight: 600;
+  }
+  tr:nth-child(even) {
+    background-color: #f8fafc;
+  }
+  .card-box {
+    background-color: #f8fafc;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    padding: 12px;
+    margin: 12px 0;
+    page-break-inside: avoid;
+  }
+  .highlight-box {
+    background-color: #eff6ff;
+    border: 1.5px solid #3b82f6;
+    border-radius: 6px;
+    padding: 12px 14px;
+    margin: 14px 0;
+    page-break-inside: avoid;
+  }
+  .warning-box {
+    background-color: #fffbeb;
+    border: 1.5px solid #f59e0b;
+    border-radius: 6px;
+    padding: 12px 14px;
+    margin: 14px 0;
+    page-break-inside: avoid;
+  }
+  .success-box {
+    background-color: #f0fdf4;
+    border: 1.5px solid #22c55e;
+    border-radius: 6px;
+    padding: 12px 14px;
+    margin: 14px 0;
+    page-break-inside: avoid;
+  }
+  .footer {
+    margin-top: 25px;
+    border-top: 1px solid #cbd5e1;
+    padding-top: 8px;
+    font-size: 8pt;
+    color: #64748b;
+    text-align: center;
+  }
+  .badge {
+    display: inline-block;
+    padding: 2px 6px;
+    font-size: 7.5pt;
+    font-weight: bold;
+    border-radius: 4px;
+    text-transform: uppercase;
+  }
+  .badge-success { background: #dcfce7; color: #166534; }
+  .badge-info { background: #dbeafe; color: #1e40af; }
+  .badge-warn { background: #fef3c7; color: #92400e; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="title">Relatório de Sessão & Transcrição Técnica</div>
+  <div class="subtitle">Editor de Adventures — MSX Clean-Room Edition (Arquitetura Renato Degiovani)</div>
+  <div class="meta-grid">
+    <div class="meta-item"><strong>Data:</strong> 24 de Setembro de 2026</div>
+    <div class="meta-item"><strong>Ambiente:</strong> MSX1/MSX2 (SDCC / MSXgl / Go)</div>
+    <div class="meta-item"><strong>Artefatos:</strong> advent.rom (32KB), edadv.exe, edadvc.exe</div>
+  </div>
+</div>
+
+<h2>1. Resumo Executivo da Sessão</h2>
+<p>
+Durante esta sessão de desenvolvimento intensivo, foram solucionados gargalos críticos na engine MSX (Z80), no compilador de dados (Go), no suporte a caracteres gráficos autênticos de Renato Degiovani (VRAM Screen 0) e nas regras de jogo do novo adventure <strong>"A Mina do Abismo"</strong>. Todas as implementações foram integradas, compiladas e validadas tanto em nível de código-fonte quanto em imagem de cartucho ROM de 32 KB.
+</p>
+
+<h2>2. Histórico de Demandas do Usuário e Soluções Implementadas</h2>
+
+<h3>2.1. Tela de Introdução, Marcadores e Divisórias (vram.scr / vram.dat)</h3>
+<ul>
+  <li><strong>Problema:</strong> Reproduzir com fidelidade estética a tela de abertura clássica do Editor de Adventures original.</li>
+  <li><strong>Solução:</strong> Inspeção da memória de vídeo (VRAM) e identificação dos caracteres específicos:
+    <ul>
+      <li>Marcador vertical de extremidade: código <code>0x18</code> (coluna 2 nas linhas 0 e 23).</li>
+      <li>Barra divisória superior horizontal: código <code>0x1B</code> (meia-barra inferior na linha 1).</li>
+      <li>Barra divisória inferior horizontal: código <code>0x1A</code> (meia-barra superior na linha 22).</li>
+    </ul>
+  </li>
+</ul>
+
+<h3>2.2. Acentuação em Português e o Mistério da Exclamação ("vazioa")</h3>
+<ul>
+  <li><strong>Problema:</strong> O cantil ao ser examinado mostrava <code>cantil esta completamente vazioa</code> (com um caractere a mais). Além disso, caracteres acentuados apresentavam artefatos.</li>
+  <li><strong>Diagnóstico:</strong> Na tabela de caracteres do MSX do Renato Degiovani (Screen 0), o código ASCII <code>0x21</code> (que normalmente é o ponto de exclamação <code>!</code>) foi ocupado pelo glifo do <strong>Á</strong>. O caractere real de exclamação <code>!</code> foi deslocado para o código <code>0x5B</code> (onde costuma ficar o colchete <code>[</code>). O texto <code>vazio!</code> exibia <code>vazioÁ</code>!</li>
+  <li><strong>Solução:</strong> Mapeamento universal no compilador Go e no decodificador UTF-8 da engine para converter <code>'!'</code> em <code>0x5B</code> (octal <code>\133</code>) e correta alocação das vogais acentuadas (inclusive <code>õ</code> em <code>0xB6</code> e <code>Õ</code> em <code>0xB5</code>).</li>
+</ul>
+
+<h3>2.3. Sensibilidade e Repetição Excessiva de Teclado (Debounce de Hardware)</h3>
+<ul>
+  <li><strong>Problema:</strong> Toques ligeiramente prolongados dobravam, triplicavam ou quadruplicavam letras na entrada de comandos.</li>
+  <li><strong>Solução:</strong> Substituição da simples alteração de registradores de BIOS (<code>0xF3F7</code>/<code>0xF3F8</code>) por rotina de <em>hardware debounce</em> em <code>ui.c</code>:
+    <pre>bool UI_IsAnyKeyPressed(void) {
+    u8 row;
+    for (row = 0; row &lt;= 8; row++) {
+        if (row == 6) continue; // Ignora Shift/Ctrl
+        if (BIOS_GetKeyboardMatrix(row) != 0xFF) return TRUE;
+    }
+    return FALSE;
+}</pre>
+    Após ler a tecla, a engine aguarda ativamente a liberação física e drena o buffer residual da BIOS, garantindo digitação precisa e suave.
+  </li>
+</ul>
+
+<h3>2.4. Resets Indesejados do Jogo e Tratamento de Game Over</h3>
+<ul>
+  <li><strong>Problema:</strong> Ao morrer por sede ou escuridão, a ROM reiniciava o hardware do MSX como um *reboot* a frio.</li>
+  <li><strong>Diagnóstico:</strong> A instrução <code>FIM</code> chamava <code>BIOS_Exit(0)</code>, que em cartuchos ROM salta para o vetor <code>0x0000</code>, reiniciando o computador.</li>
+  <li><strong>Solução:</strong> Em <code>main.c</code>, o laço de execução agora é permanente: exibe <code>[ Pressione qualquer tecla para recomeçar ]</code>, aguarda o jogador e reinicia as estruturas e registradores do jogo sem nunca reiniciar o hardware MSX.</li>
+</ul>
+
+<h3>2.5. Navegação Completa pelos 8 Pontos Cardeais</h3>
+<ul>
+  <li><strong>Problema:</strong> Ampliar o sistema para aceitar todos os 8 rumos de bússola.</li>
+  <li><strong>Solução:</strong> Expansão de <code>DIR_COUNT = 8</code> em <code>game_types.h</code>, inclusão das direções colaterais (Nordeste, Noroeste, Sudeste, Sudoeste) com suporte a sinônimos (ex: <code>L/E/LESTE/ESTE</code>, <code>O/W/OESTE/WEST</code>, <code>NO/NW</code>, <code>SO/SW</code>) e atualização visual na rosa dos ventos do editor TUI.</li>
+</ul>
+
+<h3>2.6. Erros de Lógica com Cantil, Mochila, Chave e Beber Água</h3>
+<ul>
+  <li><strong>Problema:</strong> Jogador não conseguia guardar o cantil na mochila, não conseguia beber água mesmo com cantil cheio, e não conseguia pegar a chave.</li>
+  <li><strong>Diagnóstico & Solução em 4 partes:</strong>
+    <ol>
+      <li><strong>Conflito de Verbo 21:</strong> O verbo <code>GUARDE</code> compartilha o ID 21 com <code>COLOQUE/USE</code>. Um comando de contingência <code>verbo: 21, objeto1: 6</code> interceptava <code>GUARDE CANTIL</code> e tentava encher o cantil em vez de guardá-lo. Foi removido após a criação do verbo independente <code>ENCHA</code> (ID 40).</li>
+      <li><strong>`TEMOS` e Contêineres:</strong> A instrução <code>OP_TEMOS</code> verificava apenas a mão direta. Foi atualizada em <code>interpreter.c</code> para reconhecer que o jogador possui o item tanto na mão quanto dentro da mochila em seu poder.</li>
+      <li><strong>Instrução `RET`:</strong> Comandos sem <code>RET</code> sofriam <em>fallthrough</em> após mensagens de erro, bagunçando estados da VM. Todos os ramos receberam <code>RET</code> estrito.</li>
+      <li><strong>Função 11 (Tirar de Recipiente):</strong> Implementada na VM e no YAML com o bit de consistência <code>pode_tirar: true</code>, permitindo retirar itens tanto via <code>TIRE &lt;item&gt;</code> quanto via <code>PEGUE &lt;item&gt;</code>.</li>
+    </ol>
+  </li>
+</ul>
+
+<h2>3. Adventure 2: "A Mina do Abismo"</h2>
+<div class="card-box">
+  <strong>Enredo e Dinâmica:</strong> O jogador cai nas profundezas de uma mina deserta. Precisa encontrar água fresca para saciar a sede (temporizador regressivo no Reg 5), tirar faíscas com a pederneira para acender a vela (Reg 10), coletar a mochila de lona para carregar mais itens além do limite de 3 na mão, resgatar a chave na fenda escura, destrancar o baú do feitor para obter a corda de escalada e fixá-la no pilar do abismo para descer em segurança.
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th>Sala</th>
+      <th>Nome</th>
+      <th>Iluminação</th>
+      <th>Itens Iniciais</th>
+      <th>Conexões</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>1</td><td>Entrada da Mina</td><td>Clara</td><td>Vela (2), Cantil (6)</td><td>L -&gt; 2, S -&gt; 6</td></tr>
+    <tr><td>2</td><td>Galeria de Mineração</td><td>Clara</td><td>Pederneira (5)</td><td>O -&gt; 1, N -&gt; 4, L -&gt; 3</td></tr>
+    <tr><td>3</td><td>Almoxarifado</td><td>Clara</td><td>Mochila (3)</td><td>O -&gt; 2, S -&gt; 5</td></tr>
+    <tr><td>4</td><td>Lago Subterrâneo</td><td>Clara</td><td>Água pura (8)</td><td>S -&gt; 2</td></tr>
+    <tr><td>5</td><td>Escritório do Feitor</td><td>Clara</td><td>Baú trancado (9) -&gt; Corda (7)</td><td>N -&gt; 3</td></tr>
+    <tr><td>6</td><td>Fenda dos Cristais</td><td><strong>Escura!</strong></td><td>Chave de ferro (4)</td><td>N -&gt; 1, L -&gt; 7</td></tr>
+    <tr><td>7</td><td>Túnel dos Trilhos</td><td><strong>Escura!</strong></td><td>—</td><td>O -&gt; 6, L -&gt; 8</td></tr>
+    <tr><td>8</td><td>Abismo do Túnel</td><td>Clara</td><td>Pilar de pedra (10)</td><td>O -&gt; 7 (Descer com corda = Vitória)</td></tr>
+  </tbody>
+</table>
+
+<div class="highlight-box">
+  <h2 style="margin-top:0; color:#1e40af;">📌 PONTOS EM ANDAMENTO PARA CONTINUAR AMANHÃ CEDO</h2>
+  <p>Deixamos os seguintes tópicos mapeados e prontos para darmos sequência na primeira hora:</p>
+  <ul>
+    <li>[ ] <strong>Validação em Hardware Real / openMSX:</strong> Realizar uma sessão completa de jogo em emulador do início ao fim usando os comandos canônicos da solução (sem atalhos rápidos) para homologação final da estabilidade.</li>
+    <li>[ ] <strong>Expansão de Sinônimos de Verbos e Objetos:</strong> Avaliar se o jogador tenta outros verbos comuns como <code>AMARRE CORDA NO PILAR</code> (com 2 objetos) ou <code>BEBER AGUA</code> sem acento e verificar se há novos casos de borda.</li>
+    <li>[ ] <strong>Polimento da TUI no Windows Terminal:</strong> Testar o comportamento da interface TUI (<code>edadv.exe</code>) ao redimensionar a janela do terminal no Windows 11.</li>
+    <li>[ ] <strong>Otimização de Espaço da ROM:</strong> A ROM atual de 32 KB ocupa ~25.7 KB. Avaliar compressão RLE para tabelas de mensagens caso queiramos expandir para 30+ salas futuramente.</li>
+    <li>[ ] <strong>Novo Adventure ou Conversão de Clássicos:</strong> Decidir se criaremos um terceiro adventure de teste ou se transcreveremos uma das aventuras clássicas da revista Micro Sistemas (ex: Aventuras no Mundo Antigo).</li>
+  </ul>
+</div>
+
+<div class="success-box">
+  <strong>Status Atual do Repositório:</strong>
+  <ul>
+    <li>Engine C, interpretador de bytecodes e driver de tela compilados sem erros nem warnings com SDCC 4.6.0.</li>
+    <li>ROM gerada com sucesso: <code>advent.rom</code> (32.768 bytes).</li>
+    <li>Editor TUI e Compilador CLI gerados em <code>dist/edadv.exe</code> e <code>dist/edadvc.exe</code>.</li>
+    <li>Documentação completa, manuais, guias e especificações sincronizados no repositório.</li>
+  </ul>
+</div>
+
+<div class="footer">
+  Editor de Adventures (MSX Clean-Room) — Documento gerado automaticamente para arquivamento e consulta da sessão.
+</div>
+
+</body>
+</html>
