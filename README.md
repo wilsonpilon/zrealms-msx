@@ -87,12 +87,14 @@ Diferente de engines concebidas para PCs velozes que tentam interpretar scripts 
 ```text
 zrealm-msx/
 ├── cmd/
-│   └── zrealm/            # CLI e utilitário de validação/administração de projetos
+│   └── zrealm/            # CLI e utilitário de administração e exportação
 ├── pkg/
+│   ├── exporter/          # Motor de serialização binária para o MSX 2 (V9938/Z80)
 │   ├── models/            # Modelos de domínio e cálculos de hardware MSX 2 (V9938)
-│   ├── project/           # Gerenciador de arquivos .rpgproj, migrações e integridade
+│   ├── project/           # Gerenciador de projetos (.rpgproj), migrações e demo seeder
 │   ├── storage/           # Repositórios de persistência CRUD com SQLite
 │   └── version/           # Controle dinâmico de versão semântica (X.Y.Z)
+├── engine_msx/            # Runtime C do MSX 2 (V9938 SCREEN 4, Mapper Page 2, Disk Loader)
 ├── MSXgl/                 # MSX Game Library (biblioteca C para SDCC)
 ├── dist/                  # Diretório de distribuição gerado pelo build.ps1
 ├── build.ps1              # Script de automação de build, testes e empacotamento ZIP

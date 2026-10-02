@@ -102,6 +102,35 @@ Plataforma Alvo: MSX2_MSXDOS2
 Status de Integridade: OK (Integridade física e Foreign Keys válidas)
 ```
 
+### 3.4. Exportar Projeto para Binários do MSX 2
+Para compilar o banco SQLite para as estruturas binárias nativas alinhadas à Página 2 do MSX-DOS 2 (`HEADER.BIN`, `GAME.DAT` e `SEGxx.BNK`):
+```bash
+./bin/zrealm.exe -export meu_jogo.rpgproj -out ./build_msx
+```
+*Saída esperada:*
+```text
+Exportando projeto para formato nativo MSX 2: meu_jogo.rpgproj...
+Exportação concluída com sucesso!
+  Tabela Mestra:    ./build_msx/HEADER.BIN
+  Dados (GAME.DAT): ./build_msx/GAME.DAT (16384 bytes em 1 segmentos de 16KB)
+  Total Recursos:   5 catalogados
+```
+
+### 3.5. Gerar Projeto Demonstrativo Completo
+Para gerar automaticamente um projeto pronto com masmorra, tileset customizado e 2 salas conectadas:
+```bash
+./bin/zrealm.exe -demo demo.rpgproj
+```
+
+### 3.6. Execução e Teste no Emulador openMSX
+A imagem de disquete gerada pelo build contém o sistema de boot completo sob MSX-DOS 2. Para executar no openMSX com perfil de hardware oficial (MSX 2 com 512 KB Mapper e MSX-DOS 2):
+```bash
+openmsx -machine Philips_NMS_8250 -ext msxdos2 -ext ram512k -diska engine_msx/emul/dsk/DOS2_zrealm.dsk
+```
+* **Controles no Jogo:**
+  * `[ESPAÇO]`: Pula antecipadamente para a próxima sala no loop demonstrativo.
+  * `[ESC]`: Encerra a execução e retorna com o modo de texto e RAM restaurados para o prompt `A:\>`.
+
 ---
 
 ## 4. Formato dos Arquivos & Modelo de Dados

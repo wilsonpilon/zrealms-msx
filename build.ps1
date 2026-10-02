@@ -135,13 +135,31 @@ try {
     Pop-Location
 }
 
-# 6. Cópia de Documentos de Distribuição
+# 6. Cópia de Documentos e Binários MSX para dist/
 Write-Host "`n[DOCS] Copiando documentação para dist/..." -ForegroundColor Yellow
 $docsToCopy = @("README.md", "LICENSE", "MANUAL.md", "RELEASE.md", "SPEC.md", "OUTLINE.md", "CHANGELOG.md")
 foreach ($doc in $docsToCopy) {
     $docPath = Join-Path $rootDir $doc
     if (Test-Path $docPath) {
         Copy-Item -Path $docPath -Destination $distDir -Force
+    }
+}
+
+Write-Host "`n[MSX] Copiando binários da Engine MSX 2 e imagem DSK para dist/msx/..." -ForegroundColor Yellow
+$msxDistDir = Join-Path $distDir "msx"
+New-Item -ItemType Directory -Path $msxDistDir -Force | Out-Null
+
+$msxFiles = @(
+    "engine_msx/emul/dsk/DOS2_zrealm.dsk",
+    "engine_msx/emul/dos2/zrealm.com",
+    "engine_msx/emul/dos2/HEADER.BIN",
+    "engine_msx/emul/dos2/GAME.DAT"
+)
+foreach ($mf in $msxFiles) {
+    $srcPath = Join-Path $rootDir $mf
+    if (Test-Path $srcPath) {
+        Copy-Item -Path $srcPath -Destination $msxDistDir -Force
+        Write-Host "  -> $(Split-Path $srcPath -Leaf) copiado para dist/msx/" -ForegroundColor DarkGreen
     }
 }
 

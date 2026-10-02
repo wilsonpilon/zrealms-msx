@@ -8,8 +8,8 @@ Este documento serve como mapa de bordo vivo do projeto, refletindo o roadmap es
 
 | Fase | Descrição | Status | Marco Principal |
 | :--- | :--- | :---: | :--- |
-| **Fase 1** | **Estruturação de Dados & Abstrações do Editor (Go + SQLite)** | 🟡 **80%** | Banco `.rpgproj`, Modelos de Hardware, Repositórios & Exporter |
-| **Fase 2** | **Prototipagem de Baixo Nível no MSX (C + MSXgl + SDCC)** | ⚪ *Planejado* | MSX-DOS 2, Paging Mapper (Page 2), SCREEN 4 e Sprites Modo 2 |
+| **Fase 1** | **Estruturação de Dados & Abstrações do Editor (Go + SQLite)** | 🟢 **100% Concluída** | Banco `.rpgproj`, Modelos de Hardware, Repositórios & Exporter |
+| **Fase 2** | **Prototipagem de Baixo Nível no MSX (C + MSXgl + SDCC)** | 🟢 **100% Concluída** | MSX-DOS 2, Paging Mapper (Page 2), SCREEN 4 e Binary Loader de Disco |
 | **Fase 3** | **Desenvolvimento da GUI Desktop com Fyne (O Editor Visual)** | ⚪ *Planejado* | Editores de Tilesets, Sprites, Salas 32x18, Roteiros e Regras |
 | **Fase 4** | **Gameplay Engine & Máquina de Eventos (MSX)** | ⚪ *Planejado* | Controle no Grid, VM de Eventos, HUD e Caixas de Diálogo |
 | **Fase 5** | **Pipeline Integrado de Build & Jogo de Referência** | ⚪ *Planejado* | "One-Click Run", Teste em openMSX e Jogo Demonstrador |
@@ -30,24 +30,31 @@ Este documento serve como mapa de bordo vivo do projeto, refletindo o roadmap es
   - [x] Métodos de cálculo de bits e scanlines de hardware V9938 (ordenação de blocos verticais do Modo 2).
   - [x] Camada de repositórios `pkg/storage` (CRUD de todas as entidades com constraints e limites).
   - [x] Testes unitários e de integração completos com 100% de aprovação.
-- [ ] **Subfase 1.3 — Engine de Serialização Binária (The Exporter):**
-  - [ ] Empacotador de salas em blocos lógicos alinhados a 16 KB (Página 2 / 8000h-BFFFh).
-  - [ ] Codificador de tabelas de padrões e cores para SCREEN 4 e Sprites Modo 2.
-  - [ ] Gerador da tabela mestra de cabeçalho (`HEADER.BIN` / Manifest de recursos).
-  - [ ] Testes automatizados do exportador validando bytes gerados.
+- [x] **Subfase 1.3 — Engine de Serialização Binária (The Exporter):**
+  - [x] Empacotador de salas em blocos lógicos alinhados a 16 KB (Página 2 / 8000h-BFFFh).
+  - [x] Codificador de tabelas de padrões e cores para SCREEN 4 e Sprites Modo 2.
+  - [x] Gerador da tabela mestra de cabeçalho (`HEADER.BIN` / Manifest de recursos) com Magic `ZR01`.
+  - [x] Geração contígua de `GAME.DAT` e modular de `SEGxx.BNK`.
+  - [x] Testes automatizados do exportador validando alinhamento e integridade binária.
 
 ---
 
 ### Fase 2: Prototipagem de Baixo Nível no MSX (C + MSXgl + SDCC)
-- [ ] **Subfase 2.1 — Bootstrap MSX-DOS 2 & Abstração de Mapper:**
-  - [ ] Esqueleto de aplicação `.COM` com inicialização MSXgl.
-  - [ ] Módulo `dos2_mapper.c`: interrogação via `EXTBIO`, alocação de segmentos (`ALL_SEG`) e liberação graciosa (`FRE_SEG`).
-  - [ ] Rotina de paginação segura na Página 2 (`PUT_P2` / `MAPPER_SetPage2`).
-- [ ] **Subfase 2.2 — Configuração do VDP V9938 (SCREEN 4):**
-  - [ ] Ativação de Graphic 3 com 3 bancos de padrões e paleta customizada.
-  - [ ] Configuração de Sprites Modo 2 com cores por linha.
-- [ ] **Subfase 2.3 — Teste de Carga de Sala a partir do Mapper:**
-  - [ ] Programa de prova de conceito no MSX que aloca 256 KB de Mapper e alterna salas instantaneamente na tela.
+- [x] **Subfase 2.1 — Bootstrap MSX-DOS 2 & Abstração de Mapper:**
+  - [x] Esqueleto de aplicação `.COM` com inicialização MSXgl sob MSX-DOS 2.
+  - [x] Módulo `mapper.c`: interrogação via `EXTBIOS` (Jump Table do DOS 2), alocação de segmentos (`ALL_SEG`) e liberação garantida (`FRE_SEG`).
+  - [x] Rotina de paginação segura na Página 2 (`PUT_P2` / `MAPPER_SetPage2`), mantendo Página 1 fixa (Engine) e Página 3 (DOS 2 / Stack).
+  - [x] Restauração perfeita do modo de texto BIOS (Screen 0) via `INITXT` (0x006C) ao sair, com zero vazamento de memória.
+- [x] **Subfase 2.2 — Configuração do VDP V9938 (SCREEN 4):**
+  - [x] Ativação de Graphic 3 com 3 bancos verticais de padrões (2048 bytes cada) e cores (2048 bytes cada).
+  - [x] Viewport de jogo em 32 x 18 tiles (576 bytes contíguos copiados diretamente para VRAM).
+  - [x] Área reservada e limpa para HUD (linhas 18-19) e Diálogo (linhas 20-23).
+  - [x] Desativação e ocultamento de sprites via coordenadas Y fora da tela (Modo 2).
+- [x] **Subfase 2.3 — Binary Disk Loader & Integração com Go Exporter:**
+  - [x] Módulo `loader.c` para leitura direta de `HEADER.BIN` e streaming de `GAME.DAT` em blocos de 8 KB para o Memory Mapper via handles do DOS 2 (`DOS_OpenHandle`, `DOS_ReadHandle`, `DOS_CloseHandle`).
+  - [x] Lookup O(1) de recursos (`LOADER_GetTileset`, `LOADER_GetRoom`) que chaveiam a Página 2 automaticamente para o segmento do recurso.
+  - [x] Comando `-demo` adicionado ao CLI Go `zrealm` gerando projeto demonstrativo com 2 salas conectadas e tileset customizado.
+  - [x] Teste ponta a ponta verificado no openMSX (`Philips_NMS_8250` + `ram512k` + `msxdos2`), capturando screenshots automáticos da Sala 1 (Entrada), Sala 2 (Câmara dos Pilares) e saída limpa de volta ao prompt `A:\>`.
 
 ---
 

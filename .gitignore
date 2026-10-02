@@ -22,6 +22,9 @@ test_*.rpgproj
 *.sym
 *.asm
 build/
+engine_msx/out/
+openmsx_*.txt
+*.tcl.tmp
 
 # Go workspace e cache
 vendor/

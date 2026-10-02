@@ -3,9 +3,9 @@
 ### (Editor Desktop em Go/Fyne/SQLite + Engine MSX2/MSX-DOS 2 em C/MSXgl)
 
 **Projeto Oficial:** Z-Realm (`zrealm-msx`)  
-**Versão:** 0.1.0-DRAFT  
+**Versão:** 0.3.2  
 **Data:** Outubro de 2026  
-**Status:** Documento Vivo (Backbone Arquitetural)  
+**Status:** Fases 1 e 2 Concluídas — Rumo à Fase 3 (Editor Desktop Go + Fyne)  
 **Autor:** Equipe de Arquitetura de Software & Retrocomputação  
 
 ---
@@ -181,6 +181,20 @@ No arranque, a Engine interroga o DOS 2 para determinar quantos segmentos livres
 A mesma arquitetura de dados alinhada a 16 KB viabiliza a compilação como **MegaROM** (mappers ASCII 16K ou Konami 8K/16K):
 - No formato Cartucho, a rotina `MAPPER_SetPage2(segment_id)` é compilada condicionalmente: em vez de chamar o vetor `PUT_P2` do MSX-DOS 2, ela faz uma escrita simples no registrador do mapper de cartucho (ex.: `*(volatile u8*)0x8000 = segment_id;`).
 - Toda a lógica da engine, ponteiros e structs permanecem 100% inalterados.
+
+### 4.6. Subsistema de Carregamento de Disco (Binary Disk Loader para DOS 2)
+Implementado no módulo `engine_msx/loader.c`, o carregador estabelece o protocolo de streaming de alta performance:
+1. **`HEADER.BIN` (Tabela Mestra):**
+   - Cabeçalho de 32 bytes validando Magic `ZR01`, versão binária (`1`), total de segmentos de 16 KB no arquivo de dados e parâmetros iniciais do herói (sala, posição X/Y e tileset inicial).
+   - Diretório de recursos de 8 bytes por registro mapeando `[Tipo (1B)] -> [Segmento (1B)] -> [ID Lógico (2B)] -> [Offset Página 2 (2B)] -> [Tamanho (2B)]`.
+2. **Streaming de `GAME.DAT`:**
+   - Utiliza os descritores nativos do MSX-DOS 2 (`DOS_OpenHandle`, `DOS_ReadHandle`, `DOS_CloseHandle`).
+   - Para cada segmento de 16 KB indicado no cabeçalho mestre, a engine chaveia o segmento lógico para a Página 2 (`0x8000`) e lê 16.384 bytes diretamente do disco (em 2 blocos seguros de 8.192 bytes).
+3. **Resolução de Recursos em Tempo de Execução:**
+   - `LOADER_GetTileset(id)` e `LOADER_GetRoom(id)` localizam o recurso no diretório em O(1), chaveiam automaticamente a Página 2 para o segmento correspondente via `MAPPER_SetPage2` e retornam o ponteiro direto em memória (`0x8000 + Offset`).
+4. **Finalização Graciosa e Proteção de Sistema:**
+   - Ao encerrar a execução, a engine chama `MAPPER_Cleanup()`, devolvendo 100% dos segmentos alocados ao MSX-DOS 2 (`FRE_SEG`).
+   - O modo de vídeo é restaurado com chamada de interslot BIOS para `INITXT` (`0x006C`), recarregando o gerador de caracteres e retornando ao prompt `A:\>` sem congelamento ou corrupção de tela.
 
 ---
 
@@ -400,7 +414,8 @@ O projeto será construído de forma iterativa, validando cada camada antes de a
 ---
 
 ## 7. Próximos Passos Imediatos
-Com este documento técnico firmado, a sequência de trabalho começará pela **Fase 1 (Subfase 1.1)**:
-1. Inicializar o módulo Go na raiz do projeto.
-2. Definir a estrutura de diretórios do repositório.
-3. Escrever o esquema DDL completo do SQLite e os testes de inicialização do banco.
+Com a **Fase 1 (Estruturação de Dados & Abstrações do Editor)** e a **Fase 2 (Prototipagem de Baixo Nível no MSX)** 100% concluídas e verificadas no openMSX, a sequência de trabalho avança para a **Fase 3: Desenvolvimento da GUI Desktop com Fyne (O Editor Visual)**:
+1. **Subfase 3.1 — Shell da Aplicação & Navegação:** Construir a janela mestra da aplicação com tema retrô escuro, gerenciamento de arquivos `.rpgproj` (Criar, Abrir, Salvar) e barra de ferramentas de navegação por abas.
+2. **Subfase 3.2 — Editor de Tiles (8x8):** Canvas interativo de desenho pixel-a-pixel com paleta V9938 e atributos de colisão física.
+3. **Subfase 3.3 — Editor de Sprites (16x16):** Canvas de edição para Modo 2 com preview de cores por scanline.
+4. **Subfase 3.4 — Editor de Salas:** Matriz 32x18 com carimbador de tiles, interligações cardeais e posicionamento visual de entidades.

@@ -9,6 +9,52 @@ O formato baseia-se em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0
 
 ---
 
+## [0.3.0] - 2026-10-02
+
+### Adicionado (Added)
+- **Engine MSX 2 & Prototipagem de Baixo Nível (Fase 2):**
+  - Bootstrap completo no **MSX-DOS 2** (`zrealm.com`) utilizando compilador SDCC 4.6.0 e framework MSXgl.
+  - Gerenciador de **Memory Mapper** (`mapper.c`) em conformidade com as regras do MSX-DOS 2 (`EXTBIOS`):
+    - Alocação dinâmica de segmentos de usuário via `ALL_SEG`.
+    - Paginação segura na **Página 2 (`0x8000 - 0xBFFF`)** via `PUT_P2`, mantendo a Engine fixa na Página 1 (`0x4000 - 0x7FFF`) e o sistema operacional/pilha na Página 3 (`0xC000 - 0xFFFF`).
+    - Liberação garantida de 100% dos segmentos alocados via `FRE_SEG` ao finalizar, sem vazamento de RAM.
+  - Driver de vídeo para **V9938 SCREEN 4 (Graphic 3)** (`vdp_screen4.c`):
+    - Configuração de 3 bancos verticais com 2048 bytes de padrões e 2048 bytes de atributos de cores.
+    - Viewport de exploração de **32 x 18 tiles (256x144 pixels / 576 bytes contíguos)**.
+    - Área de HUD (linhas 18-19) e Diálogo (linhas 20-23) limpas com tile preto/vazio (Tile 255).
+    - Desativação limpa de sprites do Modo 2 por coordenadas de scanline fora da tela.
+    - Restauração perfeita do modo de texto BIOS (Screen 0) e gerador de caracteres via chamada de interslot `INITXT` (0x006C).
+  - **Binary Disk Loader para MSX-DOS 2** (`loader.c`):
+    - Carregador de disco de alta velocidade usando descritores de arquivo nativos do DOS 2 (`DOS_OpenHandle`, `DOS_ReadHandle`, `DOS_CloseHandle`).
+    - Leitura e validação do cabeçalho mestre `HEADER.BIN` (Magic `ZR01`, versão, alocação de segmentos).
+    - Streaming direto de `GAME.DAT` em blocos de 8 KB para a janela da Página 2 do Memory Mapper.
+    - Funções de acesso instantâneo a recursos com paginação transparente de segmentos (`LOADER_GetTileset`, `LOADER_GetRoom`).
+  - **Comando `-demo` no Toolkit Go (`cmd/zrealm`):**
+    - Geração de projeto demonstrativo (`demo.rpgproj`) com tileset de masmorra, 2 salas interligadas (Entrada com portal Leste e Câmara dos Pilares com cruz central), sprite do herói e diálogos.
+    - Integração de exportação direta do SQLite para o disco de boot MSX (`HEADER.BIN` e `GAME.DAT`).
+  - **Empacotamento de Disco & Testes Automatizados no openMSX:**
+    - Atualização do `project_config.js` para inclusão automática de `HEADER.BIN` e `GAME.DAT` na imagem de disco `DOS2_zrealm.dsk` via `msxtar`.
+    - Script de teste automatizado `boot_test.tcl` executado com `-machine Philips_NMS_8250 -ext msxdos2 -ext ram512k`, validando visualmente a Sala 1, a Sala 2 (por troca de segmento) e o retorno com texto limpo ao prompt `A:\>`.
+
+---
+
+## [0.2.0] - 2026-10-02
+
+### Adicionado (Added)
+- **Engine de Serialização Binária para MSX 2 (Subfase 1.3):**
+  - Módulo `pkg/exporter` responsável por compilar dados do SQLite em estruturas nativas Z80/VDP.
+  - Empacotador de memória alinhado a blocos de 16 KB (Página 2 / `8000h - BFFFh`) com detecção automática de overflow de segmento.
+  - Tabela mestra de cabeçalho `HEADER.BIN` (Magic `ZR01`, versão, contagem de segmentos, dados da sala inicial e diretório de 8 bytes por recurso).
+  - Serializador de salas em blocos compactos de 656 bytes (cabeçalho de 16 bytes com conexões cardeais + matriz de 576 bytes + 8 entidades com posições e scripts).
+  - Serializador de tilesets em formato nativo V9938 SCREEN 4 (4.608 bytes: pattern table, color table, tabela de física/colisão e tabela de animações cíclicas).
+  - Serializador de sprites de 16x16 Modo 2 (48 bytes: 32 bytes pattern + 16 bytes atributos de cor por scanline).
+  - Serializador de strings e diálogos com índice relativo de offsets de 16 bits para acesso aleatório sem latência.
+  - Geração automática de `GAME.DAT` contíguo e arquivos modulares de banco `SEGxx.BNK`.
+  - Integração da flag `-export` no utilitário de linha de comando `zrealm.exe`.
+- **Conclusão da Fase 1:** Toda a fundação de dados, modelos e exportador binário para MSX 2 finalizada e validada.
+
+---
+
 ## [0.1.0] - 2026-10-02
 
 ### Adicionado (Added)
