@@ -90,6 +90,7 @@ zrealm-msx/
 │   └── zrealm/            # CLI e utilitário de administração e exportação
 ├── pkg/
 │   ├── exporter/          # Motor de serialização binária para o MSX 2 (V9938/Z80)
+│   ├── gui/               # Editor gráfico Desktop em Fyne (Tiles, Sprites, Salas, Regras e Scripts)
 │   ├── models/            # Modelos de domínio e cálculos de hardware MSX 2 (V9938)
 │   ├── project/           # Gerenciador de projetos (.rpgproj), migrações e demo seeder
 │   ├── storage/           # Repositórios de persistência CRUD com SQLite

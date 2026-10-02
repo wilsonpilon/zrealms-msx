@@ -59,16 +59,47 @@ Este documento serve como mapa de bordo vivo do projeto, refletindo o roadmap es
 ---
 
 ### Fase 3: Desenvolvimento da GUI Desktop com Fyne (O Editor Visual)
-- [ ] **Subfase 3.1 — Shell da Aplicação & Navegação:**
-  - [ ] Janela principal com tema retrô escuro, gerenciamento de projetos e abas de ferramentas.
-- [ ] **Subfase 3.2 — Editor de Tiles (8x8):**
-  - [ ] Grid de desenho pixel-a-pixel com paleta MSX2 e colisão física.
-- [ ] **Subfase 3.3 — Editor de Sprites (16x16):**
-  - [ ] Edição em Modo 2 com atribuição de cores por scanline e quadros de animação.
-- [ ] **Subfase 3.4 — Editor de Salas (Room Matrix View):**
-  - [ ] Matriz de pintura 32x18 com carimbo de tiles, conexões cardeais e inserção visual de entidades.
-- [ ] **Subfase 3.5 — Editor de Regras, Tabelas de RPG e Roteiros:**
-  - [ ] Formulários para classes, itens e editor textual de scripts.
+- [x] **Subfase 3.1 — Shell da Aplicação & Navegação:**
+  - [x] Janela desktop com tema retrô escuro customizado inspirado no MSX 2 e V9938 (`RetroDarkTheme`).
+  - [x] Gerenciador de estado reativo (`ProjectState`) com ciclo de vida, observadores e histórico de arquivos recentes.
+  - [x] Menu principal (Arquivo, Ferramentas com validação SQLite, Ajuda com especificações MSX 2).
+  - [x] Navegação por abas (Salas 32x18, Tilesets 8x8, Sprites 16x16, Diálogos, Regras de RPG e Exportador MSX 2).
+  - [x] Barra de status inferior com monitoramento em tempo real de arquivo e estimativa de memória do Memory Mapper.
+  - [x] Tela de boas-vindas inicial com atalhos para Novo, Abrir e carregar Masmorra Demo.
+  - [x] Integração unificada no CLI (`zrealm`, `zrealm <arquivo.rpgproj>`, retrocompatível com flags `-new`, `-export`, etc.).
+- [x] **Subfase 3.2 — Editor de Tiles (8x8):**
+  - [x] Paleta oficial de 16 cores do MSX 2 V9938 (`MSXPalette`).
+  - [x] Grid interativo de desenho pixel-a-pixel (`TileCanvas`) com suporte a clique e arrasto para alternar, desenhar e apagar.
+  - [x] Seletor de cores de primeiro plano (Foreground) e fundo (Background) individual por linha de varredura (8 scanlines).
+  - [x] Preview ampliado (64x64) em tempo real com escala nítida pixel-art.
+  - [x] Seletor de propriedades físicas e colisão (Passável, Sólido, Água, Dano, Gatilho).
+  - [x] Transformações matemáticas de padrão: Girar 90°, Espelhar Horizontal, Espelhar Vertical, Limpar e Preencher.
+  - [x] Adição dinâmica de novos tiles até o limite físico de 256 padrões do VDP.
+  - [x] Persistência imediata no SQLite com sincronização instantânea de estado.
+- [x] **Subfase 3.3 — Editor de Sprites (16x16 Modo 2):**
+  - [x] Grid interativo de desenho 16x16 pixels (`SpriteCanvas`) com destaque visual nos 4 quadrantes de 8x8 e fundo xadrez sutil para transparência.
+  - [x] Suporte a pintura fluida por clique e arrasto do mouse (ferramentas Alternar, Lápis e Borracha).
+  - [x] Seletor individual de cor para cada uma das 16 scanlines do Modo 2 do V9938 com atalho "Aplicar em Todas".
+  - [x] Pré-visualizações dinâmicas em escala real 1x (16x16) e 4x (64x64) com pixels nítidos.
+  - [x] Transformações completas de sprite: Espelhar Horizontal, Espelhar Vertical (com inversão de scanline de cor), Girar 90°, Deslocamento direcional (Shift Up/Down/Left/Right), Limpar e Preencher.
+  - [x] Duplicação inteligente de quadros ("Duplicar Quadro") para criação ágil de ciclos de animação (Walk cycle, Idle, Attack).
+  - [x] CRUD completo com criação, edição, persistência no SQLite e exclusão de sprites.
+- [x] **Subfase 3.4 — Editor de Salas (Room Matrix View):**
+  - [x] Matriz interativa de pintura 32x18 tiles (256x144 pixels) correspondente à geometria da viewport MSX 2 SCREEN 4 no chip V9938.
+  - [x] Conjunto completo de ferramentas de edição: Pincel (Carimbo), Balde de Tinta (`FloodFillRoom`), Borracha (Tile 0) e Conta-Gotas (`ToolEyedropper`).
+  - [x] Utilitários rápidos de preenchimento: "Limpar (Tile 0)", "Preencher Tudo" e "Preencher Bordas" (`FillBorderRoom`).
+  - [x] Paleta de carimbo com seleção visual de tiles do tileset ativo, preview em tempo real e seletor numérico direto (0..255).
+  - [x] Painel de Conexões Cardeais (Norte, Sul, Leste, Oeste) com salto rápido ("Ir para Sala"), vinculação manual e algoritmo inteligente de "Auto-Conectar por Coordenadas" (`AutoConnectRooms`).
+  - [x] Gestor completo de entidades da sala: inserção, edição, exclusão e posicionamento de atores/NPCs, baús, portas, gatilhos e inimigos, com marcadores visuais sobrepostos diretamente na matriz da sala.
+  - [x] Persistência direta no banco SQLite via `RoomEditorWidget` integrado ao `RoomView` com testes unitários cobrindo todos os algoritmos.
+- [x] **Subfase 3.5 — Editor de Regras, Tabelas de RPG e Roteiros:**
+  - [x] Editor completo de classes de herói com parâmetros base de combate (HP, MP, Ataque, Defesa) e cálculo de tamanho de registro Z80.
+  - [x] Gestor do catálogo de itens e equipamentos com categorias (Arma, Armadura, Consumível, Chave, Quest), modificadores de atributos e preços.
+  - [x] Simulador de caixa de diálogo com proporção nativa MSX 2 (SCREEN 4: 32 colunas x 4 linhas nas scanlines 20 a 23) e quebra automática de texto (`wrapText`).
+  - [x] Compilador e montador de scripts de eventos (`CompileScript`) para a Bytecode VM com opcodes compactos (`OP_MSG`, `OP_GIVE_ITEM`, `OP_TAKE_ITEM`, `OP_SET_FLAG`, `OP_CHECK_FLAG`, `OP_TELEPORT`, `OP_HEAL`, `OP_DAMAGE`, `OP_PLAY_SFX`, `OP_END`).
+  - [x] Desassemblador de bytecode (`DisassembleScript`) para engenharia reversa e exibição de bytecode hexadecimal formatado.
+  - [x] Integração de CRUD com persistência SQLite reativa em `RulesView` e `ScriptView`.
+  - [x] **Conclusão da Fase 3 (Editor Visual Desktop em Fyne):** 100% dos editores visuais operacionais, reativos e cobertos por testes unitários automatizados.
 
 ---
 

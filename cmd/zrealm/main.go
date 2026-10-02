@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/zrealm-msx/zrealm/pkg/exporter"
+	"github.com/zrealm-msx/zrealm/pkg/gui"
 	"github.com/zrealm-msx/zrealm/pkg/project"
 	"github.com/zrealm-msx/zrealm/pkg/version"
 )
@@ -19,6 +20,7 @@ func main() {
 	exportProj := flag.String("export", "", "Exporta o projeto SQLite para arquivos binários do MSX 2")
 	outDir := flag.String("out", "", "Diretório de saída para os binários exportados (padrão: ./build_msx)")
 	exportBanks := flag.Bool("banks", true, "Gera arquivos individuais SEGxx.BNK além do GAME.DAT")
+	runCLI := flag.Bool("cli", false, "Força modo de linha de comando exibindo ajuda de comandos")
 
 	flag.Parse()
 
@@ -96,11 +98,23 @@ func main() {
 		return
 	}
 
-	fmt.Printf("Z-Realm Toolkit %s\n", version.String())
-	fmt.Println("Uso:")
-	fmt.Println("  zrealm -version                           Exibe a versão atual")
-	fmt.Println("  zrealm -new <arquivo.rpgproj>             Cria um novo projeto SQLite")
-	fmt.Println("  zrealm -demo <arquivo.rpgproj>            Gera projeto de demonstração")
-	fmt.Println("  zrealm -check <arquivo.rpgproj>           Valida a integridade de um projeto")
-	fmt.Println("  zrealm -export <arquivo.rpgproj> [-out d] Exporta projeto para binários MSX 2")
+	if *runCLI {
+		fmt.Printf("Z-Realm Toolkit %s\n", version.String())
+		fmt.Println("Uso:")
+		fmt.Println("  zrealm                                    Inicia o Editor Visual Desktop (Fyne GUI)")
+		fmt.Println("  zrealm <arquivo.rpgproj>                  Abre o arquivo diretamente no Editor Visual")
+		fmt.Println("  zrealm -version                           Exibe a versão atual")
+		fmt.Println("  zrealm -new <arquivo.rpgproj>             Cria um novo projeto SQLite")
+		fmt.Println("  zrealm -demo <arquivo.rpgproj>            Gera projeto de demonstração")
+		fmt.Println("  zrealm -check <arquivo.rpgproj>           Valida a integridade de um projeto")
+		fmt.Println("  zrealm -export <arquivo.rpgproj> [-out d] Exporta projeto para binários MSX 2")
+		return
+	}
+
+	// Execução padrão: Interface Gráfica Fyne
+	desktopApp := gui.NewApp()
+	if len(flag.Args()) > 0 {
+		_ = desktopApp.State().OpenProject(flag.Args()[0])
+	}
+	desktopApp.Run()
 }

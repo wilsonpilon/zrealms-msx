@@ -1,100 +1,99 @@
 # RELEASE.md — Detalhamento do Release Oficial
 
-**Versão Atual:** 0.3.0  
+**Versão Atual:** 0.4.0  
 **Data:** 02 de Outubro de 2026  
-**Status do Release:** Phase 2 Complete (Prototipagem de Baixo Nível no MSX 2 Concluída)  
-**Alvo:** Windows (x64) para o Toolkit / MSX 2 & MSX-DOS 2 para a Engine  
+**Status do Release:** Phase 3 Complete (Editor Visual Desktop em Fyne 100% Concluído)  
+**Alvo:** Windows (x64) para o Toolkit & GUI / MSX 2 & MSX-DOS 2 para a Engine  
 
 ---
 
 ## 1. Resumo Executivo do Release
 
-A **Fase 2 (Prototipagem de Baixo Nível no MSX)** está 100% concluída. Este release entrega a **Engine Nativa do MSX 2 (`engine_msx/`)** em C (SDCC 4.6.0 + MSXgl), o subsistema de **Memory Mapper na Página 2 (`0x8000 - 0xBFFF`)** integrado ao MSX-DOS 2, o controlador gráfico de **SCREEN 4 (Graphic 3 do V9938)** e o **Binary Disk Loader (`loader.c`)**.
+A **Fase 3 (Desenvolvimento da GUI Desktop com Fyne - O Editor Visual)** está **100% concluída**. Este release entrega a aplicação de desktop completa para criação de RPGs no MSX 2, integrando banco de dados relacional SQLite, renderização gráfica com fidelidade aos modos do VDP V9938, ferramentas de desenho em tempo real, gerador de conexões de mundo, gestor de entidades, catálogo de RPG e compilador de scripts da máquina virtual de eventos.
 
-O pipeline está totalmente conectado de ponta a ponta:
-1. O comando `zrealm -demo demo.rpgproj` gera um projeto SQLite com tileset de masmorra e 2 salas conectadas.
-2. O comando `zrealm -export demo.rpgproj -out engine_msx/emul/dos2` exporta os dados binários para `HEADER.BIN` e `GAME.DAT`.
-3. O build do MSX (`build.bat`) gera o executável `zrealm.com` e a imagem de disquete `DOS2_zrealm.dsk` com todos os dados.
-4. O emulador openMSX carrega o jogo no DOS 2, pagina os segmentos na Página 2, renderiza as duas salas e retorna com texto 100% limpo ao prompt do DOS, liberando toda a RAM alocada.
+O ecossistema agora oferece a experiência completa de criação:
+1. **Tilesets & Tiles 8x8:** Desenho pixel-a-pixel com 16 cores do MSX 2, atributos de colisão e transformações completas.
+2. **Sprites 16x16 (Modo 2):** Grid com quadrantes guias, scanlines de cores independentes, previews 1x e 4x e duplicação de frames para ciclos de animação.
+3. **Salas 32x18 (SCREEN 4):** Matriz de 576 bytes contíguos com carimbo contínuo, flood fill, borracha, conta-gotas, conexões cardeais automáticas por coordenadas e posicionamento de atores.
+4. **Regras, Classes e Itens:** Ficha de heróis (HP/MP/ATK/DEF), inventário e catálogo de equipamentos.
+5. **Roteiros & Scripts:** Compilador e desassemblador de scripts de eventos para a Bytecode VM do MSX Z80 e simulador de caixa de diálogo com proporção nativa 32x4 caracteres.
 
 ---
 
 ## 2. O que foi Criado (Novos Componentes)
 
-### 2.1. Engine MSX 2 & MSX-DOS 2 Core (`engine_msx/`)
-* **`zrealm.c`:** Núcleo de inicialização e game loop em C para MSX-DOS 2:
-  * Inicialização via `crt0_dos.asm` (início em `0x0100`).
-  * Tratamento de teclado sem conflito com chamadas BDOS (leitura direta via `Keyboard_IsKeyPressed`).
-  * Finalização limpa restaurando o modo de texto BIOS (Screen 0) via `DOS_InterSlotCall(g_EXPTBL[0], R_INITXT)`.
-* **`mapper.c` / `mapper.h`:** Gerenciador de Memory Mapper para MSX-DOS 2:
-  * Localização dinâmica da Jump Table do DOS 2 (`EXTBIOS`).
-  * Alocação de segmentos via `ALL_SEG` e liberação via `FRE_SEG`.
-  * Paginação de segmentos de 16 KB na Página 2 (`0x8000 - 0xBFFF`) via `PUT_P2`.
-  * Zero vazamento de memória (todas as estruturas alocadas são devolvidas ao DOS 2).
-* **`vdp_screen4.c` / `vdp_screen4.h`:** Controlador de Vídeo V9938 SCREEN 4:
-  * Ativação de Graphic 3 com 3 bancos verticais de padrões (2048 bytes cada) e cores (2048 bytes cada).
-  * Renderização direta de Viewport de 32x18 tiles (576 bytes contíguos na Name Table `0x1800`).
-  * Limpeza dedicada de áreas de HUD (linhas 18-19) e Diálogo (linhas 20-23) com tile preto.
-  * Ocultamento de sprites Modo 2 (Y=216).
-* **`loader.c` / `loader.h`:** Carregador de Disco Binário para MSX-DOS 2:
-  * Abertura e leitura com descritores nativos (`DOS_OpenHandle`, `DOS_ReadHandle`, `DOS_CloseHandle`).
-  * Validação do cabeçalho mestre `HEADER.BIN` (Magic `ZR01`, versão 1).
-  * Streaming contínuo de `GAME.DAT` em blocos de 8 KB diretamente para o segmento mapeado na Página 2.
-  * Resolução de recursos com chaveamento automático de segmento (`LOADER_GetTileset`, `LOADER_GetRoom`).
+### 2.1. Shell da Aplicação & Navegação (Subfase 3.1)
+* **`theme.go`:** Tema retrô escuro `RetroDarkTheme` inspirado na paleta V9938 (fundos azuis/grafite escuros, destaques em ciano MSX e dourado, tipografia limpa).
+* **`state.go`:** Gerenciador `ProjectState` seguro para concorrência com callbacks reativos, dirty tracking e proteção contra perda de dados.
+* **`menu.go`:** Menu mestre da aplicação com verificação de integridade física (`PRAGMA quick_check`) e referencial (`PRAGMA foreign_key_check`) do SQLite.
+* **`statusbar.go`:** Barra de rodapé com telemetria em tempo real e estimativa de consumo de blocos de 16 KB no Memory Mapper MSX.
 
-### 2.2. Extensões no Toolkit Go (`cmd/zrealm` e `pkg/project`)
-* **`pkg/project/demo.go`:** Gerador do projeto demonstrativo `CreateDemoProject`:
-  * Tileset com Chão de masmorra (Tile 0), Parede de tijolos (Tile 1) e Portal místico dourado (Tile 2).
-  * Sala 1 ("Entrada das Catacumbas"): Paredes perimetrais com saída no Leste (Tile 2).
-  * Sala 2 ("Câmara dos Pilares"): Conexão no Oeste, 4 pilares maciços e altar cruciforme central.
-  * Sprite do Herói (16x16) e Diálogo de boas-vindas.
-* **Flag `-demo` no CLI `zrealm`:** Comando direto para gerar projetos de teste.
+### 2.2. Editor de Tiles 8x8 (Subfase 3.2)
+* **`tile_editor.go` & `tile_view.go`:**
+  * Grid pixel-a-pixel interativo com paleta V9938 de 16 cores.
+  * Seletores de cores individuais para Foreground e Background por linha de 8 pixels.
+  * Seletor de física/colisão (Passável, Sólido, Água, Dano, Gatilho).
+  * Transformações completas: Rotação 90°, Espelhamento H/V, Deslocamento direcional (Shift), Inversão, Limpar e Preencher.
 
-### 2.3. Automação de Testes e Empacotamento
-* **`project_config.js`:** Adição de `HEADER.BIN` e `GAME.DAT` em `DiskFiles` para geração automática do disquete `DOS2_zrealm.dsk` via `msxtar`.
-* **`boot_test.tcl`:** Script TCL do openMSX configurado para capturar automaticamente:
-  * Sala 1 (Entrada com portal dourado).
-  * Sala 2 (Câmara dos Pilares via troca dinâmica de segmento de Mapper).
-  * Saída limpa ao prompt do MSX-DOS 2.
-* **`build.ps1`:** Empacotamento dos binários MSX (`DOS2_zrealm.dsk`, `zrealm.com`, `HEADER.BIN`, `GAME.DAT`) no diretório `dist/msx/` e no pacote ZIP de release.
+### 2.3. Editor de Sprites 16x16 Modo 2 (Subfase 3.3)
+* **`sprite_editor.go` & `sprite_view.go`:**
+  * Grid interativo de 16x16 pixels com divisores de quadrantes 8x8.
+  * Seletor de cor individual para cada uma das 16 scanlines do Modo 2 do V9938 com atalho "Aplicar em Todas".
+  * Pré-visualizações dinâmicas em escala real 1x (16x16) e ampliada 4x (64x64) com pixels nítidos.
+  * Recurso "Duplicar Quadro" para prototipagem ágil de ciclos de animação (Walk/Idle/Attack).
 
----
+### 2.4. Editor de Salas 32x18 SCREEN 4 (Subfase 3.4)
+* **`room_canvas.go` & `room_editor.go` & `room_view.go`:**
+  * Viewport interativo de 32x18 tiles (256x144 pixels) correspondente à geometria da viewport MSX SCREEN 4.
+  * Conjunto completo de ferramentas: Pincel/Carimbo, Balde de Tinta (`FloodFillRoom`), Borracha (Tile 0) e Conta-Gotas (`ToolEyedropper`).
+  * Utilitários rápidos: Limpeza total, Preenchimento total e Preenchimento automático de bordas (`FillBorderRoom`).
+  * Paleta de carimbo dinâmica com tiles do tileset ativo, preview do tile selecionado e seletor numérico direto (0..255).
+  * Painel de Conexões Cardeais (Norte, Sul, Leste, Oeste) com navegação rápida ("Ir para Sala") e algoritmo de "Auto-Conectar por Coordenadas" (`AutoConnectRooms`).
+  * Gestor de Entidades com marcadores visuais sobrepostos diretamente na matriz da sala.
 
-## 3. O que foi Corrigido / Otimizado
-
-* **Interferência BDOS 0x06:** Substituição de `DOS_PollKey()` por leitura direta de teclado de hardware (`Keyboard_IsKeyPressed`), evitando que chamadas de polling BDOS corrompam registradores Z80 no meio de modos gráficos do VDP.
-* **Restauração de Fonte no MSX-DOS 2:** Uso de `DOS_InterSlotCall(g_EXPTBL[0], R_INITXT)` para recarregar a fonte BIOS do gerador de caracteres e restaurar completamente a Screen 0 ao sair para o DOS 2.
-* **Limpeza do HUD e Diálogo:** Ajuste de `VDP_ClearHUDAndDialogue` para usar Tile 255 (preto/vazio), evitando que o chão pontilhado do jogo invada as áreas reservadas de status e texto.
-* **Configuração de Boot openMSX:** Inclusão obrigatória de `-ext msxdos2` em conjunto com `-ext ram512k` para a máquina `Philips_NMS_8250`.
+### 2.5. Editor de Regras, Tabelas de RPG e Roteiros (Subfase 3.5)
+* **`rules_view.go`:**
+  * Gestor de Classes de Heróis: cadastro, edição e exclusão de classes com parâmetros base de combate (HP, MP, Ataque, Defesa).
+  * Catálogo de Itens: gerenciamento de armas, armaduras, consumíveis, chaves e quests com modificadores de stat e preços.
+* **`script_compiler.go` & `script_view.go`:**
+  * Compilador de scripts (`CompileScript`) para a Bytecode VM do MSX Z80 com opcodes compactos (`OP_MSG`, `OP_GIVE_ITEM`, `OP_TAKE_ITEM`, `OP_SET_FLAG`, `OP_CHECK_FLAG`, `OP_TELEPORT`, `OP_HEAL`, `OP_DAMAGE`, `OP_PLAY_SFX`, `OP_END`).
+  * Resolução automática de labels e cálculo de offsets relativos de salto.
+  * Desassemblador (`DisassembleScript`) e exibição de bytecode hexadecimal formatado.
+  * Simulador de caixa de diálogo com proporção nativa MSX (32 colunas x 4 linhas) e quebra automática de texto (`wrapText`).
 
 ---
 
-## 4. O que foi Testado & Resultados
+## 3. O que foi Testado & Resultados
 
-### 4.1. Testes Unitários Go (100% de Aprovação)
+### 3.1. Testes Unitários Go (100% de Aprovação)
 ```text
-ok  	github.com/zrealm-msx/zrealm/pkg/exporter	2.53s
-ok  	github.com/zrealm-msx/zrealm/pkg/models	0.87s
-ok  	github.com/zrealm-msx/zrealm/pkg/project	4.30s
-ok  	github.com/zrealm-msx/zrealm/pkg/project/migrations	0.84s
-ok  	github.com/zrealm-msx/zrealm/pkg/storage	2.40s
-ok  	github.com/zrealm-msx/zrealm/pkg/version	0.83s
+ok  	github.com/zrealm-msx/zrealm/pkg/exporter           2.61s
+ok  	github.com/zrealm-msx/zrealm/pkg/gui                4.62s
+ok  	github.com/zrealm-msx/zrealm/pkg/models             0.91s
+ok  	github.com/zrealm-msx/zrealm/pkg/project            4.83s
+ok  	github.com/zrealm-msx/zrealm/pkg/project/migrations 0.89s
+ok  	github.com/zrealm-msx/zrealm/pkg/storage            3.00s
+ok  	github.com/zrealm-msx/zrealm/pkg/version            0.82s
 ```
 
-### 4.2. Testes de Execução no openMSX
-* **Máquina:** `Philips_NMS_8250` + `ram512k` + `msxdos2`.
-* **Boot:** Limpo via `autoexec.bat` chamando `zrealm.com`.
-* **Leitura de Disco:** `HEADER.BIN` (72 bytes) e `GAME.DAT` (16.384 bytes) lidos sem erros.
-* **Alocação de Mapper:** 16 segmentos alocados com sucesso.
-* **Renderização:** Sala 1 e Sala 2 renderizadas com 100% de fidelidade ao schema SQLite exportado.
-* **Retorno:** Prompt `A:\>` restaurado sem travamento, congelamento ou vazamento de memória.
+* **Testes de GUI & Compilador (`pkg/gui`):**
+  - `TestRetroDarkTheme`: conformidade da paleta V9938.
+  - `TestProjectStateLifecycle` & `TestProjectStateDemo`: reatividade e integridade.
+  - `TestFloodFillRoom`, `TestFillBorderRoom`, `TestClearRoomMatrix`: algoritmos matriciais de sala 32x18.
+  - `TestAutoConnectRooms`: topologia de conexão automática em grade de salas.
+  - `TestRoomCanvasPainting`: ferramentas de pintura e marcadores visuais.
+  - `TestCompileScriptBasic`, `TestCompileScriptWithLabelsAndBranches`, `TestCompileScriptErrors`: montador de bytecode da VM.
+  - `TestDisassembleAndFormatHex`: desassemblagem e hex formatting.
+  - `TestWrapText`: quebra de texto na caixa de diálogo de 32 colunas.
+  - `TestSpriteCanvasPixelPainting`, `TestSpriteTransformations`: Modo 2 do V9938.
+  - `TestTileCanvasPixelPainting`, `TestPatternTransformations`: padrões 8x8 do V9938.
 
 ---
 
-## 5. Próximos Passos (Fase 3)
+## 4. Próximos Passos (Fase 4: Gameplay Engine & Máquina de Eventos no MSX)
 
-Com a fundação de dados (Fase 1) e o runtime de baixo nível do MSX 2 (Fase 2) concluídos e integrados, o projeto avança para a **Fase 3: Desenvolvimento da GUI Desktop com Fyne (O Editor Visual)**:
-1. **Subfase 3.1 — Shell da Aplicação & Navegação:** Criação da janela mestre, seletor de arquivos `.rpgproj` e layout de abas temáticas.
-2. **Subfase 3.2 — Editor de Tiles (8x8):** Canvas de edição com paleta do MSX 2 e marcação de colisão.
-3. **Subfase 3.3 — Editor de Sprites (16x16):** Visualizador de camadas Modo 2.
-4. **Subfase 3.4 — Editor de Salas:** Matriz 32x18 com carimbo de tiles e conexão cardeal visual.
+Com as Fases 1, 2 e 3 100% concluídas, o desenvolvimento avança para a **Fase 4**:
+1. **Subfase 4.1 — Movimentação do Herói & Colisão no Grid:** Controle direcional, colisão contra tiles sólidos/água e transição de sala nas bordas.
+2. **Subfase 4.2 — Sistema de Entidades e Atores:** Spawning dinâmico de até 8 entidades ativas, IAs simples e interação por tecla de ação.
+3. **Subfase 4.3 — Máquina Virtual de Eventos (Bytecode VM no Z80):** Execução do interpretador de instruções compactas compiladas pelo editor.
+4. **Subfase 4.4 — Caixa de Diálogos & HUD:** Renderização de mensagens nas linhas 20-23 e mostrador de HP/MP nas linhas 18-19.

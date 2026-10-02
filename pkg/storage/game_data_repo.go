@@ -149,6 +149,40 @@ func (r *GameDataRepository) ListStrings(ctx context.Context) ([]*models.StringE
 	return list, rows.Err()
 }
 
+// UpdateString atualiza o conteúdo ou tag de uma string.
+func (r *GameDataRepository) UpdateString(ctx context.Context, entry *models.StringEntry) error {
+	query := `UPDATE string_table SET context_tag = ?, text_content = ? WHERE id = ?`
+	res, err := r.db.ExecContext(ctx, query, entry.ContextTag, entry.TextContent, entry.ID)
+	if err != nil {
+		return fmt.Errorf("falha ao atualizar string %d: %w", entry.ID, err)
+	}
+	rows, err := res.RowsAffected()
+	if err != nil {
+		return err
+	}
+	if rows == 0 {
+		return fmt.Errorf("string %d não encontrada para atualização", entry.ID)
+	}
+	return nil
+}
+
+// DeleteString remove uma string da tabela.
+func (r *GameDataRepository) DeleteString(ctx context.Context, id int64) error {
+	query := `DELETE FROM string_table WHERE id = ?`
+	res, err := r.db.ExecContext(ctx, query, id)
+	if err != nil {
+		return fmt.Errorf("falha ao deletar string %d: %w", id, err)
+	}
+	rows, err := res.RowsAffected()
+	if err != nil {
+		return err
+	}
+	if rows == 0 {
+		return fmt.Errorf("string %d não encontrada para exclusão", id)
+	}
+	return nil
+}
+
 // --- Classes de Heróis (hero_classes) ---
 
 // CreateHeroClass cadastra uma nova classe de personagem.
@@ -198,6 +232,40 @@ func (r *GameDataRepository) ListHeroClasses(ctx context.Context) ([]*models.Her
 		list = append(list, h)
 	}
 	return list, rows.Err()
+}
+
+// UpdateHeroClass atualiza os dados e atributos base de uma classe de herói.
+func (r *GameDataRepository) UpdateHeroClass(ctx context.Context, h *models.HeroClass) error {
+	query := `UPDATE hero_classes SET name = ?, base_hp = ?, base_mp = ?, base_atk = ?, base_def = ? WHERE id = ?`
+	res, err := r.db.ExecContext(ctx, query, h.Name, h.BaseHP, h.BaseMP, h.BaseAtk, h.BaseDef, h.ID)
+	if err != nil {
+		return fmt.Errorf("falha ao atualizar classe de herói %d: %w", h.ID, err)
+	}
+	rows, err := res.RowsAffected()
+	if err != nil {
+		return err
+	}
+	if rows == 0 {
+		return fmt.Errorf("classe de herói %d não encontrada para atualização", h.ID)
+	}
+	return nil
+}
+
+// DeleteHeroClass remove uma classe de herói.
+func (r *GameDataRepository) DeleteHeroClass(ctx context.Context, id int64) error {
+	query := `DELETE FROM hero_classes WHERE id = ?`
+	res, err := r.db.ExecContext(ctx, query, id)
+	if err != nil {
+		return fmt.Errorf("falha ao deletar classe de herói %d: %w", id, err)
+	}
+	rows, err := res.RowsAffected()
+	if err != nil {
+		return err
+	}
+	if rows == 0 {
+		return fmt.Errorf("classe de herói %d não encontrada para exclusão", id)
+	}
+	return nil
 }
 
 // --- Itens (items) ---
@@ -268,4 +336,38 @@ func (r *GameDataRepository) ListItems(ctx context.Context) ([]*models.Item, err
 		list = append(list, item)
 	}
 	return list, rows.Err()
+}
+
+// UpdateItem atualiza os atributos e tipo de um item.
+func (r *GameDataRepository) UpdateItem(ctx context.Context, item *models.Item) error {
+	query := `UPDATE items SET name = ?, item_type = ?, modifier_stat = ?, modifier_value = ?, price = ? WHERE id = ?`
+	res, err := r.db.ExecContext(ctx, query, item.Name, int(item.ItemType), item.ModifierStat, item.ModifierValue, item.Price, item.ID)
+	if err != nil {
+		return fmt.Errorf("falha ao atualizar item %d: %w", item.ID, err)
+	}
+	rows, err := res.RowsAffected()
+	if err != nil {
+		return err
+	}
+	if rows == 0 {
+		return fmt.Errorf("item %d não encontrado para atualização", item.ID)
+	}
+	return nil
+}
+
+// DeleteItem remove um item do catálogo.
+func (r *GameDataRepository) DeleteItem(ctx context.Context, id int64) error {
+	query := `DELETE FROM items WHERE id = ?`
+	res, err := r.db.ExecContext(ctx, query, id)
+	if err != nil {
+		return fmt.Errorf("falha ao deletar item %d: %w", id, err)
+	}
+	rows, err := res.RowsAffected()
+	if err != nil {
+		return err
+	}
+	if rows == 0 {
+		return fmt.Errorf("item %d não encontrado para exclusão", id)
+	}
+	return nil
 }

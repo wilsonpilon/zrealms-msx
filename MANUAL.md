@@ -69,11 +69,29 @@ go test -v ./...
 
 ---
 
-## 3. Guia de Uso da Ferramenta CLI (`zrealm.exe`)
+## 3. Guia de Uso do Editor Visual Desktop & CLI
 
-O utilitário de linha de comando `zrealm` permite criar, validar e inspecionar bancos de dados de projetos `.rpgproj`.
+### 3.1. Iniciar o Editor Gráfico Desktop (GUI Fyne)
+Para abrir a interface gráfica completa do Z-Realm, basta executar o binário compilado sem argumentos ou dar um duplo-clique no executável:
+```powershell
+./dist/bin/zrealm.exe
+# ou na raiz após o build:
+./zrealm.exe
+```
+O editor abrirá com o tema retrô escuro do MSX 2 e abas integradas:
+* **🧱 Tilesets (8x8):** Desenho pixel-a-pixel com paleta V9938 de 16 cores, cores de frente e fundo por scanline, atributos de colisão física e transformações completas.
+* **👾 Sprites (16x16 Modo 2):** Editor com 16 scanlines de cores independentes, visualização em escala real 1x e 4x, e recurso de duplicação de quadros para ciclos de animação.
+* **🗺️ Salas (32x18 SCREEN 4):** Matriz contígua de 576 bytes com carimbo contínuo, flood fill, borracha, conta-gotas, conexões cardeais automáticas e posicionamento de entidades/atores.
+* **⚔️ Regras & RPG:** Gestão de classes de personagens (HP, MP, Ataque, Defesa) e catálogo de itens/equipamentos.
+* **📜 Scripts & Diálogos:** Editor com compilador e desassemblador de scripts para a Bytecode VM do Z80 e simulador de caixa de diálogo com proporção nativa MSX (32x4 caracteres).
+* **💾 Exportar:** Compilação dos dados para os binários nativos da Engine (`HEADER.BIN`, `GAME.DAT`).
 
-### 3.1. Consultar a Versão do Sistema
+---
+
+### 3.2. Linha de Comando (CLI Administrativa)
+O utilitário `zrealm.exe` também opera em modo de linha de comando para automação em pipelines CI/CD:
+
+#### 3.2.1. Consultar a Versão do Sistema
 ```bash
 ./bin/zrealm.exe -version
 ```

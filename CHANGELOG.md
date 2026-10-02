@@ -7,6 +7,39 @@ O formato baseia-se em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0
 * **Y (Minor / Feature):** Incrementado a cada nova feature concluída e integrada ao projeto.
 * **X (Major):** Incrementado a cada transição estrutural ou conclusão de uma grande fase (ex.: finalização da Camada de Dados, conclusão do Editor Gráfico, etc.).
 
+## [0.4.0] - 2026-10-02
+
+### Adicionado (Added)
+- **Fase 3 Completa: Editor Desktop Visual em Fyne (GUI 100% Funcional):**
+  - **Subfase 3.1 — Shell da Aplicação & Navegação:**
+    - Tema retro escuro `RetroDarkTheme` inspirado nas cores e fontes do V9938.
+    - Gerenciador de estado reativo e concorrente `ProjectState` com detecção de alterações e dirty tracking.
+    - Menu mestre da aplicação com verificação de integridade física (`quick_check`) e referencial (`foreign_key_check`) do SQLite.
+    - Barra de status ao vivo com indicador de recursos e estimativa de consumo do Memory Mapper MSX.
+  - **Subfase 3.2 — Editor de Tiles (8x8 SCREEN 4):**
+    - Grid pixel-a-pixel interativo com paleta oficial V9938 de 16 cores.
+    - Seletores de cor individuais de Foreground e Background por scanline.
+    - Configuração de tipo de colisão física (Passável, Sólido, Água, Dano, Gatilho).
+    - Transformações completas de matriz: Rotação 90°, Flip H/V, Deslocamento (Shift direcional), Inversão, Limpeza e Preenchimento.
+  - **Subfase 3.3 — Editor de Sprites (16x16 Modo 2):**
+    - Grid de 16x16 pixels com divisores de quadrantes 8x8 e transparência sutil.
+    - Atribuição independente de cor para cada uma das 16 scanlines do Modo 2 do V9938.
+    - Pré-visualização com pixels nítidos em escala 1x (16x16) e 4x (64x64).
+    - Recurso "Duplicar Quadro" para prototipagem rápida de ciclos de animação (Walk/Idle).
+  - **Subfase 3.4 — Editor de Salas (Room Matrix View):**
+    - Viewport interativo de 32x18 tiles (256x144 pixels) correspondente à área jogável SCREEN 4.
+    - Ferramentas: Pincel/Carimbo contínuo, Balde de Tinta (`FloodFillRoom`), Borracha e Conta-Gotas (`ToolEyedropper`).
+    - Utilitários: Limpeza total, Preenchimento total e Preenchimento automático de bordas (`FillBorderRoom`).
+    - Paleta de carimbo com preview de tiles e seletor numérico direto (0..255).
+    - Conexões cardeais (Norte, Sul, Leste, Oeste) com navegação direta e "Auto-Conectar por Coordenadas" (`AutoConnectRooms`).
+    - Gestor visual de entidades com inserção de NPCs, baús, portas e marcadores gráficos sobrepostos na sala.
+  - **Subfase 3.5 — Editor de Regras, Tabelas de RPG e Roteiros:**
+    - Ficha de classes de herói com parâmetros de combate (HP, MP, Ataque, Defesa).
+    - Catálogo de itens e equipamentos com categorias, preços e modificadores de atributos.
+    - Simulador de caixa de diálogo com proporção nativa MSX (32x4 caracteres nas linhas 20-23).
+    - Compilador de scripts de eventos (`CompileScript`) para a Bytecode VM com opcodes compactos (`OP_MSG`, `OP_GIVE_ITEM`, `OP_TAKE_ITEM`, `OP_SET_FLAG`, `OP_CHECK_FLAG`, `OP_TELEPORT`, `OP_HEAL`, `OP_DAMAGE`, `OP_PLAY_SFX`, `OP_END`).
+    - Desassemblador de bytecode (`DisassembleScript`) e exibição de hexadecimal formatado.
+
 ---
 
 ## [0.3.0] - 2026-10-02
