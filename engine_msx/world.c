@@ -3,6 +3,7 @@
 //─────────────────────────────────────────────────────────────────────────────
 #include "world.h"
 #include "entity.h"
+#include "ui.h"
 
 WorldState g_World;
 
@@ -36,7 +37,12 @@ bool WORLD_LoadRoom(u16 roomID)
 	}
 
 	g_World.CurrentRoomID = roomID;
-	g_World.Header = room->Header;
+	g_World.Header.NorthRoom    = room->Header.NorthRoom;
+	g_World.Header.SouthRoom    = room->Header.SouthRoom;
+	g_World.Header.EastRoom     = room->Header.EastRoom;
+	g_World.Header.WestRoom     = room->Header.WestRoom;
+	g_World.Header.TilesetID    = room->Header.TilesetID;
+	g_World.Header.EntityCount  = room->Header.EntityCount;
 
 	// 2. Copia a matriz de 576 tiles para RAM local segura
 	for (i = 0; i < VIEWPORT_TILE_COUNT; i++)
@@ -56,6 +62,7 @@ bool WORLD_LoadRoom(u16 roomID)
 				g_World.CollisionTable[i] = ts->CollisionTable[i];
 			}
 			VDP_LoadTilesetAllBanks(ts->PatternTable, ts->ColorTable);
+			UI_ReloadFont();
 		}
 	}
 

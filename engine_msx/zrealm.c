@@ -16,6 +16,7 @@
 #include "hero.h"
 #include "entity.h"
 #include "vm.h"
+#include "ui.h"
 
 #define Halt() __asm__("halt")
 
@@ -57,7 +58,7 @@ void main(void)
 
 	// 3. Inicializa o processador de vídeo V9938 em SCREEN 4 (Graphic 3)
 	VDP_InitScreen4();
-	VDP_ClearHUDAndDialogue(255); // Preenche HUD e diálogo com tile vazio
+	UI_Init(); // Carrega fonte e molduras no Banco 2 e desenha HUD inicial
 
 	// 4. Carrega a sala inicial no Memory Mapper e desenha na tela
 	if (!WORLD_LoadRoom(header->InitialRoomID))
@@ -79,11 +80,19 @@ void main(void)
 		// Aguarda o próximo ciclo de interrupção vertical (V-Blank)
 		Halt();
 
-		// Atualiza herói (controles, física, colisão e ação)
-		HERO_Update();
+		// Se a caixa de diálogo estiver ativa, processa leitura/paginação
+		if (UI_IsDialogueActive())
+		{
+			UI_UpdateDialogue();
+		}
+		else
+		{
+			// Atualiza herói (controles, física, colisão e ação)
+			HERO_Update();
 
-		// Atualiza ciclo de vida e IAs de todas as entidades ativas
-		ENTITY_Update();
+			// Atualiza ciclo de vida e IAs de todas as entidades ativas
+			ENTITY_Update();
+		}
 
 		// Tecla ESC para encerrar a partida e retornar ao sistema operacional
 		if (Keyboard_IsKeyPressed(KEY_ESC))

@@ -7,6 +7,41 @@ O formato baseia-se em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0
 * **Y (Minor / Feature):** Incrementado a cada nova feature concluída e integrada ao projeto.
 * **X (Major):** Incrementado a cada transição estrutural ou conclusão de uma grande fase (ex.: finalização da Camada de Dados, conclusão do Editor Gráfico, etc.).
 
+## [0.4.4] - 2026-10-03
+
+### Adicionado (Added)
+- **Subfase 4.4: Caixa de Diálogos & HUD no VDP V9938 (Conclusão da Fase 4):**
+  - **Módulo de Interface e HUD (`ui.h`, `ui.c`):**
+    - **Layout VRAM no Banco 2 da SCREEN 4:**
+      - Linhas 18-19 reservadas ao HUD fixo em tempo real.
+      - Linhas 20-23 reservadas à Caixa de Diálogos interativa e ao Painel de Repouso ("Standby").
+      - Fonte ASCII 8x8 completa baseada no padrão Texas Instruments TMS9900 carregada nos padrões 128..223 da VRAM (`0x1400..0x16FF`) com atributos de cor correspondentes (`0x3400..0x36FF`).
+      - Glifos customizados de UI mapeados nos padrões 224..239: molduras e cantoneiras (`┌ ─ ┐ │ └ ┘`), ícones coloridos de RPG (Coração Rosa `♥`, Estrela Azul `★`, Chave Dourada `🗝`) e seta indicadora de paginação (`▼`).
+    - **HUD Dinâmico em Tempo Real:**
+      - Renderização contínua das estatísticas vitais do herói: Pontos de Vida (`♥ xxx/xxx`), Mana (`★ xxx/xxx`), Nível (`LV:xx`) e contagem dinâmica de chaves (`🗝:x`).
+      - Algoritmo ultrarrápido de conversão decimal sem operações de divisão por hardware (`__divuint`/`__moduint`), utilizando loops de subtração de alta performance para Z80.
+      - Disparo de atualização imediata do HUD sempre que a Máquina Virtual executa `VM_OP_GIVE_ITEM`, `VM_OP_TAKE_ITEM`, `VM_OP_HEAL` ou `VM_OP_DAMAGE`.
+    - **Caixa de Diálogos com Word-Wrapping & Paginação:**
+      - Janela textual com moldura de alta definição em ciano sobre fundo preto (colunas 1 a 30, linhas 19 a 23).
+      - Algoritmo de quebra automática de palavras (*word-wrapping*) limitando o texto a 30 caracteres por linha e 3 linhas úteis por página.
+      - Paginação automática para mensagens que excedem 3 linhas, exibindo prompt com seta pulsante (`[ESPACO] ▼`) para avanço e fechamento com debounce seguro.
+      - Pausa total da movimentação do herói e IAs de entidades durante a exibição de caixas de diálogo.
+    - **Painel de Repouso ("Standby Panel"):**
+      - Exibição de contexto automático após o término de diálogos, apresentando o título do reino ("Z-REALM: CATACUMBAS") e instruções de ação ("`[ESPACO] INTERAGIR / ACAO`").
+  - **Aprimoramentos de Toolchain & Compilador:**
+    - Correção do pipeline de compilação em `MSXgl/engine/script/js/compiler.js`: sanitização de paths com remoção de trailing slashes nos parâmetros `-I` do `sdasz80.exe` e remoção automática de diretivas espúrias `!extern` geradas pelo SDCC 4.6.0 em modo `c1mode` que causavam estouro de pilha (`0xC00000FD`).
+  - **Validação Automatizada em Malha Fechada no openMSX (`sub44_test.tcl`):**
+    - Execução do script emulado no modelo `Panasonic_FS-A1GT` capturando 9 screenshots sequenciais:
+      1. `sub44_01_spawn_hud.png`: Spawn inicial com HUD ativo (`♥ 075/100`, `★ 030/030`, `LV:01`, `🗝:0`) e painel de repouso.
+      2. `sub44_02_facing_guardian.png`: Aproximação ao Guardião no grid em (13, 9).
+      3. `sub44_03_guardian_dialogue.png`: Abertura da caixa de diálogo do Guardião com moldura ciano e texto quebrado; atualização imediata do contador de chaves no HUD (`🗝:1`).
+      4. `sub44_04_dialogue_closed.png`: Fechamento do diálogo e restauração do painel de repouso.
+      5. `sub44_05_guardian_branch_dialogue.png`: Reinteração com o Guardião disparando diálogo ramificado por Flag 1.
+      6. `sub44_06_facing_chest.png`: Posicionamento em (8, 5) em frente ao Baú.
+      7. `sub44_07_chest_heal_hud.png`: Abertura do baú com diálogo descritivo e cura em tempo real de +25 HP no HUD (`♥ 100/100`).
+      8. `sub44_08_chest_empty_dialogue.png`: Reinspeção do baú confirmando diálogo de baú vazio.
+      9. `sub44_09_dos_exit.png`: Saída limpa ao MSX-DOS 2 via tecla ESC sem resíduos de vídeo ou memória.
+
 ## [0.4.3] - 2026-10-03
 
 ### Adicionado (Added)

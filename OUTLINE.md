@@ -10,8 +10,8 @@ Este documento serve como mapa de bordo vivo do projeto, refletindo o roadmap es
 | :--- | :--- | :---: | :--- |
 | **Fase 1** | **Estruturação de Dados & Abstrações do Editor (Go + SQLite)** | 🟢 **100% Concluída** | Banco `.rpgproj`, Modelos de Hardware, Repositórios & Exporter |
 | **Fase 2** | **Prototipagem de Baixo Nível no MSX (C + MSXgl + SDCC)** | 🟢 **100% Concluída** | MSX-DOS 2, Paging Mapper (Page 2), SCREEN 4 e Binary Loader de Disco |
-| **Fase 3** | **Desenvolvimento da GUI Desktop com Fyne (O Editor Visual)** | ⚪ *Planejado* | Editores de Tilesets, Sprites, Salas 32x18, Roteiros e Regras |
-| **Fase 4** | **Gameplay Engine & Máquina de Eventos (MSX)** | ⚪ *Planejado* | Controle no Grid, VM de Eventos, HUD e Caixas de Diálogo |
+| **Fase 3** | **Desenvolvimento da GUI Desktop com Fyne (O Editor Visual)** | 🟢 **100% Concluída** | Editores de Tilesets, Sprites, Salas 32x18, Roteiros e Regras |
+| **Fase 4** | **Gameplay Engine & Máquina de Eventos (MSX)** | 🟢 **100% Concluída** | Controle no Grid, VM de Eventos, HUD e Caixas de Diálogo |
 | **Fase 5** | **Pipeline Integrado de Build & Jogo de Referência** | ⚪ *Planejado* | "One-Click Run", Teste em openMSX e Jogo Demonstrador |
 
 ---
@@ -124,8 +124,14 @@ Este documento serve como mapa de bordo vivo do projeto, refletindo o roadmap es
   - [x] Buffer seguro de execução na RAM da Página 1 (`s_VMScriptBuffer[256]`) imune a chaveamentos de segmento e teleportes.
   - [x] Gerenciamento de estado global: 256 flags de evento, inventário de 16 slots com controle de quantidade e estatísticas de RPG do herói.
   - [x] Validação automatizada em malha fechada no openMSX com 8 screenshots comprovando quest do Guardião, obtenção de itens, desvios condicionais de flags (diálogo alternativo), abertura e esvaziamento do baú com cura (+25 HP) e retorno limpo ao MSX-DOS 2.
-- [ ] **Subfase 4.4 — Caixa de Diálogos & HUD:**
-  - [ ] Renderizador de texto nas linhas 20-23 e mostrador de HP/MP nas linhas 18-19.
+- [x] **Subfase 4.4 — Caixa de Diálogos & HUD:**
+  - [x] Definição de layout no Banco 2 da SCREEN 4 (V9938): linhas 18-19 reservadas ao HUD e linhas 20-23 reservadas à Caixa de Diálogos e painel de repouso.
+  - [x] Carregador de fonte ASCII 8x8 (Texas Instruments TMS9900) e glifos de UI (coração, estrela, chave, cantoneiras e molduras) no Banco 2 da VRAM (`0x1400..0x17FF`) com tabela de cores dedicada (`0x3400..0x37FF`).
+  - [x] Renderizador de HUD em tempo real com estatísticas vitais do herói: HP (`♥ xxx/xxx`), MP (`★ xxx/xxx`), Nível (`LV:xx`) e contagem de chaves (`🗝:x`) com rotina de formatação decimal ultrarrápida por subtrações sucessivas sem divisão Z80.
+  - [x] Sistema de Diálogos avançado com moldura retangular (`┌─┐│└─┘`), quebra automática de linha (word-wrapping inteligente de até 30 caracteres por linha em 3 linhas por página), indicador de prompt (`[ESPACO] ▼`) e paginação suave para textos longos.
+  - [x] Pausa automática de movimentação do herói e comportamentos de entidades durante a exibição de diálogos, com controle de debounce de entrada do teclado e joystick.
+  - [x] Painel de repouso ("Standby Panel") exibindo título da área e dica de contexto ao fechar caixas de diálogo.
+  - [x] **Conclusão da Fase 4 (Gameplay Engine & Máquina de Eventos no MSX):** 100% das subfases de gameplay (Física/Grid, Entidades/IAs, VM de Eventos e UI/HUD) plenamente operacionais e integradas.
 
 ---
 

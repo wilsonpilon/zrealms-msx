@@ -98,7 +98,16 @@ module.exports.compile = function (file, size, seg)
 				let c1Err = util.execSync(c1Cmd);
 				if(!c1Err)
 				{
-					let asmErr = util.execSync(`"${winAssembler}" -o -l -s -I${ProjDir} -I${OutDir} -I${LibDir}src "${winAsm}"`);
+					// Remove broken !extern lines emitted by SDCC c1mode that crash sdasz80
+					let asmContent = fs.readFileSync(asmFile, 'utf8');
+					let cleanedAsm = asmContent.replace(/^[ \t]*!extern[^\r\n]*[\r\n]+/gm, '');
+					fs.writeFileSync(asmFile, cleanedAsm, 'utf8');
+
+					let cleanProjDir = ProjDir.replace(/[\\\/]+$/, '').replace(/\//g, '\\');
+					let cleanOutDir  = OutDir.replace(/[\\\/]+$/, '').replace(/\//g, '\\');
+					let cleanLibSrc  = `${LibDir}src`.replace(/[\\\/]+$/, '').replace(/\//g, '\\');
+
+					let asmErr = util.execSync(`"${winAssembler}" -o -l -s -I"${cleanProjDir}" -I"${cleanOutDir}" -I"${cleanLibSrc}" "${winAsm}"`);
 					if(!asmErr)
 					{
 						err = 0;

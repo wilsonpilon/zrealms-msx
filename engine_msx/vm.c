@@ -4,6 +4,7 @@
 //─────────────────────────────────────────────────────────────────────────────
 #include "vm.h"
 #include "dos.h"
+#include "ui.h"
 
 u8              g_VMFlags[VM_MAX_FLAGS];
 VMInventorySlot g_VMInventory[VM_MAX_INVENTORY];
@@ -200,6 +201,7 @@ bool VM_ExecuteBytecode(const u8* bytecode, u16 length)
 				g_VMActiveStringID = strID;
 				LOADER_CopyString(strID, g_VMActiveMessage, VM_MAX_MSG_LEN);
 				g_VMHasMessage = TRUE;
+				UI_ShowDialogue(g_VMActiveMessage);
 				pc += 3;
 				break;
 			}
@@ -210,6 +212,7 @@ bool VM_ExecuteBytecode(const u8* bytecode, u16 length)
 				if (pc + 2 >= length) return FALSE;
 				itemID = (u16)bytecode[pc + 1] | ((u16)bytecode[pc + 2] << 8);
 				VM_GiveItem(itemID, 1);
+				UI_UpdateHUD();
 				pc += 3;
 				break;
 			}
@@ -220,6 +223,7 @@ bool VM_ExecuteBytecode(const u8* bytecode, u16 length)
 				if (pc + 2 >= length) return FALSE;
 				itemID = (u16)bytecode[pc + 1] | ((u16)bytecode[pc + 2] << 8);
 				VM_TakeItem(itemID, 1);
+				UI_UpdateHUD();
 				pc += 3;
 				break;
 			}
@@ -282,6 +286,7 @@ bool VM_ExecuteBytecode(const u8* bytecode, u16 length)
 				{
 					g_HeroStats.HP = g_HeroStats.MaxHP;
 				}
+				UI_UpdateHUD();
 				pc += 2;
 				break;
 			}
@@ -299,6 +304,7 @@ bool VM_ExecuteBytecode(const u8* bytecode, u16 length)
 				{
 					g_HeroStats.HP -= hp;
 				}
+				UI_UpdateHUD();
 				pc += 2;
 				break;
 			}

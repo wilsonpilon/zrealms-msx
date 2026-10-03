@@ -3,6 +3,7 @@
 //─────────────────────────────────────────────────────────────────────────────
 #include "hero.h"
 #include "entity.h"
+#include "ui.h"
 
 Hero g_Hero;
 
@@ -68,6 +69,12 @@ void HERO_Update(void)
 	bool moveUp, moveDown, moveLeft, moveRight;
 	i8 dx = 0;
 	i8 dy = 0;
+
+	// Se a caixa de diálogo estiver aberta, pausa a movimentação e ações do herói
+	if (UI_IsDialogueActive())
+	{
+		return;
+	}
 
 	g_Hero.Moved = FALSE;
 
