@@ -26,9 +26,10 @@ typedef struct
 	u8            TileY;        // Coordenada no Grid (0..17)
 	u8            PixelX;       // Coordenada física horizontal na tela (0..248)
 	u8            PixelY;       // Coordenada física vertical na tela (0..136)
-	HeroDirection Direction;    // Direção atual
-	u8            StepCooldown; // Temporizador em frames para repetição de passos
-	bool          Moved;        // Flag indicando movimentação recente
+	HeroDirection Direction;      // Direção atual
+	u8            StepCooldown;   // Temporizador em frames para repetição de passos
+	u8            ActionCooldown; // Temporizador em frames para tecla de ação (Espaço / Trigger)
+	bool          Moved;          // Flag indicando movimentação recente
 } Hero;
 
 extern Hero g_Hero;

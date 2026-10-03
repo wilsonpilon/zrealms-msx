@@ -187,3 +187,37 @@ func TestFullExportPipeline(t *testing.T) {
 		t.Errorf("tamanho de SEG00.BNK esperado %d, obtido %d", SegmentSize, len(seg0Data))
 	}
 }
+
+func TestExportDemoForMSX(t *testing.T) {
+	tempDir, err := os.MkdirTemp("", "zrealm_demo_export_*")
+	if err != nil {
+		t.Fatalf("erro ao criar tempdir: %v", err)
+	}
+	defer os.RemoveAll(tempDir)
+
+	demoPath := filepath.Join(tempDir, "demo.rpgproj")
+	demoProj, err := project.CreateDemoProject(demoPath)
+	if err != nil {
+		t.Fatalf("falha ao criar projeto demo: %v", err)
+	}
+	defer demoProj.Close()
+
+	// Exporta para engine_msx/emul/dos2
+	engineDir := filepath.Join("..", "..", "engine_msx", "emul", "dos2")
+	_ = os.MkdirAll(engineDir, 0755)
+
+	res, err := Export(demoProj, ExportOptions{
+		OutputDir:       engineDir,
+		ExportBankFiles: false,
+	})
+	if err != nil {
+		t.Fatalf("falha ao exportar demo para engine_msx: %v", err)
+	}
+
+	if res.ResourceCount < 6 {
+		t.Errorf("esperado pelo menos 6 recursos no demo (1 tileset, 2 salas, 3 sprites), obtido %d", res.ResourceCount)
+	}
+
+	t.Logf("Demo exportado com sucesso para %s: %d recursos, %d segmentos", engineDir, res.ResourceCount, res.TotalSegments)
+}
+

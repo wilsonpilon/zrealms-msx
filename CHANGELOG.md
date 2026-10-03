@@ -7,6 +7,45 @@ O formato baseia-se em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0
 * **Y (Minor / Feature):** Incrementado a cada nova feature concluída e integrada ao projeto.
 * **X (Major):** Incrementado a cada transição estrutural ou conclusão de uma grande fase (ex.: finalização da Camada de Dados, conclusão do Editor Gráfico, etc.).
 
+## [0.4.2] - 2026-10-03
+
+### Adicionado (Added)
+- **Subfase 4.2: Sistema de Entidades, Atores e IAs da Sala (MSX 2 Gameplay Engine):**
+  - **Módulo de Entidades da Sala (`entity.h`, `entity.c`):**
+    - Gerenciador com capacidade de até 8 instâncias ativas simultâneas (`MAX_ACTIVE_ENTITIES = 8`).
+    - Atribuição dinâmica de hardware no VDP V9938: slots de sprites 1 a 8 em Modo 2 (16x16 pixels com cor por scanline), mantendo slot 0 exclusivo para o Herói.
+    - Ciclo de vida integrado: rotina `ENTITY_LoadRoomEntities` que limpa entidades da sala anterior e carrega dinamicamente novas entidades a partir de `BinaryRoom.Entities` via Memory Mapper (Página 2: `0x8000-0xBFFF`).
+    - Finalização graciosa com `ENTITY_Cleanup()`, ocultando os 8 sprites de hardware do VDP.
+  - **Inteligências Artificiais e Comportamentos (Behavior Types):**
+    - `BEHAVIOR_STATIC_NPC`: NPCs estacionários com colisão sólida e resposta a interação por proximidade.
+    - `BEHAVIOR_WANDERING_NPC`: NPCs errantes com passos autônomos no grid, acionados por PRNG Z80 leve, verificação de limites do mapa, passabilidade de tiles (`COLLISION_PASSABLE`), colisão contra o herói e contra outras entidades ativas.
+    - `BEHAVIOR_PATROL_NPC`: NPCs patrulheiros em rota contínua de vaivém com reversão ao encontrar obstáculos ou entidades.
+    - `BEHAVIOR_CHEST`: Baú de tesouro com colisão sólida intransponível e alternância de estado (aberto/fechado) ao interagir.
+    - `BEHAVIOR_DOOR`: Porta ou passagem com bloqueio físico transitável conforme estado.
+    - `BEHAVIOR_TRIGGER`: Gatilhos invisíveis de piso acionados instantaneamente ao pisar (`ENTITY_CheckStepTrigger`).
+  - **Colisão Física de Entidades no Grid:**
+    - Verificação de colisão `ENTITY_IsSolidAt` integrada a `HERO_Update()`: o herói não atravessa NPCs ou baús.
+    - Entidades ativas em movimento verificam colisão mútua e colisão contra a posição do herói.
+  - **Interação por Tecla de Ação (Barra de Espaço / Gatilho do Joystick):**
+    - Suporte unificado à Barra de Espaço (`KEY_SPACE`) no teclado e Botão 1 (`JOY_INPUT_TRIGGER_A`) no Joystick da Porta 1.
+    - Temporizador suave de debounce (`ActionCooldown = 15 frames`, ~0.25s).
+    - Cálculo direcional de abordagem à frente do herói com fallback contextual sob os pés para acionar `ENTITY_InteractAt()`.
+  - **Assets e Projeto Demonstrador (`demo.go`):**
+    - Adicionado Sprite 2 ("Guardião") com armadura ciano, elmo dourado e lança.
+    - Adicionado Sprite 3 ("Baú de Tesouro") com ferragens douradas e corpo castanho.
+    - Sala 1: Guardião em `(12, 9)` e Baú em `(8, 4)`.
+    - Sala 2: Sentinela Errante em `(6, 6)` e Baú Místico em `(21, 9)`.
+  - **Validação Automatizada no openMSX (`sub42_test.tcl`):**
+    - Sequência automatizada com 6 screenshots gravados em disco:
+      1. `sub42_01_spawn_entities.png`: Spawn na Sala 1 com Herói, Guardião e Baú renderizados simultaneamente.
+      2. `sub42_02_collision_guardian.png`: Herói caminhando a Oeste e colisão física sólida bloqueando avanço em `(13, 9)`.
+      3. `sub42_03_interact_guardian.png`: Acionamento da tecla ESPACO e interação contextual com o Guardião.
+      4. `sub42_04_room2_entities.png`: Travessia para a Sala 2 via Memory Mapper com limpeza dos sprites da Sala 1 e spawn das entidades da Sala 2.
+      5. `sub42_05_wandering_npc.png`: Sentinela Errante movendo-se autonomamente pelo grid SCREEN 4.
+      6. `sub42_06_dos_clean_exit.png`: Retorno limpo ao MSX-DOS 2 via ESC, desativação de sprites e 100% da RAM liberada.
+
+---
+
 ## [0.4.1] - 2026-10-03
 
 ### Adicionado (Added)

@@ -414,7 +414,7 @@ O projeto será construído de forma iterativa, validando cada camada antes de a
 ---
 
 ## 7. Próximos Passos Imediatos
-Com a **Fase 1 (Estruturação de Dados & Abstrações do Editor)**, a **Fase 2 (Prototipagem de Baixo Nível no MSX)**, a **Fase 3 (Editor Visual Desktop em Go + Fyne)** e a **Subfase 4.1 (Movimentação do Herói & Colisão no Grid)** 100% concluídas e comprovadas visualmente no openMSX, a sequência de trabalho avança para a **Subfase 4.2: Sistema de Entidades e Atores da Sala**:
-1. **Subfase 4.2 — Sistema de Entidades e Atores:** Implementar buffer e gerenciador de até 8 entidades ativas por sala, atribuição de sprites V9938 do banco, comportamentos e IAs de patrulha e interação por tecla de ação (espaço / trigger joystick).
-2. **Subfase 4.3 — Máquina Virtual de Eventos (Bytecode VM):** Interpretador Z80 para os 10 opcodes compactos gerados pelo editor.
-3. **Subfase 4.4 — Caixa de Diálogos & HUD:** Renderização de texto e mostrador de HP/MP no viewport inferior da SCREEN 4.
+Com a **Fase 1 (Estruturação de Dados & Abstrações do Editor)**, a **Fase 2 (Prototipagem de Baixo Nível no MSX)**, a **Fase 3 (Editor Visual Desktop em Go + Fyne)**, a **Subfase 4.1 (Movimentação do Herói & Colisão no Grid)** e a **Subfase 4.2 (Sistema de Entidades, Atores e IAs da Sala)** 100% concluídas e comprovadas visualmente no openMSX, a sequência de trabalho avança para a **Subfase 4.3: Máquina Virtual de Eventos (Bytecode VM)**:
+1. **Subfase 4.3 — Máquina Virtual de Eventos (Bytecode VM):** Interpretador Z80 residente na Página 1 para os 10 opcodes compactos gerados pelo editor (`OP_MSG`, `OP_GIVE_ITEM`, `OP_TAKE_ITEM`, `OP_SET_FLAG`, `OP_CHECK_FLAG`, `OP_TELEPORT`, `OP_HEAL`, `OP_DAMAGE`, `OP_PLAY_SFX`, `OP_END`), com pilha de execução e flags globais de jogo.
+2. **Subfase 4.4 — Caixa de Diálogos & HUD:** Renderização de texto e mostrador de HP/MP no viewport inferior da SCREEN 4 (linhas 18 a 23).
+3. **Fase 5 — Pipeline Integrado de Build & Jogo de Referência:** Automação "One-Click Run" e MASMORRA DEMO com 20 salas.

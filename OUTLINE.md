@@ -112,8 +112,13 @@ Este documento serve como mapa de bordo vivo do projeto, refletindo o roadmap es
   - [x] Renderização de Sprites Modo 2 (16x16 pixels) com `VDP_LoadSprite`, `VDP_SetSpritePos` e ocultação limpa com `VDP_Screen4_HideSprite`.
   - [x] Saída limpa ao MSX-DOS 2 via tecla `ESC` restaurando modo texto BIOS (`R_INITXT`), desativando sprites e liberando todos os segmentos de RAM com `MAPPER_Cleanup()`.
   - [x] Validação automatizada em emulador openMSX comprovando com 5 screenshots sequenciais: spawn na Sala 1, caminhada a Leste, travessia do portal e carregamento da Sala 2 ("Câmara dos Pilares"), retorno pelo portal Oeste e encerramento limpo ao DOS 2.
-- [ ] **Subfase 4.2 — Sistema de Entidades e Atores:**
-  - [ ] Até 8 entidades ativas na sala, IAs simples e interação por tecla de ação.
+- [x] **Subfase 4.2 — Sistema de Entidades e Atores da Sala:**
+  - [x] Gerenciador dinâmico de entidades com até 8 instâncias ativas na sala (`entity.h`, `entity.c`).
+  - [x] Alocação automática de Sprites Modo 2 (16x16) nos slots 1 a 8 do VDP V9938 com ciclo de vida, carregamento e ocultação limpa.
+  - [x] Inteligências Artificiais e comportamentos: NPCs estáticos, NPCs errantes com PRNG Z80 e checagem de colisão mútua, baús sólidos e gatilhos de piso.
+  - [x] Interação contextual por tecla de ação unificada (Barra de Espaço no teclado e Gatilho A no Joystick) com debounce e verificação direcional.
+  - [x] Sistema de colisão física de entidades integrado ao herói impedindo travessia de NPCs e baús.
+  - [x] Validação automatizada no openMSX com 6 screenshots sequenciais comprovando spawn de entidades, colisão sólida contra o Guardião, interação via ESPAÇO, transição para Sala 2, IA do NPC errante e encerramento limpo no MSX-DOS 2.
 - [ ] **Subfase 4.3 — Máquina Virtual de Eventos (Bytecode VM):**
   - [ ] Interpretador de instruções compactas (`OP_MSG`, `OP_GIVE_ITEM`, `OP_CHECK_FLAG`, etc.).
 - [ ] **Subfase 4.4 — Caixa de Diálogos & HUD:**

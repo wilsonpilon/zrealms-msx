@@ -185,16 +185,123 @@ func CreateDemoProject(filePath string) (*Project, error) {
 		return nil, err
 	}
 
-	// 5. Adiciona Diálogo Inicial
+	// 5. Cria Sprite 2: Guardião / Sentinela
+	sprGuardian := models.NewSprite("Guardiao")
+	// Cores Modo 2: topo dourado/amarelo (10), armadura ciano (7), cinto azul (4), botas cinza (14)
+	for i := 0; i <= 3; i++ {
+		sprGuardian.ColorBytes[i] = 0x0A
+	}
+	for i := 4; i <= 7; i++ {
+		sprGuardian.ColorBytes[i] = 0x07
+	}
+	for i := 8; i <= 11; i++ {
+		sprGuardian.ColorBytes[i] = 0x04
+	}
+	for i := 12; i <= 15; i++ {
+		sprGuardian.ColorBytes[i] = 0x0E
+	}
+	// Padrão do Guardião com elmo, armadura e lança
+	_ = sprGuardian.SetPixel(7, 1, true); _ = sprGuardian.SetPixel(8, 1, true)
+	_ = sprGuardian.SetPixel(6, 2, true); _ = sprGuardian.SetPixel(7, 2, true); _ = sprGuardian.SetPixel(8, 2, true); _ = sprGuardian.SetPixel(9, 2, true)
+	_ = sprGuardian.SetPixel(6, 3, true); _ = sprGuardian.SetPixel(7, 3, true); _ = sprGuardian.SetPixel(8, 3, true); _ = sprGuardian.SetPixel(9, 3, true)
+	for x := 4; x <= 11; x++ { _ = sprGuardian.SetPixel(x, 4, true) }
+	_ = sprGuardian.SetPixel(3, 5, true); _ = sprGuardian.SetPixel(6, 5, true); _ = sprGuardian.SetPixel(7, 5, true); _ = sprGuardian.SetPixel(8, 5, true); _ = sprGuardian.SetPixel(9, 5, true); _ = sprGuardian.SetPixel(12, 5, true)
+	_ = sprGuardian.SetPixel(3, 6, true); _ = sprGuardian.SetPixel(5, 6, true); _ = sprGuardian.SetPixel(6, 6, true); _ = sprGuardian.SetPixel(7, 6, true); _ = sprGuardian.SetPixel(8, 6, true); _ = sprGuardian.SetPixel(9, 6, true); _ = sprGuardian.SetPixel(10, 6, true); _ = sprGuardian.SetPixel(12, 6, true)
+	_ = sprGuardian.SetPixel(3, 7, true); _ = sprGuardian.SetPixel(6, 7, true); _ = sprGuardian.SetPixel(7, 7, true); _ = sprGuardian.SetPixel(8, 7, true); _ = sprGuardian.SetPixel(9, 7, true); _ = sprGuardian.SetPixel(12, 7, true)
+	for x := 5; x <= 10; x++ { _ = sprGuardian.SetPixel(x, 8, true) }; _ = sprGuardian.SetPixel(3, 8, true); _ = sprGuardian.SetPixel(12, 8, true)
+	_ = sprGuardian.SetPixel(3, 9, true); _ = sprGuardian.SetPixel(6, 9, true); _ = sprGuardian.SetPixel(9, 9, true); _ = sprGuardian.SetPixel(12, 9, true)
+	_ = sprGuardian.SetPixel(3, 10, true); _ = sprGuardian.SetPixel(6, 10, true); _ = sprGuardian.SetPixel(9, 10, true); _ = sprGuardian.SetPixel(12, 10, true)
+	_ = sprGuardian.SetPixel(3, 11, true); _ = sprGuardian.SetPixel(5, 11, true); _ = sprGuardian.SetPixel(6, 11, true); _ = sprGuardian.SetPixel(9, 11, true); _ = sprGuardian.SetPixel(10, 11, true); _ = sprGuardian.SetPixel(12, 11, true)
+	if err := st.Sprites.CreateSprite(ctx, sprGuardian); err != nil {
+		return nil, err
+	}
+
+	// 6. Cria Sprite 3: Baú de Tesouro
+	sprChest := models.NewSprite("Bau")
+	// Cores Modo 2: ferragens douradas/amarelas (10) e corpo castanho/madeira (6)
+	for i := 0; i <= 7; i++ {
+		sprChest.ColorBytes[i] = 0x0A
+	}
+	for i := 8; i <= 15; i++ {
+		sprChest.ColorBytes[i] = 0x06
+	}
+	// Padrão do baú com tampa arredondada e fechadura
+	for x := 4; x <= 11; x++ { _ = sprChest.SetPixel(x, 5, true) }
+	for x := 3; x <= 12; x++ { _ = sprChest.SetPixel(x, 6, true) }
+	for x := 3; x <= 12; x++ { _ = sprChest.SetPixel(x, 7, true) }
+	for x := 3; x <= 12; x++ { _ = sprChest.SetPixel(x, 8, true) }
+	for x := 3; x <= 12; x++ { _ = sprChest.SetPixel(x, 9, true) }
+	for x := 3; x <= 12; x++ { _ = sprChest.SetPixel(x, 10, true) }
+	for x := 3; x <= 12; x++ { _ = sprChest.SetPixel(x, 11, true) }
+	_ = sprChest.SetPixel(3, 12, true); _ = sprChest.SetPixel(4, 12, true); _ = sprChest.SetPixel(11, 12, true); _ = sprChest.SetPixel(12, 12, true)
+	if err := st.Sprites.CreateSprite(ctx, sprChest); err != nil {
+		return nil, err
+	}
+
+	// 7. Entidades da Sala 1: Entrada das Catacumbas
+	// - Guardião em (12, 9): NPC Estático
+	guardianEnt1 := &models.Entity{
+		RoomID:       r1.ID,
+		Name:         "Guardiao",
+		PosX:         12,
+		PosY:         9,
+		SpriteID:     &sprGuardian.ID,
+		BehaviorType: models.BehaviorStaticNPC,
+	}
+	if err := st.Rooms.CreateEntity(ctx, guardianEnt1); err != nil {
+		return nil, err
+	}
+
+	// - Baú de Ferro em (8, 4): Baú de Tesouro
+	chestEnt1 := &models.Entity{
+		RoomID:       r1.ID,
+		Name:         "Bau de Ferro",
+		PosX:         8,
+		PosY:         4,
+		SpriteID:     &sprChest.ID,
+		BehaviorType: models.BehaviorChest,
+	}
+	if err := st.Rooms.CreateEntity(ctx, chestEnt1); err != nil {
+		return nil, err
+	}
+
+	// 8. Entidades da Sala 2: Câmara dos Pilares
+	// - Sentinela em (6, 6): NPC Errante
+	sentinelEnt2 := &models.Entity{
+		RoomID:       r2.ID,
+		Name:         "Sentinela",
+		PosX:         6,
+		PosY:         6,
+		SpriteID:     &sprGuardian.ID,
+		BehaviorType: models.BehaviorWanderingNPC,
+	}
+	if err := st.Rooms.CreateEntity(ctx, sentinelEnt2); err != nil {
+		return nil, err
+	}
+
+	// - Baú Místico em (21, 9): Baú de Tesouro
+	chestEnt2 := &models.Entity{
+		RoomID:       r2.ID,
+		Name:         "Bau Mistico",
+		PosX:         21,
+		PosY:         9,
+		SpriteID:     &sprChest.ID,
+		BehaviorType: models.BehaviorChest,
+	}
+	if err := st.Rooms.CreateEntity(ctx, chestEnt2); err != nil {
+		return nil, err
+	}
+
+	// 9. Adiciona Diálogo Inicial
 	msgWelcome := &models.StringEntry{
 		ContextTag:  "MSG_WELCOME",
-		TextContent: "Bem-vindo as Catacumbas de Cristal! Pressione [ESPACO] para avancar.",
+		TextContent: "Bem-vindo as Catacumbas de Cristal! Pressione [ESPACO] para interagir.",
 	}
 	if err := st.GameData.CreateString(ctx, msgWelcome); err != nil {
 		return nil, err
 	}
 
-	// 6. Atualiza configurações do projeto
+	// 10. Atualiza configurações do projeto
 	_ = proj.SetSetting("initial_room_id", fmt.Sprintf("%d", r1.ID))
 	_ = proj.SetSetting("initial_hero_x", "16")
 	_ = proj.SetSetting("initial_hero_y", "9")

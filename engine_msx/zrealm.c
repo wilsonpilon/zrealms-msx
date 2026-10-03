@@ -14,6 +14,7 @@
 #include "loader.h"
 #include "world.h"
 #include "hero.h"
+#include "entity.h"
 
 #define Halt() __asm__("halt")
 
@@ -48,8 +49,9 @@ void main(void)
 	PrintHex((u8)header->InitialRoomID);
 	DOS_StringOutput("\r\n$");
 
-	// 2. Inicializa o subsistema de mundo e gerência de salas
+	// 2. Inicializa o subsistema de mundo e de entidades
 	WORLD_Init();
+	ENTITY_Init();
 
 	// 3. Inicializa o processador de vídeo V9938 em SCREEN 4 (Graphic 3)
 	VDP_InitScreen4();
@@ -75,8 +77,11 @@ void main(void)
 		// Aguarda o próximo ciclo de interrupção vertical (V-Blank)
 		Halt();
 
-		// Atualiza entrada de controles, física de colisão e movimentação no grid
+		// Atualiza herói (controles, física, colisão e ação)
 		HERO_Update();
+
+		// Atualiza ciclo de vida e IAs de todas as entidades ativas
+		ENTITY_Update();
 
 		// Tecla ESC para encerrar a partida e retornar ao sistema operacional
 		if (Keyboard_IsKeyPressed(KEY_ESC))
@@ -86,8 +91,9 @@ void main(void)
 	}
 
 cleanup:
-	// Oculta o sprite do herói antes de restaurar o modo texto
+	// Oculta o sprite do herói e todas as entidades ativas
 	VDP_Screen4_HideSprite(0);
+	ENTITY_Cleanup();
 
 	// Restaura o modo de texto SCREEN 0 padrão do MSX-DOS 2 via BIOS
 	DOS_InterSlotCall(g_EXPTBL[0], R_INITXT);

@@ -2,6 +2,7 @@
 // Z-Realm (zrealm-msx) - Controlador e Entidade do Herói (MSX 2)
 //─────────────────────────────────────────────────────────────────────────────
 #include "hero.h"
+#include "entity.h"
 
 Hero g_Hero;
 
@@ -28,6 +29,7 @@ void HERO_Init(u8 startTileX, u8 startTileY, u8 spriteResourceID)
 	g_Hero.PixelY = startTileY * 8;
 	g_Hero.Direction = HERO_DIR_DOWN;
 	g_Hero.StepCooldown = 0;
+	g_Hero.ActionCooldown = 0;
 	g_Hero.Moved = FALSE;
 
 	// Carrega o sprite do herói no slot 0 do VDP
@@ -75,6 +77,12 @@ void HERO_Update(void)
 		g_Hero.StepCooldown--;
 	}
 
+	// Cooldown do botão de ação (Espaço / Gatilho)
+	if (g_Hero.ActionCooldown > 0)
+	{
+		g_Hero.ActionCooldown--;
+	}
+
 	// 1. Leitura de Joystick (Porta 1) com sanitização de hardware desconectado
 	joy = Joystick_Read(JOY_PORT_1);
 	joyUp    = IS_JOY_PRESSED(joy, JOY_INPUT_DIR_UP);
@@ -88,7 +96,38 @@ void HERO_Update(void)
 		joyUp = joyDown = joyLeft = joyRight = FALSE;
 	}
 
-	// 2. Leitura de Teclado (Setas do MSX)
+	// 2. Leitura da tecla de ação (Espaço no Teclado ou Gatilho A no Joystick)
+	{
+		bool actKb = Keyboard_IsKeyPressed(KEY_SPACE);
+		bool actJoy = IS_JOY_PRESSED(joy, JOY_INPUT_TRIGGER_A);
+
+		if ((actKb || actJoy) && g_Hero.ActionCooldown == 0)
+		{
+			i8 fx = (i8)g_Hero.TileX;
+			i8 fy = (i8)g_Hero.TileY;
+
+			if (g_Hero.Direction == HERO_DIR_UP)         fy--;
+			else if (g_Hero.Direction == HERO_DIR_DOWN)  fy++;
+			else if (g_Hero.Direction == HERO_DIR_LEFT)  fx--;
+			else if (g_Hero.Direction == HERO_DIR_RIGHT) fx++;
+
+			g_Hero.ActionCooldown = 15; // ~0.25 segundo de cooldown
+
+			if (fx >= 0 && fx < VIEWPORT_WIDTH && fy >= 0 && fy < VIEWPORT_HEIGHT)
+			{
+				if (!ENTITY_InteractAt((u8)fx, (u8)fy))
+				{
+					ENTITY_InteractAt(g_Hero.TileX, g_Hero.TileY);
+				}
+			}
+			else
+			{
+				ENTITY_InteractAt(g_Hero.TileX, g_Hero.TileY);
+			}
+		}
+	}
+
+	// 3. Leitura de Teclado (Setas do MSX)
 	kbUp    = Keyboard_IsKeyPressed(KEY_UP);
 	kbDown  = Keyboard_IsKeyPressed(KEY_DOWN);
 	kbLeft  = Keyboard_IsKeyPressed(KEY_LEFT);
@@ -174,6 +213,13 @@ void HERO_Update(void)
 				return;
 			}
 
+			// Checa colisão contra entidades sólidas ativas (NPCs, baús, portas)
+			if (ENTITY_IsSolidAt((u8)targetX, (u8)targetY))
+			{
+				g_Hero.StepCooldown = HERO_STEP_COOLDOWN_FRAMES;
+				return;
+			}
+
 			// Terreno livre para travessia (Passável, Dano ou Gatilho)
 			g_Hero.TileX = (u8)targetX;
 			g_Hero.TileY = (u8)targetY;
@@ -182,6 +228,9 @@ void HERO_Update(void)
 			g_Hero.StepCooldown = HERO_STEP_COOLDOWN_FRAMES;
 			g_Hero.Moved = TRUE;
 			HERO_Draw();
+
+			// Checa se pisou em gatilho invisível (BEHAVIOR_TRIGGER)
+			ENTITY_CheckStepTrigger(g_Hero.TileX, g_Hero.TileY);
 		}
 	}
 }

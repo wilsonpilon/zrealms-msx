@@ -2,6 +2,7 @@
 // Z-Realm (zrealm-msx) - Gerenciador de Salas, Colisão e Mundo (MSX 2)
 //─────────────────────────────────────────────────────────────────────────────
 #include "world.h"
+#include "entity.h"
 
 WorldState g_World;
 
@@ -60,6 +61,9 @@ bool WORLD_LoadRoom(u16 roomID)
 
 	// 4. Desenha imediatamente os 576 tiles da sala no viewport do VDP
 	VDP_DrawRoomViewport(g_World.TileMatrix);
+
+	// 5. Carrega e posiciona até 8 entidades ativas da sala
+	ENTITY_LoadRoomEntities(g_World.Header.EntityCount, room->Entities);
 	return TRUE;
 }
 
