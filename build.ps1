@@ -37,6 +37,7 @@
 param (
     [switch]$BumpFeature,
     [switch]$BumpMajor,
+    [switch]$KeepVersion,
     [switch]$SkipTests
 )
 
@@ -67,7 +68,9 @@ if ($parts.Length -lt 3) {
 [int]$patch = [int]$parts[2]
 
 # 2. Incremento da versão X.Y.Z
-if ($BumpMajor) {
+if ($KeepVersion) {
+    Write-Host "[VERSION] Versão mantida pelo usuário: X=$major, Y=$minor, Z=$patch" -ForegroundColor Cyan
+} elseif ($BumpMajor) {
     $major++
     $minor = 0
     $patch = 0
@@ -131,6 +134,7 @@ try {
         throw "Falha ao compilar cmd/zrealm com código de saída $LASTEXITCODE"
     }
     Write-Host "[BUILD] Executável gerado com sucesso: $targetExe" -ForegroundColor Green
+    Copy-Item -Path $targetExe -Destination (Join-Path $rootDir "zrealm.exe") -Force
 } finally {
     Pop-Location
 }

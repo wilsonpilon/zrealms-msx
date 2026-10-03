@@ -1,99 +1,49 @@
 # RELEASE.md — Detalhamento do Release Oficial
 
-**Versão Atual:** 0.4.0  
-**Data:** 02 de Outubro de 2026  
-**Status do Release:** Phase 3 Complete (Editor Visual Desktop em Fyne 100% Concluído)  
+**Versão Atual:** 0.4.4  
+**Data:** 03 de Outubro de 2026  
+**Status do Release:** Phase 4 Complete (Gameplay Engine & Máquina de Eventos no MSX 100% Concluída)  
 **Alvo:** Windows (x64) para o Toolkit & GUI / MSX 2 & MSX-DOS 2 para a Engine  
 
 ---
 
 ## 1. Resumo Executivo do Release
 
-A **Fase 3 (Desenvolvimento da GUI Desktop com Fyne - O Editor Visual)** está **100% concluída**. Este release entrega a aplicação de desktop completa para criação de RPGs no MSX 2, integrando banco de dados relacional SQLite, renderização gráfica com fidelidade aos modos do VDP V9938, ferramentas de desenho em tempo real, gerador de conexões de mundo, gestor de entidades, catálogo de RPG e compilador de scripts da máquina virtual de eventos.
+A **Fase 4 (Gameplay Engine & Máquina de Eventos no MSX)** está **100% concluída**. Este release entrega a engine completa em C compilada com SDCC e MSXgl para **MSX-DOS 2** e chips gráficos **Yamaha V9938**, trazendo:
 
-O ecossistema agora oferece a experiência completa de criação:
-1. **Tilesets & Tiles 8x8:** Desenho pixel-a-pixel com 16 cores do MSX 2, atributos de colisão e transformações completas.
-2. **Sprites 16x16 (Modo 2):** Grid com quadrantes guias, scanlines de cores independentes, previews 1x e 4x e duplicação de frames para ciclos de animação.
-3. **Salas 32x18 (SCREEN 4):** Matriz de 576 bytes contíguos com carimbo contínuo, flood fill, borracha, conta-gotas, conexões cardeais automáticas por coordenadas e posicionamento de atores.
-4. **Regras, Classes e Itens:** Ficha de heróis (HP/MP/ATK/DEF), inventário e catálogo de equipamentos.
-5. **Roteiros & Scripts:** Compilador e desassemblador de scripts de eventos para a Bytecode VM do MSX Z80 e simulador de caixa de diálogo com proporção nativa 32x4 caracteres.
+1. **Movimentação no Grid & Física (Subfase 4.1):** Controle discreto de 8x8 pixels na viewport 32x18 tiles (SCREEN 4), colisão contra tiles sólidos e transição cardeal contínua entre salas usando paginação dinâmica no Memory Mapper (Página 2: `0x8000-0xBFFF`).
+2. **Sistema de Entidades & IAs da Sala (Subfase 4.2):** Spawning de até 8 entidades simultâneas em Sprites Modo 2 (16x16 pixels com atributos de cor por scanline), NPCs estáticos, NPCs errantes com PRNG Z80, baús sólidos e gatilhos de piso acionados por aproximação ou tecla de ação (`ESPAÇO` / Botão A).
+3. **Máquina Virtual de Eventos (Bytecode VM) (Subfase 4.3):** Interpretador de 11 opcodes canônicos (`OP_MSG`, `OP_GIVE_ITEM`, `OP_TAKE_ITEM`, `OP_SET_FLAG`, `OP_CHECK_FLAG`, `OP_TELEPORT`, `OP_HEAL`, `OP_DAMAGE`, etc.), inventário de 16 slots, 256 flags de evento globais e atributos do herói em buffer imune a chaveamentos de memória.
+4. **Caixa de Diálogos & HUD no V9938 (Subfase 4.4):** HUD fixo em tempo real nas linhas 18-19 (`♥ HP: 075/100`, `★ MP: 030/030`, `LV: 01`, `🗝: 0..9`), caixa de diálogo emoldurada nas linhas 20-23 com *word-wrapping* automático de 30 colunas por linha, paginação com prompt `[ESPACO] ▼`, debounce seguro e painel de repouso ("Standby").
 
 ---
 
-## 2. O que foi Criado (Novos Componentes)
+## 2. Componentes da Engine MSX 2 (C / MSXgl / SDCC)
 
-### 2.1. Shell da Aplicação & Navegação (Subfase 3.1)
-* **`theme.go`:** Tema retrô escuro `RetroDarkTheme` inspirado na paleta V9938 (fundos azuis/grafite escuros, destaques em ciano MSX e dourado, tipografia limpa).
-* **`state.go`:** Gerenciador `ProjectState` seguro para concorrência com callbacks reativos, dirty tracking e proteção contra perda de dados.
-* **`menu.go`:** Menu mestre da aplicação com verificação de integridade física (`PRAGMA quick_check`) e referencial (`PRAGMA foreign_key_check`) do SQLite.
-* **`statusbar.go`:** Barra de rodapé com telemetria em tempo real e estimativa de consumo de blocos de 16 KB no Memory Mapper MSX.
-
-### 2.2. Editor de Tiles 8x8 (Subfase 3.2)
-* **`tile_editor.go` & `tile_view.go`:**
-  * Grid pixel-a-pixel interativo com paleta V9938 de 16 cores.
-  * Seletores de cores individuais para Foreground e Background por linha de 8 pixels.
-  * Seletor de física/colisão (Passável, Sólido, Água, Dano, Gatilho).
-  * Transformações completas: Rotação 90°, Espelhamento H/V, Deslocamento direcional (Shift), Inversão, Limpar e Preencher.
-
-### 2.3. Editor de Sprites 16x16 Modo 2 (Subfase 3.3)
-* **`sprite_editor.go` & `sprite_view.go`:**
-  * Grid interativo de 16x16 pixels com divisores de quadrantes 8x8.
-  * Seletor de cor individual para cada uma das 16 scanlines do Modo 2 do V9938 com atalho "Aplicar em Todas".
-  * Pré-visualizações dinâmicas em escala real 1x (16x16) e ampliada 4x (64x64) com pixels nítidos.
-  * Recurso "Duplicar Quadro" para prototipagem ágil de ciclos de animação (Walk/Idle/Attack).
-
-### 2.4. Editor de Salas 32x18 SCREEN 4 (Subfase 3.4)
-* **`room_canvas.go` & `room_editor.go` & `room_view.go`:**
-  * Viewport interativo de 32x18 tiles (256x144 pixels) correspondente à geometria da viewport MSX SCREEN 4.
-  * Conjunto completo de ferramentas: Pincel/Carimbo, Balde de Tinta (`FloodFillRoom`), Borracha (Tile 0) e Conta-Gotas (`ToolEyedropper`).
-  * Utilitários rápidos: Limpeza total, Preenchimento total e Preenchimento automático de bordas (`FillBorderRoom`).
-  * Paleta de carimbo dinâmica com tiles do tileset ativo, preview do tile selecionado e seletor numérico direto (0..255).
-  * Painel de Conexões Cardeais (Norte, Sul, Leste, Oeste) com navegação rápida ("Ir para Sala") e algoritmo de "Auto-Conectar por Coordenadas" (`AutoConnectRooms`).
-  * Gestor de Entidades com marcadores visuais sobrepostos diretamente na matriz da sala.
-
-### 2.5. Editor de Regras, Tabelas de RPG e Roteiros (Subfase 3.5)
-* **`rules_view.go`:**
-  * Gestor de Classes de Heróis: cadastro, edição e exclusão de classes com parâmetros base de combate (HP, MP, Ataque, Defesa).
-  * Catálogo de Itens: gerenciamento de armas, armaduras, consumíveis, chaves e quests com modificadores de stat e preços.
-* **`script_compiler.go` & `script_view.go`:**
-  * Compilador de scripts (`CompileScript`) para a Bytecode VM do MSX Z80 com opcodes compactos (`OP_MSG`, `OP_GIVE_ITEM`, `OP_TAKE_ITEM`, `OP_SET_FLAG`, `OP_CHECK_FLAG`, `OP_TELEPORT`, `OP_HEAL`, `OP_DAMAGE`, `OP_PLAY_SFX`, `OP_END`).
-  * Resolução automática de labels e cálculo de offsets relativos de salto.
-  * Desassemblador (`DisassembleScript`) e exibição de bytecode hexadecimal formatado.
-  * Simulador de caixa de diálogo com proporção nativa MSX (32 colunas x 4 linhas) e quebra automática de texto (`wrapText`).
+* **`hero.h` & `hero.c`:** Controle do herói no grid 32x18, cooldown suave de passos, orientação direcional (Norte/Sul/Leste/Oeste) e integração de colisão física contra tiles e atores.
+* **`world.h` & `world.c`:** Gerenciador do mundo ativo e paginação transparente de salas via Memory Mapper do MSX-DOS 2 (`MAPPER_SetPage2`), com suporte a limites cardeais e transições dinâmicas.
+* **`entity.h` & `entity.c`:** Alocação de hardware para sprites 1 a 8 no V9938, rotinas de IA para NPCs errantes e interações contextuais com baús e NPCs.
+* **`vm.h` & `vm.c`:** Interpretador da Bytecode VM com buffer isolado na Página 1 (`s_VMScriptBuffer[256]`), tabela de 256 flags globais e inventário de 16 posições.
+* **`ui.h` & `ui.c`:** Gestão visual do Banco 2 da VRAM (linhas 16 a 23 da SCREEN 4), carga de fonte ASCII TMS9900 8x8 e glifos especiais de UI, renderizador de HUD em tempo real e caixa de diálogo emoldurada com paginação e word-wrapping.
+* **`mapper.h` & `mapper.c`:** Gerenciamento do Memory Mapper via `EXTBIOS` do DOS 2, com alocação dinâmica e liberação integral garantida.
+* **`vdp_screen4.h` & `vdp_screen4.c`:** Inicialização do modo Graphic 3 no V9938, bancos de padrões e cores, e viewport de 576 bytes contíguos.
 
 ---
 
-## 3. O que foi Testado & Resultados
+## 3. Validação Automatizada no Emulador openMSX
 
-### 3.1. Testes Unitários Go (100% de Aprovação)
-```text
-ok  	github.com/zrealm-msx/zrealm/pkg/exporter           2.61s
-ok  	github.com/zrealm-msx/zrealm/pkg/gui                4.62s
-ok  	github.com/zrealm-msx/zrealm/pkg/models             0.91s
-ok  	github.com/zrealm-msx/zrealm/pkg/project            4.83s
-ok  	github.com/zrealm-msx/zrealm/pkg/project/migrations 0.89s
-ok  	github.com/zrealm-msx/zrealm/pkg/storage            3.00s
-ok  	github.com/zrealm-msx/zrealm/pkg/version            0.82s
-```
+Todas as 4 subfases foram submetidas a testes de malha fechada via scripts de automação TCL no openMSX (`Panasonic_FS-A1GT`, `ram512k`, `msxdos2`), capturando screenshots sequenciais e inspecionando a memória RAM:
 
-* **Testes de GUI & Compilador (`pkg/gui`):**
-  - `TestRetroDarkTheme`: conformidade da paleta V9938.
-  - `TestProjectStateLifecycle` & `TestProjectStateDemo`: reatividade e integridade.
-  - `TestFloodFillRoom`, `TestFillBorderRoom`, `TestClearRoomMatrix`: algoritmos matriciais de sala 32x18.
-  - `TestAutoConnectRooms`: topologia de conexão automática em grade de salas.
-  - `TestRoomCanvasPainting`: ferramentas de pintura e marcadores visuais.
-  - `TestCompileScriptBasic`, `TestCompileScriptWithLabelsAndBranches`, `TestCompileScriptErrors`: montador de bytecode da VM.
-  - `TestDisassembleAndFormatHex`: desassemblagem e hex formatting.
-  - `TestWrapText`: quebra de texto na caixa de diálogo de 32 colunas.
-  - `TestSpriteCanvasPixelPainting`, `TestSpriteTransformations`: Modo 2 do V9938.
-  - `TestTileCanvasPixelPainting`, `TestPatternTransformations`: padrões 8x8 do V9938.
+* **Subfase 4.1 (`sub41_test.tcl`):** 5 capturas comprovando movimentação no grid, colisão física, transição entre Sala 1 e Sala 2 e encerramento limpo via `ESC`.
+* **Subfase 4.2 (`sub42_test.tcl`):** 6 capturas comprovando spawn de entidades, colisão contra o Guardião, interação com baú, IA errante e persistência.
+* **Subfase 4.3 (`sub43_test.tcl`):** 8 capturas comprovando quest do Guardião, obtenção de itens, branch condicional por Flag 1, cura ao abrir o baú (+25 HP) e detecção de baú esvaziado.
+* **Subfase 4.4 (`sub44_test.tcl`):** 9 capturas comprovando HUD em tempo real, abertura de caixa de diálogo com moldura ciano e word-wrapping, atualização dinâmica do contador de chaves (`🗝:1`), diálogo ramificado, cura no HUD (`♥ 100/100`), diálogo de baú vazio e saída limpa ao prompt `A:\>`.
 
 ---
 
-## 4. Próximos Passos (Fase 4: Gameplay Engine & Máquina de Eventos no MSX)
+## 4. Próximos Passos (Fase 5: Pipeline Integrado de Build & Jogo de Referência)
 
-Com as Fases 1, 2 e 3 100% concluídas, o desenvolvimento avança para a **Fase 4**:
-1. **Subfase 4.1 — Movimentação do Herói & Colisão no Grid:** Controle direcional, colisão contra tiles sólidos/água e transição de sala nas bordas.
-2. **Subfase 4.2 — Sistema de Entidades e Atores:** Spawning dinâmico de até 8 entidades ativas, IAs simples e interação por tecla de ação.
-3. **Subfase 4.3 — Máquina Virtual de Eventos (Bytecode VM no Z80):** Execução do interpretador de instruções compactas compiladas pelo editor.
-4. **Subfase 4.4 — Caixa de Diálogos & HUD:** Renderização de mensagens nas linhas 20-23 e mostrador de HP/MP nas linhas 18-19.
+Com a Gameplay Engine 100% concluída, o projeto ruma à sua fase final:
+1. **Subfase 5.1 — Automação "One-Click Run":** Botão de compilação e teste automático disparando exportação de `.rpgproj`, montagem de `.DSK` e boot no openMSX.
+2. **Subfase 5.2 — Backend MegaROM (Cartucho):** Suporte opcional à geração de arquivo `.ROM` unificado com chaveador de banco em cartucho (ASCII 16K / Konami).
+3. **Subfase 5.3 — Jogo de Referência Completo:** Masmorra de demonstração com 20 salas, enigmas, NPCs, combate simples e trilha sonora PSG.
