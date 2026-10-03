@@ -119,8 +119,11 @@ Este documento serve como mapa de bordo vivo do projeto, refletindo o roadmap es
   - [x] Interação contextual por tecla de ação unificada (Barra de Espaço no teclado e Gatilho A no Joystick) com debounce e verificação direcional.
   - [x] Sistema de colisão física de entidades integrado ao herói impedindo travessia de NPCs e baús.
   - [x] Validação automatizada no openMSX com 6 screenshots sequenciais comprovando spawn de entidades, colisão sólida contra o Guardião, interação via ESPAÇO, transição para Sala 2, IA do NPC errante e encerramento limpo no MSX-DOS 2.
-- [ ] **Subfase 4.3 — Máquina Virtual de Eventos (Bytecode VM):**
-  - [ ] Interpretador de instruções compactas (`OP_MSG`, `OP_GIVE_ITEM`, `OP_CHECK_FLAG`, etc.).
+- [x] **Subfase 4.3 — Máquina Virtual de Eventos (Bytecode VM):**
+  - [x] Interpretador de instruções compactas (`OP_NOP`, `OP_MSG`, `OP_GIVE_ITEM`, `OP_TAKE_ITEM`, `OP_SET_FLAG`, `OP_CHECK_FLAG`, `OP_TELEPORT`, `OP_HEAL`, `OP_DAMAGE`, `OP_PLAY_SFX`, `OP_END`).
+  - [x] Buffer seguro de execução na RAM da Página 1 (`s_VMScriptBuffer[256]`) imune a chaveamentos de segmento e teleportes.
+  - [x] Gerenciamento de estado global: 256 flags de evento, inventário de 16 slots com controle de quantidade e estatísticas de RPG do herói.
+  - [x] Validação automatizada em malha fechada no openMSX com 8 screenshots comprovando quest do Guardião, obtenção de itens, desvios condicionais de flags (diálogo alternativo), abertura e esvaziamento do baú com cura (+25 HP) e retorno limpo ao MSX-DOS 2.
 - [ ] **Subfase 4.4 — Caixa de Diálogos & HUD:**
   - [ ] Renderizador de texto nas linhas 20-23 e mostrador de HP/MP nas linhas 18-19.
 

@@ -15,6 +15,7 @@
 #include "world.h"
 #include "hero.h"
 #include "entity.h"
+#include "vm.h"
 
 #define Halt() __asm__("halt")
 
@@ -49,9 +50,10 @@ void main(void)
 	PrintHex((u8)header->InitialRoomID);
 	DOS_StringOutput("\r\n$");
 
-	// 2. Inicializa o subsistema de mundo e de entidades
+	// 2. Inicializa o subsistema de mundo, de entidades e a VM de eventos
 	WORLD_Init();
 	ENTITY_Init();
+	VM_Init();
 
 	// 3. Inicializa o processador de vídeo V9938 em SCREEN 4 (Graphic 3)
 	VDP_InitScreen4();

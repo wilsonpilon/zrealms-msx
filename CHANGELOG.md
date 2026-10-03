@@ -7,6 +7,49 @@ O formato baseia-se em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0
 * **Y (Minor / Feature):** Incrementado a cada nova feature concluída e integrada ao projeto.
 * **X (Major):** Incrementado a cada transição estrutural ou conclusão de uma grande fase (ex.: finalização da Camada de Dados, conclusão do Editor Gráfico, etc.).
 
+## [0.4.3] - 2026-10-03
+
+### Adicionado (Added)
+- **Subfase 4.3: Máquina Virtual de Eventos (Bytecode VM no Z80):**
+  - **Módulo da Máquina Virtual (`vm.h`, `vm.c`):**
+    - Interpretador Z80 de alta eficiência para os 11 opcodes canônicos da especificação:
+      - `OP_NOP (0x00)`: Nenhuma operação.
+      - `OP_MSG (0x01)`: Carrega e exibe string pelo ID lógico via Memory Mapper.
+      - `OP_GIVE_ITEM (0x02)`: Adiciona item ao inventário com empilhamento de quantidade.
+      - `OP_TAKE_ITEM (0x03)`: Remove item do inventário e compacta slots contíguos.
+      - `OP_SET_FLAG (0x04)`: Altera estado global de uma das 256 flags.
+      - `OP_CHECK_FLAG (0x05)`: Desvio condicional relativo (`int16 offset`) caso a flag esteja ativa (`!= 0`).
+      - `OP_TELEPORT (0x06)`: Teletransporte forçado de sala e coordenadas `(X, Y)`.
+      - `OP_HEAL (0x07)`: Restauração de HP do herói respeitando o teto de `MaxHP`.
+      - `OP_DAMAGE (0x08)`: Subtração de HP do herói com proteção de piso em 0.
+      - `OP_PLAY_SFX (0x09)`: Disparo de efeitos sonoros com `DOS_Beep()` imune a chamadas diretas de BIOS não mapeada.
+      - `OP_END (0xFF)`: Finalização de execução de script.
+    - Buffer seguro de execução na RAM residente da Página 1 (`s_VMScriptBuffer[256]`), copiando o bytecode antes de executar para garantir imunidade contra trocas de segmento no Memory Mapper (Página 2) causadas por `OP_TELEPORT` ou `WORLD_LoadRoom`.
+    - Gerenciamento de estado global:
+      - Tabela de 256 flags de evento globais (`g_VMFlags[256]`).
+      - Inventário do jogador com 16 slots (`g_VMInventory[16]`), armazenando `ItemID` (16-bit) e `Quantity` (8-bit) com rotinas de busca, contagem e remoção sem uso de `memcpy`.
+      - Estatísticas do herói (`g_HeroStats`): HP, MaxHP, MP, MaxMP, Nível, Ataque e Defesa.
+  - **Integração no Loader e Exporter:**
+    - Definição de `ResTypeScript = 6` em [pkg/exporter/types.go](file:///e:/zrealms-msx/pkg/exporter/types.go).
+    - Suporte a indexação direta O(1) de Strings em [pkg/exporter/exporter.go](file:///e:/zrealms-msx/pkg/exporter/exporter.go).
+    - Rotinas de cópia segura com preservação de paginação no mapper: `LOADER_CopyScript()` e `LOADER_CopyString()`.
+  - **Integração nas Entidades e Gameplay:**
+    - [engine_msx/entity.c](file:///e:/zrealms-msx/engine_msx/entity.c): Acionamento automático de `VM_ExecuteScript(ent->EventScriptID)` ao interagir (`ENTITY_InteractAt`) ou pisar em gatilhos (`ENTITY_CheckStepTrigger`).
+    - [engine_msx/zrealm.c](file:///e:/zrealms-msx/engine_msx/zrealm.c): Inicialização da VM de eventos no boot do jogo (`VM_Init()`).
+  - **Validação Automatizada em Malha Fechada no openMSX (`sub43_test.tcl`):**
+    - Controlador em malha fechada via leitura direta de memória RAM no openMSX inspecionando coordenadas, flags, inventário, HP e IDs de strings.
+    - 8 screenshots sequenciais comprovando:
+      1. `sub43_01_spawn.png`: Spawn inicial com herói em (16, 9), flags zeradas e inventário vazio.
+      2. `sub43_02_facing_guardian.png`: Aproximação a Oeste até (13, 9) encarando o Guardião.
+      3. `sub43_03_guardian_quest.png`: Disparo do Script 1: obtenção da Chave de Ferro, Flag 1 definida para 1, carregamento da Mensagem 2 e execução de SFX.
+      4. `sub43_04_guardian_branched.png`: Segunda interação com o Guardião: detecção de Flag 1 ativa e desvio condicional para a Mensagem 3 sem duplicar itens.
+      5. `sub43_05_facing_chest.png`: Navegação no grid até (8, 5) encarando o Baú em (8, 4).
+      6. `sub43_06_chest_opened.png`: Abertura do baú: obtenção da Poção de Vida, cura de 25 HP (75 -> 100 HP), Flag 2 definida para 1 e Mensagem 4.
+      7. `sub43_07_chest_empty.png`: Segunda interação no baú aberto: desvio condicional para a Mensagem 5 ("O baú está vazio").
+      8. `sub43_08_dos_exit.png`: Encerramento limpo via tecla ESC com restauração de vídeo e liberação integral de memória RAM no MSX-DOS 2.
+
+---
+
 ## [0.4.2] - 2026-10-03
 
 ### Adicionado (Added)

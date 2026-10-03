@@ -234,3 +234,14 @@ void HERO_Update(void)
 		}
 	}
 }
+
+u8 HERO_GetTileX(void)
+{
+	return g_Hero.TileX;
+}
+
+u8 HERO_GetTileY(void)
+{
+	return g_Hero.TileY;
+}
+

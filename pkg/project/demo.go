@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/zrealm-msx/zrealm/pkg/models"
+	"github.com/zrealm-msx/zrealm/pkg/script"
 )
 
 // CreateDemoProject cria um projeto de demonstração com um tileset completo,
@@ -238,34 +239,127 @@ func CreateDemoProject(filePath string) (*Project, error) {
 		return nil, err
 	}
 
-	// 7. Entidades da Sala 1: Entrada das Catacumbas
-	// - Guardião em (12, 9): NPC Estático
+	// 7. Itens do Catálogo do RPG
+	itemKey := &models.Item{
+		Name:     "Chave de Ferro",
+		ItemType: models.ItemKey,
+		Price:    0,
+	}
+	if err := st.GameData.CreateItem(ctx, itemKey); err != nil {
+		return nil, err
+	}
+
+	itemPotion := &models.Item{
+		Name:          "Pocao de Vida",
+		ItemType:      models.ItemConsumable,
+		ModifierStat:  1, // HP
+		ModifierValue: 25,
+		Price:         10,
+	}
+	if err := st.GameData.CreateItem(ctx, itemPotion); err != nil {
+		return nil, err
+	}
+
+	// 8. Tabela de Strings de Diálogo (IDs 1 a 5)
+	msgWelcome := &models.StringEntry{
+		ContextTag:  "MSG_WELCOME",
+		TextContent: "Bem-vindo as Catacumbas de Cristal! Pressione [ESPACO] para interagir.",
+	}
+	if err := st.GameData.CreateString(ctx, msgWelcome); err != nil {
+		return nil, err
+	}
+
+	msgGuardianIntro := &models.StringEntry{
+		ContextTag:  "MSG_GUARDIAN_1",
+		TextContent: "Guardiao: As profundezas sao perigosas. Pegue a Chave de Ferro!",
+	}
+	if err := st.GameData.CreateString(ctx, msgGuardianIntro); err != nil {
+		return nil, err
+	}
+
+	msgGuardianRepeat := &models.StringEntry{
+		ContextTag:  "MSG_GUARDIAN_2",
+		TextContent: "Guardiao: Que a luz guie seus passos nas profundezas.",
+	}
+	if err := st.GameData.CreateString(ctx, msgGuardianRepeat); err != nil {
+		return nil, err
+	}
+
+	msgChestOpen := &models.StringEntry{
+		ContextTag:  "MSG_CHEST_OPEN",
+		TextContent: "Voce abriu o bau e encontrou uma Pocao de Vida! (+25 HP)",
+	}
+	if err := st.GameData.CreateString(ctx, msgChestOpen); err != nil {
+		return nil, err
+	}
+
+	msgChestEmpty := &models.StringEntry{
+		ContextTag:  "MSG_CHEST_EMPTY",
+		TextContent: "O bau esta vazio.",
+	}
+	if err := st.GameData.CreateString(ctx, msgChestEmpty); err != nil {
+		return nil, err
+	}
+
+	// 9. Scripts de Eventos da Bytecode VM
+	guardianScriptSrc := "CHECK_FLAG 1 ja_falou\nMSG 2\nGIVE_ITEM 1\nSET_FLAG 1 1\nPLAY_SFX 1\nEND\nja_falou:\nMSG 3\nEND"
+	guardianBC, err := script.CompileScript(guardianScriptSrc)
+	if err != nil {
+		return nil, fmt.Errorf("falha ao compilar script do guardiao: %w", err)
+	}
+	scrGuardian := &models.Script{
+		Name:       "Script Guardiao",
+		SourceCode: guardianScriptSrc,
+		Bytecode:   guardianBC,
+	}
+	if err := st.GameData.CreateScript(ctx, scrGuardian); err != nil {
+		return nil, err
+	}
+
+	chestScriptSrc := "CHECK_FLAG 2 bau_aberto\nMSG 4\nGIVE_ITEM 2\nHEAL 25\nSET_FLAG 2 1\nPLAY_SFX 1\nEND\nbau_aberto:\nMSG 5\nEND"
+	chestBC, err := script.CompileScript(chestScriptSrc)
+	if err != nil {
+		return nil, fmt.Errorf("falha ao compilar script do bau: %w", err)
+	}
+	scrChest := &models.Script{
+		Name:       "Script Bau",
+		SourceCode: chestScriptSrc,
+		Bytecode:   chestBC,
+	}
+	if err := st.GameData.CreateScript(ctx, scrChest); err != nil {
+		return nil, err
+	}
+
+	// 10. Entidades da Sala 1: Entrada das Catacumbas
+	// - Guardião em (12, 9): NPC Estático vinculado ao Script 1
 	guardianEnt1 := &models.Entity{
-		RoomID:       r1.ID,
-		Name:         "Guardiao",
-		PosX:         12,
-		PosY:         9,
-		SpriteID:     &sprGuardian.ID,
-		BehaviorType: models.BehaviorStaticNPC,
+		RoomID:        r1.ID,
+		Name:          "Guardiao",
+		PosX:          12,
+		PosY:          9,
+		SpriteID:      &sprGuardian.ID,
+		BehaviorType:  models.BehaviorStaticNPC,
+		EventScriptID: &scrGuardian.ID,
 	}
 	if err := st.Rooms.CreateEntity(ctx, guardianEnt1); err != nil {
 		return nil, err
 	}
 
-	// - Baú de Ferro em (8, 4): Baú de Tesouro
+	// - Baú de Ferro em (8, 4): Baú de Tesouro vinculado ao Script 2
 	chestEnt1 := &models.Entity{
-		RoomID:       r1.ID,
-		Name:         "Bau de Ferro",
-		PosX:         8,
-		PosY:         4,
-		SpriteID:     &sprChest.ID,
-		BehaviorType: models.BehaviorChest,
+		RoomID:        r1.ID,
+		Name:          "Bau de Ferro",
+		PosX:          8,
+		PosY:          4,
+		SpriteID:      &sprChest.ID,
+		BehaviorType:  models.BehaviorChest,
+		EventScriptID: &scrChest.ID,
 	}
 	if err := st.Rooms.CreateEntity(ctx, chestEnt1); err != nil {
 		return nil, err
 	}
 
-	// 8. Entidades da Sala 2: Câmara dos Pilares
+	// 11. Entidades da Sala 2: Câmara dos Pilares
 	// - Sentinela em (6, 6): NPC Errante
 	sentinelEnt2 := &models.Entity{
 		RoomID:       r2.ID,
@@ -281,27 +375,19 @@ func CreateDemoProject(filePath string) (*Project, error) {
 
 	// - Baú Místico em (21, 9): Baú de Tesouro
 	chestEnt2 := &models.Entity{
-		RoomID:       r2.ID,
-		Name:         "Bau Mistico",
-		PosX:         21,
-		PosY:         9,
-		SpriteID:     &sprChest.ID,
-		BehaviorType: models.BehaviorChest,
+		RoomID:        r2.ID,
+		Name:          "Bau Mistico",
+		PosX:          21,
+		PosY:          9,
+		SpriteID:      &sprChest.ID,
+		BehaviorType:  models.BehaviorChest,
+		EventScriptID: &scrChest.ID,
 	}
 	if err := st.Rooms.CreateEntity(ctx, chestEnt2); err != nil {
 		return nil, err
 	}
 
-	// 9. Adiciona Diálogo Inicial
-	msgWelcome := &models.StringEntry{
-		ContextTag:  "MSG_WELCOME",
-		TextContent: "Bem-vindo as Catacumbas de Cristal! Pressione [ESPACO] para interagir.",
-	}
-	if err := st.GameData.CreateString(ctx, msgWelcome); err != nil {
-		return nil, err
-	}
-
-	// 10. Atualiza configurações do projeto
+	// 12. Atualiza configurações do projeto
 	_ = proj.SetSetting("initial_room_id", fmt.Sprintf("%d", r1.ID))
 	_ = proj.SetSetting("initial_hero_x", "16")
 	_ = proj.SetSetting("initial_hero_y", "9")

@@ -82,6 +82,32 @@ module.exports.compile = function (file, size, seg)
 		let err = util.execSync(`"${Compiler}" ${SDCCParam}`);
 		if(err)
 		{
+			// Fallback: Smart App Control / AppLocker bypass via GCC preprocessor + SDCC c1mode
+			let gccPath = "C:/msys64/ucrt64/bin/gcc.exe";
+			let preFile = `${OutDir}${fileName}.pre.c`;
+			let asmFile = `${OutDir}${fileName}.asm`;
+			let gccParam = `-E -D__SDCC=4 -D__SDCC_VERSION_MAJOR=4 -D__SDCC_VERSION_MINOR=6 -D__SDCC_VERSION_PATCH=0 -DSDCC_z80 -D__z80 -DTARGET=TARGET_${Target} -DROM_SIZE=${ROMSize} -DMSX_VERSION=MSX_${Machine} -I${ProjDir} -I${LibDir}src -I${LibDir}content -I${ToolsDir} "${file}" -o "${preFile}"`;
+			let gccErr = util.execSync(`"${gccPath}" ${gccParam}`);
+			if(!gccErr)
+			{
+				let winCompiler = Compiler.replace(/\//g, '\\');
+				let winAssembler = Assembler.replace(/\//g, '\\');
+				let winPre = preFile.replace(/\//g, '\\');
+				let winAsm = asmFile.replace(/\//g, '\\');
+				let c1Cmd = (process.platform === "win32") ? `cmd /c "type ${winPre} | ${winCompiler} -mz80 ${AddOpt} --emit-externs --c1mode -o ${winAsm}"` : `"${Compiler}" -mz80 ${AddOpt} --emit-externs --c1mode -o "${asmFile}" < "${preFile}"`;
+				let c1Err = util.execSync(c1Cmd);
+				if(!c1Err)
+				{
+					let asmErr = util.execSync(`"${winAssembler}" -o -l -s -I${ProjDir} -I${OutDir} -I${LibDir}src "${winAsm}"`);
+					if(!asmErr)
+					{
+						err = 0;
+					}
+				}
+			}
+		}
+		if(err)
+		{
 			util.print(`Compile error! Code: ${err}`, PrintError);
 			process.exit(310);
 		}

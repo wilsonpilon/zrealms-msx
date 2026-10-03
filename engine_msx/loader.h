@@ -20,6 +20,7 @@
 #define RES_TYPE_ROOM       3
 #define RES_TYPE_STRINGS    4
 #define RES_TYPE_GAMEDATA   5
+#define RES_TYPE_SCRIPT     6
 
 #define MAX_RESOURCES_DIR   64
 
@@ -102,3 +103,10 @@ void* LOADER_MapResource(u8 type, u16 id);
 BinaryRoom* LOADER_GetRoom(u16 roomID);
 BinaryTileset* LOADER_GetTileset(u16 tilesetID);
 BinarySprite* LOADER_GetSprite(u16 spriteID);
+
+// Copia o bytecode de um script para um buffer na RAM local (Página 1) preservando a paginação ativa.
+u16 LOADER_CopyScript(u16 scriptID, u8* destBuf, u16 maxLen);
+
+// Copia uma string da tabela de textos para um buffer na RAM local preservando a paginação ativa.
+bool LOADER_CopyString(u16 stringID, c8* destBuf, u16 maxLen);
+

@@ -17,6 +17,7 @@ const (
 	ResTypeRoom      uint8 = 3
 	ResTypeStrings   uint8 = 4
 	ResTypeGameData  uint8 = 5
+	ResTypeScript    uint8 = 6
 
 	// Limites da arquitetura MSX
 	MaxEntitiesPerRoom = 8

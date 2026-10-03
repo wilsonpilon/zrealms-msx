@@ -192,6 +192,79 @@ if (DoClean)
 //  ██ ▀ ▄█▀▄ ▄█▄█ ██▀▄ ▄  ██  ▄███
 //  ▀█▄▀ ▀█▄▀ ██ █ ██▀  ██ ▀█▄ ▀█▄▄
 //_________________▀▀__________________________________________________________
+//=============================================================================
+// GENERATE MODULES LIST
+//=============================================================================
+
+// Add crt0 source to build list (it must be the first in the list)
+SrcList = [];
+RelList = [];
+LibList = [];
+MapList = [];
+const codeExtList = [ "c", "s", "asm" ];
+
+if (Target !== "LIB")
+	SrcList.push(`${LibDir}src/crt0/${Crt0}.asm`);
+
+// Add project sources to build list
+for (let i = 0; i < ProjModules.length; i++)
+{
+	let bFound = false;
+
+	for (let e = 0; e < codeExtList.length; e++)
+	{
+		if (fs.existsSync(`./${ProjModules[i]}.${codeExtList[e]}`))
+		{
+			SrcList.push(`./${ProjModules[i]}.${codeExtList[e]}`);
+			let fileName = path.parse(ProjModules[i]).name;
+			RelList.push(`${OutDir}${fileName}.rel`);
+			bFound = true;
+			break;
+		}
+	}
+
+	if (!bFound)
+	{
+		util.print(`Source file ${ProjModules[i]}.c not found!`, PrintError);
+		process.exit(100);
+	}
+}
+
+// Add modules sources to build list
+if (BuildLibrary && LibModules.length)
+{
+	util.print(`» MSXgl Modules: ${LibModules}`);
+	for (let i = 0; i < LibModules.length; i++)
+	{
+		if (!fs.existsSync(`${LibDir}src/${LibModules[i]}.c`)) {
+			util.print(`Module ${LibModules[i]}.c not found!`, PrintError);
+			process.exit(110);
+		}
+
+		SrcList.push(`${LibDir}src/${LibModules[i]}.c`);
+
+		let fileName = path.parse(LibModules[i]).name;
+		LibList.push(`${OutDir}${fileName}.rel`);
+	}
+}
+
+// Additional source files to build
+for (let i = 0; i < AddSources.length; i++)
+{
+	if (!fs.existsSync(`./${AddSources[i]}`))
+	{
+		util.print(`Additionnal source ${AddSources[i]} not found!`, PrintError);
+		process.exit(120);
+	}
+
+	SrcList.push(`./${AddSources[i]}`);
+
+	let fileName = path.parse(AddSources[i]).name;
+	RelList.push(`${OutDir}${fileName}.rel`);
+}
+
+MapperBanks = "";
+
 if (DoCompile)
 {
 	//-- Start timer
@@ -343,77 +416,6 @@ if (DoCompile)
 		util.print(`Generating '${LocOutput}' localization file...`, PrintHighlight);
 		localizer.generate(LocFiles, LocOutput, LocStruct, LocSplitDef, Verbose);
 		util.print("Success", PrintSuccess);
-	}
-
-	//=========================================================================
-	// GENERATE MODULES LIST
-	//=========================================================================
-
-	// Add crt0 source to build list (it must be the first in the list)
-	SrcList = [];
-	RelList = [];
-	LibList = [];
-	MapList = [];
-	const codeExtList = [ "c", "s", "asm" ];
-
-	if (Target !== "LIB")
-		SrcList.push(`${LibDir}src/crt0/${Crt0}.asm`);
-
-	// Add project sources to build list
-	for (let i = 0; i < ProjModules.length; i++)
-	{
-		let bFound = false;
-
-		for (let e = 0; e < codeExtList.length; e++)
-		{
-			if (fs.existsSync(`./${ProjModules[i]}.${codeExtList[e]}`))
-			{
-				SrcList.push(`./${ProjModules[i]}.${codeExtList[e]}`);
-				let fileName = path.parse(ProjModules[i]).name;
-				RelList.push(`${OutDir}${fileName}.rel`);
-				bFound = true;
-				break;
-			}
-		}
-
-		if (!bFound)
-		{
-			util.print(`Source file ${ProjModules[i]}.c not found!`, PrintError);
-			process.exit(100);
-		}
-	}
-
-	// Add modules sources to build list
-	if (BuildLibrary && LibModules.length)
-	{
-		util.print(`» MSXgl Modules: ${LibModules}`);
-		for (let i = 0; i < LibModules.length; i++)
-		{
-			if (!fs.existsSync(`${LibDir}src/${LibModules[i]}.c`)) {
-				util.print(`Module ${LibModules[i]}.c not found!`, PrintError);
-				process.exit(110);
-			}
-
-			SrcList.push(`${LibDir}src/${LibModules[i]}.c`);
-
-			let fileName = path.parse(LibModules[i]).name;
-			LibList.push(`${OutDir}${fileName}.rel`);
-		}
-	}
-
-	// Additional source files to build
-	for (let i = 0; i < AddSources.length; i++)
-	{
-		if (!fs.existsSync(`./${AddSources[i]}`))
-		{
-			util.print(`Additionnal source ${AddSources[i]} not found!`, PrintError);
-			process.exit(120);
-		}
-
-		SrcList.push(`./${AddSources[i]}`);
-
-		let fileName = path.parse(AddSources[i]).name;
-		RelList.push(`${OutDir}${fileName}.rel`);
 	}
 
 	//=========================================================================

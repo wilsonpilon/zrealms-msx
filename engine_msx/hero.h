@@ -45,3 +45,8 @@ void HERO_Draw(void);
 
 // Posiciona o herói diretamente em uma coordenada do grid
 void HERO_SetPosition(u8 tileX, u8 tileY);
+
+// Getters de coordenadas do grid do herói
+u8 HERO_GetTileX(void);
+u8 HERO_GetTileY(void);
+

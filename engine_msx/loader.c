@@ -156,3 +156,83 @@ BinarySprite* LOADER_GetSprite(u16 spriteID)
 	return (BinarySprite*)LOADER_MapResource(RES_TYPE_SPRITE, spriteID);
 }
 
+// Copia o bytecode de um script para um buffer na RAM local (Página 1) preservando a paginação ativa.
+u16 LOADER_CopyScript(u16 scriptID, u8* destBuf, u16 maxLen)
+{
+	const ResourceEntry* entry = LOADER_FindResource(RES_TYPE_SCRIPT, scriptID);
+	u8 prevSeg;
+	u16 size;
+	const u8* src;
+	u16 i;
+
+	if (!entry || !destBuf || maxLen == 0)
+	{
+		return 0;
+	}
+
+	prevSeg = MAPPER_GetPage2();
+	MAPPER_SetPage2(entry->Segment);
+
+	size = entry->Size;
+	if (size > maxLen)
+	{
+		size = maxLen;
+	}
+
+	src = (const u8*)(0x8000 + entry->Offset);
+	for (i = 0; i < size; i++)
+	{
+		destBuf[i] = src[i];
+	}
+
+	MAPPER_SetPage2(prevSeg);
+	return size;
+}
+
+// Copia uma string da tabela de textos para um buffer na RAM local preservando a paginação ativa.
+bool LOADER_CopyString(u16 stringID, c8* destBuf, u16 maxLen)
+{
+	const ResourceEntry* entry = LOADER_FindResource(RES_TYPE_STRINGS, 1);
+	u8 prevSeg;
+	const u8* base;
+	u16 count;
+	const u16* offsetTable;
+	u16 strOffset;
+	const c8* srcStr;
+	u16 i;
+
+	if (!entry || !destBuf || maxLen == 0)
+	{
+		if (destBuf && maxLen > 0)
+			destBuf[0] = 0;
+		return FALSE;
+	}
+
+	prevSeg = MAPPER_GetPage2();
+	MAPPER_SetPage2(entry->Segment);
+
+	base = (const u8*)(0x8000 + entry->Offset);
+	count = *(const u16*)base;
+	if (stringID >= count)
+	{
+		MAPPER_SetPage2(prevSeg);
+		destBuf[0] = 0;
+		return FALSE;
+	}
+
+	offsetTable = (const u16*)(base + 2);
+	strOffset = offsetTable[stringID];
+	srcStr = (const c8*)(base + 2 + (count * 2) + strOffset);
+
+	i = 0;
+	while (i < maxLen - 1 && srcStr[i] != 0)
+	{
+		destBuf[i] = srcStr[i];
+		i++;
+	}
+	destBuf[i] = 0;
+
+	MAPPER_SetPage2(prevSeg);
+	return TRUE;
+}
+

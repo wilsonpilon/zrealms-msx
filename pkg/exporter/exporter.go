@@ -11,6 +11,7 @@ import (
 
 	"github.com/zrealm-msx/zrealm/pkg/models"
 	"github.com/zrealm-msx/zrealm/pkg/project"
+	"github.com/zrealm-msx/zrealm/pkg/script"
 	"github.com/zrealm-msx/zrealm/pkg/storage"
 )
 
@@ -95,7 +96,29 @@ func Export(p *project.Project, opts ExportOptions) (*ExportResult, error) {
 		}
 	}
 
-	// 5. Determina parâmetros iniciais do herói e da sala de partida
+	// 5. Exporta Scripts de Evento (Bytecode VM)
+	scriptsList, err := st.GameData.ListScripts(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("falha ao listar scripts: %w", err)
+	}
+
+	for _, scr := range scriptsList {
+		bc := scr.Bytecode
+		if len(bc) == 0 && scr.SourceCode != "" {
+			var compileErr error
+			bc, compileErr = script.CompileScript(scr.SourceCode)
+			if compileErr != nil {
+				return nil, fmt.Errorf("falha ao compilar script %d (%s): %w", scr.ID, scr.Name, compileErr)
+			}
+		}
+		if len(bc) > 0 {
+			if _, err := packer.WriteResource(ResTypeScript, uint16(scr.ID), bc); err != nil {
+				return nil, fmt.Errorf("falha ao empacotar script %d: %w", scr.ID, err)
+			}
+		}
+	}
+
+	// 6. Determina parâmetros iniciais do herói e da sala de partida
 	initialRoomID := uint16(1)
 	if len(rooms) > 0 {
 		initialRoomID = uint16(rooms[0].ID)
@@ -294,29 +317,42 @@ func exportRoom(ctx context.Context, st *storage.Storage, room *models.Room) ([]
 }
 
 func exportStrings(list []*models.StringEntry) []byte {
-	buf := new(bytes.Buffer)
-	count := uint16(len(list))
+	if len(list) == 0 {
+		return nil
+	}
 
-	// Número de strings
+	maxID := 0
+	entryMap := make(map[int]*models.StringEntry)
+	for _, entry := range list {
+		if int(entry.ID) > maxID {
+			maxID = int(entry.ID)
+		}
+		entryMap[int(entry.ID)] = entry
+	}
+
+	count := uint16(maxID + 1)
+	buf := new(bytes.Buffer)
+
+	// Número total de slots na tabela (0..maxID)
 	_ = binary.Write(buf, binary.LittleEndian, count)
 
-	// Tabela temporária de strings em bytes para calcular os offsets relativos
 	var stringBytes [][]byte
-	for _, entry := range list {
-		// Null-terminated string para C no SDCC
-		b := append([]byte(entry.TextContent), 0)
+	for i := 0; i <= maxID; i++ {
+		var b []byte
+		if entry, ok := entryMap[i]; ok {
+			b = append([]byte(entry.TextContent), 0)
+		} else {
+			b = []byte{0} // String vazia para IDs não preenchidos
+		}
 		stringBytes = append(stringBytes, b)
 	}
 
-	// Calcula os offsets relativos ao início do bloco de strings
-	// O bloco de strings começa logo após: 2 bytes (count) + (count * 2 bytes de offset)
 	currentOffset := uint16(0)
 	for _, sb := range stringBytes {
 		_ = binary.Write(buf, binary.LittleEndian, currentOffset)
 		currentOffset += uint16(len(sb))
 	}
 
-	// Anexa o conteúdo de todas as strings
 	for _, sb := range stringBytes {
 		buf.Write(sb)
 	}

@@ -5,6 +5,7 @@
 #include "entity.h"
 #include "world.h"
 #include "hero.h"
+#include "vm.h"
 
 EntityInstance g_Entities[MAX_ACTIVE_ENTITIES];
 u8 g_ActiveEntityCount = 0;
@@ -175,6 +176,12 @@ bool ENTITY_InteractAt(u8 tileX, u8 tileY)
 			break;
 	}
 
+	// Executa o script de evento vinculado à entidade
+	if (ent->EventScriptID != 0 && ent->EventScriptID != 0xFFFF)
+	{
+		VM_ExecuteScript(ent->EventScriptID);
+	}
+
 	return TRUE;
 }
 
@@ -185,6 +192,11 @@ void ENTITY_CheckStepTrigger(u8 tileX, u8 tileY)
 	{
 		ent->Interacted = TRUE;
 		ent->State = 1;
+
+		if (ent->EventScriptID != 0 && ent->EventScriptID != 0xFFFF)
+		{
+			VM_ExecuteScript(ent->EventScriptID);
+		}
 	}
 }
 
@@ -236,7 +248,7 @@ void ENTITY_Update(void)
 							if (WORLD_GetCollision((u8)targetX, (u8)targetY) == COLLISION_PASSABLE)
 							{
 								// Não colide com a posição do herói
-								if (!(targetX == (i8)g_Hero.TileX && targetY == (i8)g_Hero.TileY))
+								if (!(targetX == (i8)HERO_GetTileX() && targetY == (i8)HERO_GetTileY()))
 								{
 									// Não colide com outras entidades ativas
 									bool blocked = FALSE;
@@ -295,7 +307,7 @@ void ENTITY_Update(void)
 						if (targetX >= 1 && targetX < (VIEWPORT_WIDTH - 1) && targetY >= 1 && targetY < (VIEWPORT_HEIGHT - 1))
 						{
 							if (WORLD_GetCollision((u8)targetX, (u8)targetY) == COLLISION_PASSABLE &&
-								!(targetX == (i8)g_Hero.TileX && targetY == (i8)g_Hero.TileY) &&
+								!(targetX == (i8)HERO_GetTileX() && targetY == (i8)HERO_GetTileY()) &&
 								!ENTITY_IsSolidAt((u8)targetX, (u8)targetY))
 							{
 								canStep = TRUE;

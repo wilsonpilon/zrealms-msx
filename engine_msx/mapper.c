@@ -28,6 +28,10 @@ bool MAPPER_Init(u8 minRequiredSegments)
 	// 2. Salva o segmento atual da Página 2 para restaurar na saída
 	g_MapperState.OriginalPage2 = DOSMapper_GetPage2();
 
+__asm
+	.globl _g_DOS_VarTable
+__endasm;
+
 	// Identifica o slot do mapper principal a partir da tabela de variáveis do DOS 2
 	slotId = g_DOS_VarTable ? g_DOS_VarTable->Slot : 0;
 
@@ -42,7 +46,8 @@ bool MAPPER_Init(u8 minRequiredSegments)
 			break;
 		}
 
-		s_AllocatedSegments[g_MapperState.TotalSegments] = seg;
+		s_AllocatedSegments[g_MapperState.TotalSegments].Number = seg.Number;
+		s_AllocatedSegments[g_MapperState.TotalSegments].Slot = seg.Slot;
 		g_MapperState.TotalSegments++;
 	}
 
