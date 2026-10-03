@@ -3,9 +3,9 @@
 ### (Editor Desktop em Go/Fyne/SQLite + Engine MSX2/MSX-DOS 2 em C/MSXgl)
 
 **Projeto Oficial:** Z-Realm (`zrealm-msx`)  
-**Versão:** 0.3.2  
+**Versão:** 0.4.1  
 **Data:** Outubro de 2026  
-**Status:** Fases 1 e 2 Concluídas — Rumo à Fase 3 (Editor Desktop Go + Fyne)  
+**Status:** Fases 1, 2 e 3 Concluídas; Subfase 4.1 Concluída com Sucesso — Rumo à Subfase 4.2 (Sistema de Entidades e Atores)  
 **Autor:** Equipe de Arquitetura de Software & Retrocomputação  
 
 ---
@@ -414,8 +414,7 @@ O projeto será construído de forma iterativa, validando cada camada antes de a
 ---
 
 ## 7. Próximos Passos Imediatos
-Com a **Fase 1 (Estruturação de Dados & Abstrações do Editor)** e a **Fase 2 (Prototipagem de Baixo Nível no MSX)** 100% concluídas e verificadas no openMSX, a sequência de trabalho avança para a **Fase 3: Desenvolvimento da GUI Desktop com Fyne (O Editor Visual)**:
-1. **Subfase 3.1 — Shell da Aplicação & Navegação:** Construir a janela mestra da aplicação com tema retrô escuro, gerenciamento de arquivos `.rpgproj` (Criar, Abrir, Salvar) e barra de ferramentas de navegação por abas.
-2. **Subfase 3.2 — Editor de Tiles (8x8):** Canvas interativo de desenho pixel-a-pixel com paleta V9938 e atributos de colisão física.
-3. **Subfase 3.3 — Editor de Sprites (16x16):** Canvas de edição para Modo 2 com preview de cores por scanline.
-4. **Subfase 3.4 — Editor de Salas:** Matriz 32x18 com carimbador de tiles, interligações cardeais e posicionamento visual de entidades.
+Com a **Fase 1 (Estruturação de Dados & Abstrações do Editor)**, a **Fase 2 (Prototipagem de Baixo Nível no MSX)**, a **Fase 3 (Editor Visual Desktop em Go + Fyne)** e a **Subfase 4.1 (Movimentação do Herói & Colisão no Grid)** 100% concluídas e comprovadas visualmente no openMSX, a sequência de trabalho avança para a **Subfase 4.2: Sistema de Entidades e Atores da Sala**:
+1. **Subfase 4.2 — Sistema de Entidades e Atores:** Implementar buffer e gerenciador de até 8 entidades ativas por sala, atribuição de sprites V9938 do banco, comportamentos e IAs de patrulha e interação por tecla de ação (espaço / trigger joystick).
+2. **Subfase 4.3 — Máquina Virtual de Eventos (Bytecode VM):** Interpretador Z80 para os 10 opcodes compactos gerados pelo editor.
+3. **Subfase 4.4 — Caixa de Diálogos & HUD:** Renderização de texto e mostrador de HP/MP no viewport inferior da SCREEN 4.

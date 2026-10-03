@@ -7,6 +7,34 @@ O formato baseia-se em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0
 * **Y (Minor / Feature):** Incrementado a cada nova feature concluída e integrada ao projeto.
 * **X (Major):** Incrementado a cada transição estrutural ou conclusão de uma grande fase (ex.: finalização da Camada de Dados, conclusão do Editor Gráfico, etc.).
 
+## [0.4.1] - 2026-10-03
+
+### Adicionado (Added)
+- **Subfase 4.1: Movimentação do Herói & Colisão no Grid (MSX 2 Gameplay Engine):**
+  - **Módulo do Herói (`hero.h`, `hero.c`):**
+    - Entidade do Herói com coordenadas discretas de grid (`TileX`, `TileY`), coordenadas de tela (`PixelX`, `PixelY`), orientação direcional (`HERO_DIR_UP`, `HERO_DIR_DOWN`, `HERO_DIR_LEFT`, `HERO_DIR_RIGHT`) e estado de movimento (`Moved`).
+    - Cooldown de repetição de passos configurável (`HERO_STEP_COOLDOWN_FRAMES = 6`), proporcionando latência zero no primeiro acionamento e taxa contínua de ~10 passos por segundo.
+    - Suporte simultâneo e higienizado a Joystick na Porta 1 (`JOY_PORT_1`) e Teclado (Setas direcionais do MSX via `Keyboard_IsKeyPressed`).
+  - **Módulo de Mundo e Transição de Salas (`world.h`, `world.c`):**
+    - Gerenciador global `g_World` com buffers locais para os 576 tiles da sala e 256 bytes de colisão física.
+    - Verificação de colisão física em tempo real via `WORLD_GetCollision`: suporte a `COLLISION_SOLID`, `COLLISION_WATER`, `COLLISION_DAMAGE`, `COLLISION_TRIGGER` e `COLLISION_PASSABLE`.
+    - Transição de bordas e portais cardeais (Norte, Sul, Leste, Oeste) via `WORLD_CheckRoomTransition`: paginação automática do segmento no Memory Mapper (Página 2: `0x8000 - 0xBFFF`), recarga dos dados da sala e reposicionamento automático na borda oposta.
+  - **Sprites V9938 Modo 2 (`vdp_screen4.h`, `vdp_screen4.c`):**
+    - Configuração de tabelas de padrões (`0x3800`), atributos (`0x1E00`) e cores (`0x1C00`) para sprites 16x16.
+    - Funções de renderização: `VDP_LoadSprite` (32 bytes de pattern + 16 bytes de color per-scanline), `VDP_SetSpritePos` e ocultação via `VDP_Screen4_HideSprite`.
+  - **Loop Principal e Encerramento Limpo (`zrealm.c`):**
+    - Sincronização a 50/60 Hz no V-Blank via interrupções (`Halt()`).
+    - Tecla `ESC` para encerramento gracioso: ocultação de sprites, restauração do modo texto BIOS (`R_INITXT`) e liberação de 100% dos segmentos alocados no Memory Mapper (`MAPPER_Cleanup()`).
+  - **Validação Automatizada com openMSX:**
+    - Script de teste `sync_trace.tcl` sincronizado com o renderizador VDP gerando 5 screenshots comprovando:
+      1. Spawn do herói no centro da Sala 1 `(16, 9)`.
+      2. Caminhada a Leste rumo ao portal.
+      3. Chegada à Sala 2 ("Câmara dos Pilares") via chaveamento do Memory Mapper.
+      4. Retorno pelo portal Oeste de volta à Sala 1.
+      5. Retorno limpo ao prompt do MSX-DOS 2 com mensagem de sucesso e memória liberada.
+
+---
+
 ## [0.4.0] - 2026-10-02
 
 ### Adicionado (Added)

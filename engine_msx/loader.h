@@ -87,6 +87,13 @@ typedef struct
 	u8 AnimationTable[256];  // 256 tiles * 1 byte
 } BinaryTileset;
 
+// BinarySprite: Estrutura de um sprite compilado Modo 2 (48 bytes: 32 bytes pattern + 16 bytes color)
+typedef struct
+{
+	u8 Pattern[32]; // 32 bytes de padrões 16x16 (4 blocos 8x8)
+	u8 Color[16];   // 16 bytes de atributos de cor por scanline
+} BinarySprite;
+
 // Funções públicas do Loader
 bool LOADER_LoadGame(const c8* headerPath, const c8* dataPath);
 const MasterHeader* LOADER_GetMasterHeader(void);
@@ -94,3 +101,4 @@ const ResourceEntry* LOADER_FindResource(u8 type, u16 id);
 void* LOADER_MapResource(u8 type, u16 id);
 BinaryRoom* LOADER_GetRoom(u16 roomID);
 BinaryTileset* LOADER_GetTileset(u16 tilesetID);
+BinarySprite* LOADER_GetSprite(u16 spriteID);

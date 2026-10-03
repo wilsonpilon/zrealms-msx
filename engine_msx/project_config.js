@@ -30,11 +30,11 @@ Emulator  = "openmsx";
 // PROJECT SETTINGS
 //*****************************************************************************
 ProjName = "zrealm";
-ProjModules = [ ProjName, "mapper", "vdp_screen4", "loader" ];
+ProjModules = [ ProjName, "mapper", "vdp_screen4", "loader", "world", "hero" ];
 ProjSegments = ProjName;
 
 // Módulos da biblioteca MSXgl necessários para a Engine
-LibModules = [ "dos", "dos_mapper", "vdp", "system", "bios", "keyboard" ];
+LibModules = [ "dos", "dos_mapper", "vdp", "system", "bios", "keyboard", "joystick" ];
 
 //*****************************************************************************
 // TARGET & HARDWARE SETTINGS

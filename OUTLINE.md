@@ -104,8 +104,14 @@ Este documento serve como mapa de bordo vivo do projeto, refletindo o roadmap es
 ---
 
 ### Fase 4: Gameplay Engine & Máquina de Eventos (MSX)
-- [ ] **Subfase 4.1 — Movimentação do Herói & Colisão no Grid:**
-  - [ ] Entrada de teclado/joystick com movimentação em passos de 8 pixels e troca automática de sala nas bordas.
+- [x] **Subfase 4.1 — Movimentação do Herói & Colisão no Grid:**
+  - [x] Movimentação discreta de 8x8 pixels alinhada ao grid 32x18 (SCREEN 4) com leitura combinada de Joystick (Porta 1) e Teclado (Setas do MSX).
+  - [x] Cooldown de repetição de passos (`HERO_STEP_COOLDOWN_FRAMES = 6`) garantindo responsividade imediata no toque inicial e cadência suave ao manter pressionado.
+  - [x] Verificação de física e colisão de tiles em tempo real (`COLLISION_SOLID`, `COLLISION_WATER`, `COLLISION_DAMAGE`, `COLLISION_TRIGGER`, `COLLISION_PASSABLE`).
+  - [x] Transição cardeal de salas nas bordas (Norte, Sul, Leste, Oeste) com paginação dinâmica automática na Página 2 (`0x8000 - 0xBFFF`) via Memory Mapper (EXTBIOS).
+  - [x] Renderização de Sprites Modo 2 (16x16 pixels) com `VDP_LoadSprite`, `VDP_SetSpritePos` e ocultação limpa com `VDP_Screen4_HideSprite`.
+  - [x] Saída limpa ao MSX-DOS 2 via tecla `ESC` restaurando modo texto BIOS (`R_INITXT`), desativando sprites e liberando todos os segmentos de RAM com `MAPPER_Cleanup()`.
+  - [x] Validação automatizada em emulador openMSX comprovando com 5 screenshots sequenciais: spawn na Sala 1, caminhada a Leste, travessia do portal e carregamento da Sala 2 ("Câmara dos Pilares"), retorno pelo portal Oeste e encerramento limpo ao DOS 2.
 - [ ] **Subfase 4.2 — Sistema de Entidades e Atores:**
   - [ ] Até 8 entidades ativas na sala, IAs simples e interação por tecla de ação.
 - [ ] **Subfase 4.3 — Máquina Virtual de Eventos (Bytecode VM):**

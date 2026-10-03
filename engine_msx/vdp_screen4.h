@@ -33,3 +33,13 @@ void VDP_ClearHUDAndDialogue(u8 clearTileIndex);
 
 // Define um caractere na tabela de nomes em coordenadas específicas (X: 0..31, Y: 0..23)
 void VDP_PrintTile(u8 x, u8 y, u8 tileIndex);
+
+// Carrega padrão (32 bytes) e cores (16 bytes) para um sprite de 16x16 (Modo 2)
+void VDP_LoadSprite(u8 spriteIndex, const u8* patternData, const u8* colorData);
+
+// Posiciona um sprite de 16x16 na tela (coordenadas de pixels 0..255, 0..211)
+void VDP_SetSpritePos(u8 spriteIndex, u8 x, u8 y);
+
+// Oculta um sprite desativando-o no VDP (Y = 216)
+void VDP_Screen4_HideSprite(u8 spriteIndex);
+

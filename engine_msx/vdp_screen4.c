@@ -21,8 +21,9 @@ void VDP_InitScreen4(void)
 	// Oculta todos os sprites (define Y = 216 / 0xD8 para desativar processador de sprites)
 	VDP_FillVRAM_16K(216, VRAM_SPRITE_ATTR, 32 * 4);
 
-	// Reativa o display
+	// Reativa o display e habilita interrupções de sincronismo vertical (V-Blank)
 	VDP_EnableDisplay(TRUE);
+	VDP_EnableVBlank(TRUE);
 }
 
 // Carrega o conjunto de 256 tiles para as três seções verticais da tela
@@ -67,3 +68,49 @@ void VDP_PrintTile(u8 x, u8 y, u8 tileIndex)
 	u16 addr = VRAM_LAYOUT_TABLE + (y * 32) + x;
 	VDP_Poke_16K(tileIndex, addr);
 }
+
+// Carrega padrão (32 bytes) e cores (16 bytes) para um sprite de 16x16 (Modo 2)
+void VDP_LoadSprite(u8 spriteIndex, const u8* patternData, const u8* colorData)
+{
+	u16 patternAddr;
+	u16 colorAddr;
+
+	if (spriteIndex >= 32)
+		return;
+
+	patternAddr = VRAM_SPRITE_PATTERN + ((u16)spriteIndex * 32);
+	colorAddr   = VRAM_SPRITE_COLOR   + ((u16)spriteIndex * 16);
+
+	VDP_WriteVRAM_16K(patternData, patternAddr, 32);
+	VDP_WriteVRAM_16K(colorData, colorAddr, 16);
+}
+
+// Posiciona um sprite de 16x16 na tela (coordenadas de pixels 0..255, 0..211)
+void VDP_SetSpritePos(u8 spriteIndex, u8 x, u8 y)
+{
+	u8 attr[4];
+	u16 attrAddr;
+
+	if (spriteIndex >= 32)
+		return;
+
+	attrAddr = VRAM_SPRITE_ATTR + ((u16)spriteIndex * 4);
+
+	// No VDP V9938, a linha de exibição na tela é Y + 1 (portanto, para exibir em y usa-se y - 1)
+	attr[0] = (u8)(y - 1);
+	attr[1] = x;
+	attr[2] = spriteIndex * 4; // Em 16x16, cada sprite ocupa 4 padrões de 8x8
+	attr[3] = 0;               // Sem flags especiais
+
+	VDP_WriteVRAM_16K(attr, attrAddr, 4);
+}
+
+// Oculta um sprite desativando-o no VDP (Y = 216)
+void VDP_Screen4_HideSprite(u8 spriteIndex)
+{
+	if (spriteIndex >= 32)
+		return;
+
+	VDP_Poke_16K(216, VRAM_SPRITE_ATTR + ((u16)spriteIndex * 4));
+}
+

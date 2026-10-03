@@ -1,16 +1,19 @@
 // ____________________________
 // Z-Realm (zrealm-msx) - Engine Core para MSX 2 & MSX-DOS 2
-// Fase 2: Bootstrap MSX-DOS 2, Memory Mapper (Página 2) e V9938 SCREEN 4
+// Fase 4: Gameplay Engine, Movimentação no Grid & Colisão (Subfase 4.1)
 //─────────────────────────────────────────────────────────────────────────────
 #include "core.h"
 #include "dos.h"
 #include "dos_mapper.h"
 #include "vdp.h"
 #include "keyboard.h"
+#include "joystick.h"
 #include "mapper.h"
 #include "vdp_screen4.h"
 #include "system.h"
 #include "loader.h"
+#include "world.h"
+#include "hero.h"
 
 #define Halt() __asm__("halt")
 
@@ -21,33 +24,23 @@ static void PrintHex(u8 val)
 	DOS_CharOutput(hex[val & 0x0F]);
 }
 
-// Pequeno atraso calibrado em software (não depende de interrupção VDP)
-static void WaitDelay(u16 count)
-{
-	volatile u16 i;
-	for (i = 0; i < count; i++)
-	{
-		__asm nop __endasm;
-	}
-}
-
 // Ponto de entrada do executável .COM no MSX-DOS 2
 void main(void)
 {
 	const MasterHeader* header;
-	BinaryTileset* tileset;
+	u8 startX, startY;
 
-	DOS_StringOutput("=== Z-Realm MSX2 Engine ===\r\n$");
+	DOS_StringOutput("=== Z-Realm MSX2 Engine (Gameplay Core) ===\r\n$");
 
-	// 1. Carrega o jogo binário (HEADER.BIN e GAME.DAT) via Loader do MSX-DOS 2
+	// 1. Carrega o banco binário do jogo via handles de arquivo do DOS 2
 	if (!LOADER_LoadGame("HEADER.BIN", "GAME.DAT"))
 	{
-		DOS_StringOutput("Erro ao carregar dados do jogo!\r\n$");
+		DOS_StringOutput("Erro fatal: Falha ao carregar HEADER.BIN ou GAME.DAT!\r\n$");
 		return;
 	}
 
 	header = LOADER_GetMasterHeader();
-	DOS_StringOutput("Jogo carregado! Segmentos: $");
+	DOS_StringOutput("Dados carregados com sucesso! Segmentos: $");
 	PrintHex((u8)header->SegmentCount);
 	DOS_StringOutput(" Recursos: $");
 	PrintHex((u8)header->ResourceCount);
@@ -55,55 +48,52 @@ void main(void)
 	PrintHex((u8)header->InitialRoomID);
 	DOS_StringOutput("\r\n$");
 
-	// 2. Mapeia e carrega o tileset inicial na VRAM
-	tileset = LOADER_GetTileset(header->InitialTileset);
-	if (!tileset)
+	// 2. Inicializa o subsistema de mundo e gerência de salas
+	WORLD_Init();
+
+	// 3. Inicializa o processador de vídeo V9938 em SCREEN 4 (Graphic 3)
+	VDP_InitScreen4();
+	VDP_ClearHUDAndDialogue(255); // Preenche HUD e diálogo com tile vazio
+
+	// 4. Carrega a sala inicial no Memory Mapper e desenha na tela
+	if (!WORLD_LoadRoom(header->InitialRoomID))
 	{
-		DOS_StringOutput("Erro: Tileset inicial nao encontrado!\r\n$");
-		MAPPER_Cleanup();
-		return;
+		DOS_StringOutput("Erro: Nao foi possivel carregar a sala inicial!\r\n$");
+		goto cleanup;
 	}
 
-	// 3. Inicializa o modo de vídeo V9938 SCREEN 4 (Graphic 3)
-	VDP_InitScreen4();
+	// 5. Inicializa o herói na coordenada de partida com o Sprite 1
+	startX = (header->InitialHeroX < VIEWPORT_WIDTH) ? header->InitialHeroX : 16;
+	startY = (header->InitialHeroY < VIEWPORT_HEIGHT) ? header->InitialHeroY : 9;
+	HERO_Init(startX, startY, 1);
 
-	// 4. Copia os padrões e cores do tileset para os 3 bancos da SCREEN 4
-	VDP_LoadTilesetAllBanks(tileset->PatternTable, tileset->ColorTable);
-	VDP_ClearHUDAndDialogue(255);
+	// 6. Loop Principal de Gameplay (Sincronizado a 50/60 Hz no V-Blank)
+	EnableInterrupt();
 
-	// 5. Loop de Demonstração:
-	// Alterna entre a Sala 1 (Entrada) e a Sala 2 (Câmara dos Pilares) carregadas da RAM do Mapper
+	while (TRUE)
 	{
-		u8 cycle;
-		for (cycle = 0; cycle < 2; cycle++)
-		{
-			u16 t;
-			u16 roomId = (cycle == 0) ? header->InitialRoomID : 2;
-			BinaryRoom* room = LOADER_GetRoom(roomId);
-			if (room)
-			{
-				VDP_DrawRoomViewport(room->TileMatrix);
-			}
+		// Aguarda o próximo ciclo de interrupção vertical (V-Blank)
+		Halt();
 
-			// Exibe cada sala por ~3.3 segundos (30 passos de ~110ms)
-			for (t = 0; t < 30; t++)
-			{
-				if (Keyboard_IsKeyPressed(KEY_ESC))
-				{
-					goto cleanup;
-				}
-				if (Keyboard_IsKeyPressed(KEY_SPACE))
-				{
-					// Pular para o próximo ciclo se apertar espaço
-					break;
-				}
-				WaitDelay(6000);
-			}
+		// Atualiza entrada de controles, física de colisão e movimentação no grid
+		HERO_Update();
+
+		// Tecla ESC para encerrar a partida e retornar ao sistema operacional
+		if (Keyboard_IsKeyPressed(KEY_ESC))
+		{
+			break;
 		}
 	}
 
 cleanup:
+	// Oculta o sprite do herói antes de restaurar o modo texto
+	VDP_Screen4_HideSprite(0);
+
+	// Restaura o modo de texto SCREEN 0 padrão do MSX-DOS 2 via BIOS
 	DOS_InterSlotCall(g_EXPTBL[0], R_INITXT);
+
+	// Libera todos os segmentos do Memory Mapper alocados via EXTBIOS
 	MAPPER_Cleanup();
-	DOS_StringOutput("Z-Realm: Execucao finalizada com sucesso! RAM liberada.\r\n$");
+
+	DOS_StringOutput("Z-Realm: Sessao finalizada com sucesso! RAM liberada.\r\n$");
 }

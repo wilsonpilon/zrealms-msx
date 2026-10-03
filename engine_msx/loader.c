@@ -149,3 +149,10 @@ BinaryTileset* LOADER_GetTileset(u16 tilesetID)
 {
 	return (BinaryTileset*)LOADER_MapResource(RES_TYPE_TILESET, tilesetID);
 }
+
+// Atalho para mapear e obter ponteiro para um Sprite (BinarySprite)
+BinarySprite* LOADER_GetSprite(u16 spriteID)
+{
+	return (BinarySprite*)LOADER_MapResource(RES_TYPE_SPRITE, spriteID);
+}
+
