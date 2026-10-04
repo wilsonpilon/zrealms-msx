@@ -103,11 +103,12 @@ module.exports.compile = function (file, size, seg)
 					let cleanedAsm = asmContent.replace(/^[ \t]*!extern[^\r\n]*[\r\n]+/gm, '');
 					fs.writeFileSync(asmFile, cleanedAsm, 'utf8');
 
-					let cleanProjDir = ProjDir.replace(/[\\\/]+$/, '').replace(/\//g, '\\');
-					let cleanOutDir  = OutDir.replace(/[\\\/]+$/, '').replace(/\//g, '\\');
-					let cleanLibSrc  = `${LibDir}src`.replace(/[\\\/]+$/, '').replace(/\//g, '\\');
+					let cleanProjDir = ProjDir.replace(/[\\\/]+$/, '').replace(/\\/g, '/');
+					let cleanOutDir  = OutDir.replace(/[\\\/]+$/, '').replace(/\\/g, '/');
+					let cleanLibSrc  = `${LibDir}src`.replace(/[\\\/]+$/, '').replace(/\\/g, '/');
+					let fwdAsm       = asmFile.replace(/\\/g, '/');
 
-					let asmErr = util.execSync(`"${winAssembler}" -o -l -s -I"${cleanProjDir}" -I"${cleanOutDir}" -I"${cleanLibSrc}" "${winAsm}"`);
+					let asmErr = util.execSync(`"${winAssembler}" -o -l -s -g -I"${cleanProjDir}" -I"${cleanOutDir}" -I"${cleanLibSrc}" "${fwdAsm}"`);
 					if(!asmErr)
 					{
 						err = 0;

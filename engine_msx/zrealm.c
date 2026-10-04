@@ -3,8 +3,10 @@
 // Fase 4: Gameplay Engine, Movimentação no Grid & Colisão (Subfase 4.1)
 //─────────────────────────────────────────────────────────────────────────────
 #include "core.h"
+#if (TARGET_TYPE == TYPE_DOS)
 #include "dos.h"
 #include "dos_mapper.h"
+#endif
 #include "vdp.h"
 #include "keyboard.h"
 #include "joystick.h"
@@ -20,6 +22,7 @@
 
 #define Halt() __asm__("halt")
 
+#if (TARGET_TYPE == TYPE_DOS)
 static void PrintHex(u8 val)
 {
 	static const c8 hex[] = "0123456789ABCDEF";
@@ -114,3 +117,67 @@ cleanup:
 
 	DOS_StringOutput("Z-Realm: Sessao finalizada com sucesso! RAM liberada.\r\n$");
 }
+
+#else // TARGET_TYPE == TYPE_ROM
+
+// Ponto de entrada do cartucho MegaROM
+void main(void)
+{
+	const MasterHeader* header;
+	u8 startX, startY;
+
+	// 1. Inicializa os dados a partir do Bank 0 do MegaROM
+	if (!LOADER_LoadROM())
+	{
+		while (TRUE) Halt();
+	}
+
+	header = LOADER_GetMasterHeader();
+
+	// 2. Inicializa o subsistema de mundo, de entidades e a VM de eventos
+	WORLD_Init();
+	ENTITY_Init();
+	VM_Init();
+
+	// 3. Inicializa o processador de vídeo V9938 em SCREEN 4 (Graphic 3)
+	VDP_InitScreen4();
+	UI_Init();
+
+	// 4. Carrega a sala inicial no Memory Mapper e desenha na tela
+	if (!WORLD_LoadRoom(header->InitialRoomID))
+	{
+		while (TRUE) Halt();
+	}
+
+	// 5. Inicializa o herói na coordenada de partida com o Sprite 1
+	startX = (header->InitialHeroX < VIEWPORT_WIDTH) ? header->InitialHeroX : 16;
+	startY = (header->InitialHeroY < VIEWPORT_HEIGHT) ? header->InitialHeroY : 9;
+	HERO_Init(startX, startY, 1);
+
+	// 6. Loop Principal de Gameplay (Sincronizado a 50/60 Hz no V-Blank)
+	EnableInterrupt();
+
+	while (TRUE)
+	{
+		Halt();
+
+		if (UI_IsDialogueActive())
+		{
+			UI_UpdateDialogue();
+		}
+		else
+		{
+			HERO_Update();
+			ENTITY_Update();
+		}
+
+		// Em cartucho, tecla ESC reinicia o herói na sala inicial
+		if (Keyboard_IsKeyPressed(KEY_ESC))
+		{
+			HERO_Init(startX, startY, 1);
+			WORLD_LoadRoom(header->InitialRoomID);
+		}
+	}
+}
+
+#endif

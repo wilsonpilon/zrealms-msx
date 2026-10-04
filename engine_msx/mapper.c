@@ -3,6 +3,7 @@
 // Implementação com proteção total contra vazamento de memória no DOS 2
 //─────────────────────────────────────────────────────────────────────────────
 #include "mapper.h"
+#if (TARGET_TYPE == TYPE_DOS)
 #include "dos.h"
 
 // Tabela de segmentos físicos alocados do sistema operacional
@@ -100,3 +101,54 @@ void MAPPER_Cleanup(void)
 	g_MapperState.TotalSegments = 0;
 	g_MapperState.ActiveSegment = 0xFF;
 }
+
+#elif (TARGET_TYPE == TYPE_ROM)
+
+// No cartucho MegaROM, todos os segmentos lógicos estão disponíveis diretamente na ROM
+MapperState g_MapperState = { MAPPER_MAX_SEGMENTS, 0xFF, 0 };
+
+bool MAPPER_Init(u8 minRequiredSegments)
+{
+	(void)minRequiredSegments;
+	g_MapperState.TotalSegments = MAPPER_MAX_SEGMENTS;
+	g_MapperState.ActiveSegment = 0xFF;
+
+	// Configura o primeiro segmento de dados (Bank 1) na Página 2 (8000h)
+	MAPPER_SetPage2(0);
+	return TRUE;
+}
+
+void MAPPER_SetPage2(u8 logicalSegment)
+{
+	if (g_MapperState.ActiveSegment == logicalSegment)
+		return;
+
+	// No cartucho MegaROM:
+	// - Bank 0 é a Engine e cabeçalho mestre em Página 1 (4000h - 7FFFh).
+	// - Banks 1..N são os segmentos de dados chaveados na Página 2 (8000h - BFFFh).
+	#if (ROM_MAPPER == ROM_ASCII16)
+		Poke(0x77FF, (u8)(logicalSegment + 1));
+	#elif (ROM_MAPPER == ROM_ASCII8)
+		Poke(0x7000, (u8)((logicalSegment + 1) * 2));
+		Poke(0x7800, (u8)((logicalSegment + 1) * 2 + 1));
+	#elif (ROM_MAPPER == ROM_KONAMI)
+		Poke(0x8000, (u8)((logicalSegment + 1) * 2));
+		Poke(0xA000, (u8)((logicalSegment + 1) * 2 + 1));
+	#else
+		Poke(0x77FF, (u8)(logicalSegment + 1));
+	#endif
+
+	g_MapperState.ActiveSegment = logicalSegment;
+}
+
+u8 MAPPER_GetPage2(void)
+{
+	return g_MapperState.ActiveSegment;
+}
+
+void MAPPER_Cleanup(void)
+{
+	g_MapperState.ActiveSegment = 0xFF;
+}
+
+#endif

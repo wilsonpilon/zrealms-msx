@@ -1339,7 +1339,33 @@ void VDP_CommandWait() __PRESERVES(b, c, d, e, h, l, iyl, iyh)
 void VDP_CommandSetupR32()
 {
 	VDP_CommandWait();
-	ASM_REG_WRITE_INC(g_VDP_Command, 32, 15);
+	__asm
+		ld		a, #32
+		VDP_DI
+		out		(P_VDP_ADDR), a
+		ld		a, #(0x80 | 17)
+		VDP_EI_DEF
+		out		(P_VDP_ADDR), a
+		ld		hl, #_g_VDP_Command
+		ld		c, #P_VDP_IREG
+		VDP_DI_DEF
+		outi
+		outi
+		outi
+		outi
+		outi
+		outi
+		outi
+		outi
+		outi
+		outi
+		outi
+		outi
+		outi
+		outi
+		ei
+		outi
+	__endasm;
 }
 
 //-----------------------------------------------------------------------------
@@ -1347,7 +1373,29 @@ void VDP_CommandSetupR32()
 void VDP_CommandSetupR36()
 {
 	VDP_CommandWait();
-	ASM_REG_WRITE_INC(g_VDP_Command + 4, 36, 11);
+	__asm
+		ld		a, #36
+		VDP_DI
+		out		(P_VDP_ADDR), a
+		ld		a, #(0x80 | 17)
+		VDP_EI_DEF
+		out		(P_VDP_ADDR), a
+		ld		hl, #(_g_VDP_Command + 4)
+		ld		c, #P_VDP_IREG
+		VDP_DI_DEF
+		outi
+		outi
+		outi
+		outi
+		outi
+		outi
+		outi
+		outi
+		outi
+		outi
+		ei
+		outi
+	__endasm;
 }
 
 //-----------------------------------------------------------------------------
@@ -1405,7 +1453,32 @@ void VDP_CommandCustomR32(const VDP_Command* data)
 {
 	data; // HL
 	VDP_CommandWait(); // don't modify HL
-	ASM_REG_WRITE_INC_HL(32, 15);
+	__asm
+		ld		a, #32
+		VDP_DI
+		out		(P_VDP_ADDR), a
+		ld		a, #(0x80 | 17)
+		VDP_EI_DEF
+		out		(P_VDP_ADDR), a
+		ld		c, #P_VDP_IREG
+		VDP_DI_DEF
+		outi
+		outi
+		outi
+		outi
+		outi
+		outi
+		outi
+		outi
+		outi
+		outi
+		outi
+		outi
+		outi
+		outi
+		ei
+		outi
+	__endasm;
 }
 
 //-----------------------------------------------------------------------------
@@ -1414,7 +1487,28 @@ void VDP_CommandCustomR36(const VDP_Command36* data)
 {
 	data; // HL
 	VDP_CommandWait(); // don't modify HL
-	ASM_REG_WRITE_INC_HL(36, 11);
+	__asm
+		ld		a, #36
+		VDP_DI
+		out		(P_VDP_ADDR), a
+		ld		a, #(0x80 | 17)
+		VDP_EI_DEF
+		out		(P_VDP_ADDR), a
+		ld		c, #P_VDP_IREG
+		VDP_DI_DEF
+		outi
+		outi
+		outi
+		outi
+		outi
+		outi
+		outi
+		outi
+		outi
+		outi
+		ei
+		outi
+	__endasm;
 }
 
 #endif

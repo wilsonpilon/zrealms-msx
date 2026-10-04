@@ -6,6 +6,7 @@
 static MasterHeader  s_MasterHeader;
 static ResourceEntry s_ResourceDirectory[MAX_RESOURCES_DIR];
 
+#if (TARGET_TYPE == TYPE_DOS)
 // Carrega o HEADER.BIN e faz o streaming de GAME.DAT para os segmentos do Mapper
 bool LOADER_LoadGame(const c8* headerPath, const c8* dataPath)
 {
@@ -104,6 +105,56 @@ bool LOADER_LoadGame(const c8* headerPath, const c8* dataPath)
 	DOS_CloseHandle(hFile);
 	return TRUE;
 }
+#else
+// Inicializa o MasterHeader e Diretório diretamente a partir do Bank 0 do MegaROM
+bool LOADER_LoadROM(void)
+{
+	const MasterHeader* romHeader = (const MasterHeader*)ROM_HEADER_ADDR;
+	const ResourceEntry* romDir = (const ResourceEntry*)(ROM_HEADER_ADDR + sizeof(MasterHeader));
+	const u8* src;
+	u8* dst;
+	u16 i;
+
+	// Valida assinatura 'ZR01' e versão
+	if (romHeader->Magic[0] != LOADER_MAGIC_0 ||
+	    romHeader->Magic[1] != LOADER_MAGIC_1 ||
+	    romHeader->Magic[2] != LOADER_MAGIC_2 ||
+	    romHeader->Magic[3] != LOADER_MAGIC_3 ||
+	    romHeader->Version != LOADER_VERSION)
+	{
+		return FALSE;
+	}
+
+	// Copia o MasterHeader para a RAM
+	src = (const u8*)romHeader;
+	dst = (u8*)&s_MasterHeader;
+	for (i = 0; i < sizeof(MasterHeader); i++)
+	{
+		*dst++ = *src++;
+	}
+
+	if (s_MasterHeader.ResourceCount > MAX_RESOURCES_DIR)
+	{
+		return FALSE;
+	}
+
+	// Copia as entradas do diretório para a RAM
+	src = (const u8*)romDir;
+	dst = (u8*)s_ResourceDirectory;
+	for (i = 0; i < (s_MasterHeader.ResourceCount * sizeof(ResourceEntry)); i++)
+	{
+		*dst++ = *src++;
+	}
+
+	// Inicializa o mapper de ROM
+	if (!MAPPER_Init(s_MasterHeader.SegmentCount))
+	{
+		return FALSE;
+	}
+
+	return TRUE;
+}
+#endif
 
 // Retorna ponteiro constante para o MasterHeader carregado
 const MasterHeader* LOADER_GetMasterHeader(void)

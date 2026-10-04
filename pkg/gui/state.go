@@ -218,6 +218,45 @@ func (s *ProjectState) OneClickRun(opts runner.RunOptions) (*runner.RunResult, e
 	return runner.OneClickRun(proj, opts)
 }
 
+// ExportROM compila e gera um cartucho .ROM (MegaROM ASCII-16) do projeto ativo.
+func (s *ProjectState) ExportROM(outDir string) (*exporter.ROMExportResult, error) {
+	s.mu.RLock()
+	proj := s.project
+	filePath := s.filePath
+	s.mu.RUnlock()
+
+	if proj == nil {
+		return nil, fmt.Errorf("nenhum projeto aberto para exportar")
+	}
+
+	if outDir == "" {
+		outDir = filepath.Join(filepath.Dir(filePath), "build_msx")
+	}
+
+	return exporter.ExportROM(proj, exporter.ExportROMOptions{
+		OutputDir: outDir,
+	})
+}
+
+// OneClickRunROM executa a exportação como MegaROM e lançamento no openMSX (-cart).
+func (s *ProjectState) OneClickRunROM(opts runner.RunROMOptions) (*runner.RunROMResult, error) {
+	s.mu.RLock()
+	proj := s.project
+	filePath := s.filePath
+	s.mu.RUnlock()
+
+	if proj == nil {
+		return nil, fmt.Errorf("nenhum projeto aberto para executar")
+	}
+
+	if opts.OutputDir == "" {
+		opts.OutputDir = filepath.Join(filepath.Dir(filePath), "build_msx")
+	}
+	opts.Async = true
+
+	return runner.OneClickRunROM(proj, opts)
+}
+
 // AddRecentFile adiciona um caminho à lista de recentes.
 func (s *ProjectState) AddRecentFile(path string) {
 	s.mu.Lock()

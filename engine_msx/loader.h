@@ -5,8 +5,13 @@
 #pragma once
 
 #include "core.h"
+#if (TARGET_TYPE == TYPE_DOS)
 #include "dos.h"
+#endif
 #include "mapper.h"
+
+// Endereço fixo do cabeçalho mestre no Bank 0 do MegaROM (0x7C00 no espaço de endereçamento do Z80)
+#define ROM_HEADER_ADDR     0x7C00
 
 // Constantes do formato binário Z-Realm
 #define LOADER_MAGIC_0      'Z'
@@ -96,7 +101,11 @@ typedef struct
 } BinarySprite;
 
 // Funções públicas do Loader
+#if (TARGET_TYPE == TYPE_DOS)
 bool LOADER_LoadGame(const c8* headerPath, const c8* dataPath);
+#else
+bool LOADER_LoadROM(void);
+#endif
 const MasterHeader* LOADER_GetMasterHeader(void);
 const ResourceEntry* LOADER_FindResource(u8 type, u16 id);
 void* LOADER_MapResource(u8 type, u16 id);

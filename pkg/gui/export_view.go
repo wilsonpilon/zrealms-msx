@@ -51,13 +51,22 @@ func NewExportView(state *ProjectState, win fyne.Window) fyne.CanvasObject {
 	v.logArea.Disable()
 	v.logArea.SetText("Nenhuma ação realizada nesta sessão.\nClique em 'Testar no openMSX' para o ciclo completo automatizado\nou em 'Exportar Binários' para geração manual.")
 
-	btnRunOneClick := widget.NewButtonWithIcon("▶ Testar no openMSX (One-Click Run) [F5]", theme.MediaPlayIcon(), func() {
+	btnRunOneClick := widget.NewButtonWithIcon("▶ Testar Disquete DOS2 (.DSK) [F5]", theme.MediaPlayIcon(), func() {
 		v.runOneClick()
 	})
 	btnRunOneClick.Importance = widget.HighImportance
 
-	btnExport := widget.NewButtonWithIcon("Exportar Binários (Manual)", theme.DocumentSaveIcon(), func() {
+	btnRunROM := widget.NewButtonWithIcon("🕹️ Testar Cartucho MegaROM (.ROM)", theme.MediaFastForwardIcon(), func() {
+		v.runOneClickROM()
+	})
+	btnRunROM.Importance = widget.HighImportance
+
+	btnExport := widget.NewButtonWithIcon("Exportar Disquete (HEADER/GAME.DAT)", theme.DocumentSaveIcon(), func() {
 		v.runExport()
+	})
+
+	btnExportROM := widget.NewButtonWithIcon("Exportar Cartucho .ROM (ASCII-16)", theme.FileIcon(), func() {
+		v.runExportROM()
 	})
 
 	btnOpenFolder := widget.NewButtonWithIcon("Abrir Pasta no Explorer", theme.FolderOpenIcon(), func() {
@@ -72,18 +81,18 @@ func NewExportView(state *ProjectState, win fyne.Window) fyne.CanvasObject {
 
 	form := container.NewVBox(
 		widget.NewLabelWithStyle("🚀 Automação 'One-Click Run' (openMSX)", fyne.TextAlignLeading, fyne.TextStyle{Bold: true}),
-		widget.NewLabel("Exporta o projeto SQLite, empacota o disquete MSX-DOS 2 (720 KB) e executa o jogo no openMSX com 1 clique."),
+		widget.NewLabel("Exporta o projeto e inicia instantaneamente no emulador openMSX via Disquete DOS 2 ou Cartucho MegaROM."),
 		container.NewGridWithColumns(2,
 			widget.NewFormItem("Perfil da Máquina:", v.selectMachine).Widget,
 			widget.NewFormItem("Caminho do openMSX (Opcional):", v.entryEmuPath).Widget,
 		),
-		container.NewHBox(btnRunOneClick),
+		container.NewHBox(btnRunOneClick, btnRunROM),
 		widget.NewSeparator(),
 
-		widget.NewLabelWithStyle("📦 Exportador Binário Manual", fyne.TextAlignLeading, fyne.TextStyle{Bold: true}),
+		widget.NewLabelWithStyle("📦 Exportadores Binários Manuais", fyne.TextAlignLeading, fyne.TextStyle{Bold: true}),
 		widget.NewFormItem("Diretório de Saída:", v.entryOutDir).Widget,
 		v.checkBanks,
-		container.NewHBox(btnExport, btnOpenFolder),
+		container.NewHBox(btnExport, btnExportROM, btnOpenFolder),
 		widget.NewSeparator(),
 
 		widget.NewLabelWithStyle("Registro de Operações:", fyne.TextAlignLeading, fyne.TextStyle{Bold: true}),
@@ -106,7 +115,7 @@ func (v *ExportView) runOneClick() {
 	outDir := v.entryOutDir.Text
 	emuPath := strings.TrimSpace(v.entryEmuPath.Text)
 
-	v.logArea.SetText("Iniciando pipeline One-Click Run...\n[1/3] Exportando dados do projeto SQLite...")
+	v.logArea.SetText("Iniciando pipeline One-Click Run (Disquete MSX-DOS 2)...\n[1/3] Exportando dados do projeto SQLite...")
 
 	go func() {
 		res, err := v.state.OneClickRun(runner.RunOptions{
@@ -125,7 +134,7 @@ func (v *ExportView) runOneClick() {
 
 		summary := fmt.Sprintf(
 			"==========================================================\n"+
-				"   ONE-CLICK RUN DISPARADO COM SUCESSO!\n"+
+				"   ONE-CLICK RUN DISPARADO COM SUCESSO (MSX-DOS 2)!\n"+
 				"==========================================================\n\n"+
 				"[1/3] Exportação Binária: OK\n"+
 				"      - Tabela Mestra:    %s\n"+
@@ -138,10 +147,68 @@ func (v *ExportView) runOneClick() {
 				"      - Executável:       %s\n"+
 				"      - Máquina:          %s\n"+
 				"      - Linha de Comando:\n        %s\n\n"+
-				"O jogo está rodando no openMSX!\n"+
+				"O jogo está rodando no openMSX via Disquete!\n"+
 				"Controles: Direcionais para andar, ESPACO para interagir, ESC para sair ao DOS.",
 			res.ExportResult.HeaderPath, res.ExportResult.TotalDataBytes, res.ExportResult.TotalSegments, res.ExportResult.ResourceCount,
 			res.DskPath, res.DskSize,
+			res.EmulatorExe, machine,
+			strings.Join(res.CommandLine, " "),
+		)
+		v.logArea.SetText(summary)
+	}()
+}
+
+func (v *ExportView) runOneClickROM() {
+	if !v.state.IsOpen() {
+		dialog.ShowInformation("Aviso", "Abra ou crie um projeto antes de testar.", v.win)
+		return
+	}
+
+	machine := "Philips_NMS_8250"
+	if strings.HasPrefix(v.selectMachine.Selected, "Panasonic") {
+		machine = "Panasonic_FS-A1GT"
+	}
+
+	outDir := v.entryOutDir.Text
+	emuPath := strings.TrimSpace(v.entryEmuPath.Text)
+
+	v.logArea.SetText("Iniciando pipeline One-Click Run (Cartucho MegaROM .ROM)...\n[1/2] Compilando recursos e montando imagem MegaROM ASCII-16...")
+
+	go func() {
+		res, err := v.state.OneClickRunROM(runner.RunROMOptions{
+			OutputDir:   outDir,
+			EmulatorExe: emuPath,
+			Machine:     machine,
+			AutoRun:     true,
+			Async:       true,
+		})
+
+		if err != nil {
+			v.logArea.SetText(fmt.Sprintf("FALHA NO ONE-CLICK RUN ROM:\n%v", err))
+			dialog.ShowError(fmt.Errorf("falha ao executar cartucho no openMSX: %w", err), v.win)
+			return
+		}
+
+		summary := fmt.Sprintf(
+			"==========================================================\n"+
+				"   ONE-CLICK RUN DISPARADO COM SUCESSO (CARTUCHO .ROM)!\n"+
+				"==========================================================\n\n"+
+				"[1/2] Cartucho MegaROM: OK\n"+
+				"      - Arquivo .ROM:     %s (%d bytes / %d KB)\n"+
+				"      - Mapper:           %s (%d bancos de 16KB)\n"+
+				"      - Segmentos Jogo:   %d banco(s)\n"+
+				"      - Recursos:         %d catalogados\n\n"+
+				"[2/2] Emulador openMSX: DISPARADO COM CARTUCHO (-cart)!\n"+
+				"      - Executável:       %s\n"+
+				"      - Máquina:          %s\n"+
+				"      - Linha de Comando:\n        %s\n\n"+
+				"O jogo está rodando diretamente no openMSX como Cartucho MegaROM!\n"+
+				"Boot instantâneo, zero latência de disco, SCREEN 4 pronta.\n"+
+				"Controles: Direcionais para andar, ESPACO para interagir, ESC para reset.",
+			res.ROMPath, res.ROMSize, res.ROMSize/1024,
+			res.ExportResult.MapperType, res.ExportResult.TotalBanks,
+			res.ExportResult.TotalSegments,
+			res.ExportResult.ResourceCount,
 			res.EmulatorExe, machine,
 			strings.Join(res.CommandLine, " "),
 		)
@@ -165,7 +232,7 @@ func (v *ExportView) runExport() {
 
 	summary := fmt.Sprintf(
 		"==========================================================\n"+
-			"   EXPORTAÇÃO CONCLUÍDA COM SUCESSO!\n"+
+			"   EXPORTAÇÃO DISQUETE CONCLUÍDA COM SUCESSO!\n"+
 			"==========================================================\n\n"+
 			"Tabela Mestra:    %s\n"+
 			"Arquivo de Dados: %s\n"+
@@ -177,5 +244,38 @@ func (v *ExportView) runExport() {
 		res.HeaderPath, res.DataPath, res.TotalDataBytes, res.TotalSegments, res.ResourceCount,
 	)
 	v.logArea.SetText(summary)
-	dialog.ShowInformation("Exportação Concluída", "Os binários MSX 2 foram gerados com sucesso!", v.win)
+	dialog.ShowInformation("Exportação Concluída", "Os binários do disquete MSX 2 foram gerados com sucesso!", v.win)
+}
+
+func (v *ExportView) runExportROM() {
+	if !v.state.IsOpen() {
+		dialog.ShowInformation("Aviso", "Abra ou crie um projeto antes de exportar.", v.win)
+		return
+	}
+
+	outDir := v.entryOutDir.Text
+	res, err := v.state.ExportROM(outDir)
+	if err != nil {
+		dialog.ShowError(fmt.Errorf("falha na exportação de cartucho: %w", err), v.win)
+		v.logArea.SetText(fmt.Sprintf("ERRO NA EXPORTAÇÃO ROM:\n%v", err))
+		return
+	}
+
+	summary := fmt.Sprintf(
+		"==========================================================\n"+
+			"   EXPORTAÇÃO CARTUCHO MEGAROM CONCLUÍDA COM SUCESSO!\n"+
+			"==========================================================\n\n"+
+			"Arquivo .ROM:     %s\n"+
+			"Tamanho Total:    %d bytes (%d KB)\n"+
+			"Tipo de Mapper:   %s (%d bancos de 16KB)\n"+
+			"Segmentos Jogo:   %d banco(s)\n"+
+			"Total Recursos:   %d catalogados\n\n"+
+			"O arquivo .ROM gerado é bootável em qualquer MSX 2 com suporte a MegaROM ASCII-16\n"+
+			"(MegaFlashROM, Carnivore2, GR8NET ou emuladores openMSX/blueMSX)!",
+		res.ROMPath, res.TotalROMBytes, res.TotalROMBytes/1024,
+		res.MapperType, res.TotalBanks,
+		res.TotalSegments, res.ResourceCount,
+	)
+	v.logArea.SetText(summary)
+	dialog.ShowInformation("Exportação ROM Concluída", "O cartucho MegaROM (.ROM) foi gerado com sucesso!", v.win)
 }

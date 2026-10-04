@@ -7,6 +7,39 @@ O formato baseia-se em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0
 * **Y (Minor / Feature):** Incrementado a cada nova feature concluída e integrada ao projeto.
 * **X (Major):** Incrementado a cada transição estrutural ou conclusão de uma grande fase (ex.: finalização da Camada de Dados, conclusão do Editor Gráfico, etc.).
 
+## [0.5.2] - 2026-10-04
+
+### Adicionado (Added)
+- **Subfase 5.2: Backend MegaROM (Cartucho .ROM ASCII-16):**
+  - **Engine C Multi-Target (`engine_msx`):**
+    - Suporte nativo completo à compilação multi-alvo: MSX-DOS 2 (`target=DOS2` -> `.COM`) e Cartucho MegaROM (`target=ROM_ASCII16` -> `.ROM`).
+    - Configuração dinâmica de módulos de biblioteca no `project_config.js` (`vdp`, `system`, `bios`, `keyboard`, `joystick`, `memory`) ao compilar para ROM.
+    - Implementação de paginação de bancos MegaROM ASCII-16 em `mapper.c`: chaveamento de 16 KB via escrita no endereço `0x77FF` para a Página 2 (`0x8000..0xBFFF`), mapeando `logicalSegment + 1`.
+    - Carregador de ROM em `loader.c` (`LOADER_LoadROM`): mapeamento direto da Tabela Mestra e Diretório de Recursos a partir de `0x7C00` (offset `0x3C00` no arquivo ROM).
+    - Ponto de entrada específico de cartucho em `zrealm.c` inicializando subsistemas de vídeo, entidades, VM de eventos e loop principal a 60 fps.
+    - Patches de compatibilidade no `MSXgl` (`vdp.c`, `system.c`, `bios.c`, `compiler.js`) expandindo macros com quebras de linha e adicionando `-g` ao `sdasz80` para símbolos globais.
+  - **Exportador Go MegaROM (`pkg/exporter/megarom.go`):**
+    - Embutimento da imagem base compilada do cartucho (`zrealm_base.rom` de 16 KB no Banco 0).
+    - Injeção da Tabela Mestra (`HEADER.BIN`) no offset `0x3C00` (CPU `0x7C00`).
+    - Alocação dos dados empacotados do jogo (`GAME.DAT`) a partir do Banco 1 (`0x4000`).
+    - Preenchimento padronizado (`0xFF`) com `CalculateStandardROMSize` para capacidades de cartucho comerciais (128 KB, 256 KB, 512 KB, 1024 KB, 2048 KB, 4096 KB).
+    - Testes unitários e de integração em `megarom_test.go` cobrindo cálculo de tamanho, montagem física e validação de integridade.
+  - **Runner e Automação de Execução (`pkg/runner`):**
+    - Métodos `BuildOpenMSXROMArgs`, `LaunchOpenMSXCart` e `OneClickRunROM`.
+    - Suporte a disparo do emulador com a flag `-cart` no `openmsx`.
+  - **Interface Gráfica Desktop Fyne (`pkg/gui`):**
+    - Botão de ação rápida "🕹️ Testar Cartucho MegaROM (.ROM)" na aba Exportar.
+    - Exportação manual com painel informativo exibindo tamanho do arquivo, quantidade de bancos de 16 KB e segmentos de dados.
+  - **Interface de Linha de Comando (CLI - `cmd/zrealm/main.go`):**
+    - Flags `-export-rom <arquivo.rpgproj>`, `-run-rom <arquivo.rpgproj>` e `-pad-size <KB>`.
+  - **Validação Automatizada em Malha Fechada no openMSX (`sub52_test.tcl`):**
+    - Execução do cartucho `demo.rom` gerado, capturando 5 screenshots sequenciais em SCREEN 4:
+      1. `sub52_01_spawn_cart.png`: Spawn inicial na Sala 1 com masmorra, sprites e HUD ativos no cartucho.
+      2. `sub52_02_facing_guardian_cart.png`: Herói caminhando a Oeste e ficando diante do NPC Guardião.
+      3. `sub52_03_dialogue_cart.png`: Caixa de diálogo renderizada na tela com a fala do Guardião.
+      4. `sub52_04_item_received_cart.png`: Diálogo concluído e Chave de Ferro recebida no inventário (HUD `🗝:1`).
+      5. `sub52_05_room2_cart.png`: Transição cardeal a Leste para a Sala 2 (Câmara dos Pilares) carregada a partir do banco MegaROM.
+
 ## [0.5.1] - 2026-10-04
 
 ### Adicionado (Added)

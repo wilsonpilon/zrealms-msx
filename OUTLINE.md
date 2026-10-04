@@ -144,7 +144,15 @@ Este documento serve como mapa de bordo vivo do projeto, refletindo o roadmap es
   - [x] Integração completa na GUI desktop Fyne (`ExportView` com botão One-Click Run `[F5]`, seletor de perfil de hardware e console de logs em tempo real).
   - [x] Adição do comando CLI `zrealm -run <arquivo.rpgproj>` (com flags opcionais `-machine`, `-emu` e `-script`).
   - [x] Validação automatizada em malha fechada no openMSX (`sub51_test.tcl`) comprovando com 3 screenshots sequenciais: boot do disquete gerado, gameplay interativo com HUD e saída limpa ao MSX-DOS 2 via ESC com liberação total de RAM.
-- [ ] **Subfase 5.2 — Backend MegaROM (Cartucho):**
-  - [ ] Geração de arquivo `.ROM` unificado com chaveador de banco em cartucho.
+- [x] **Subfase 5.2 — Backend MegaROM (Cartucho .ROM):**
+  - [x] Compilação multi-target da engine C para ambos os formatos: MSX-DOS 2 (`.COM`) e MegaROM ASCII-16 (`.ROM`).
+  - [x] Implementação de chaveamento de bancos MegaROM ASCII-16 via escrita em `0x77FF` (`MAPPER_SetPage2`), mapeando a Página 2 (`0x8000..0xBFFF`) diretamente para os bancos de 16 KB do cartucho.
+  - [x] Injeção e leitura da Tabela Mestra (`MasterHeader`) e Diretório de Recursos diretamente no Banco 0 do cartucho em `ROM_HEADER_ADDR = 0x7C00` (offset `0x3C00` do arquivo ROM), aproveitando o espaço restante de 1 KB do Banco 0.
+  - [x] Criação do pacote Go `pkg/exporter/megarom.go` com embutimento da base ROM (`zrealm_base.rom`), injeção do cabeçalho e append sequencial dos segmentos de dados a partir do Banco 1 (`0x4000`), com preenchimento (padding `0xFF`) para tamanhos padronizados de cartucho (128 KB, 256 KB, 512 KB, 1024 KB, 2048 KB, 4096 KB).
+  - [x] Integração completa do pipeline de One-Click Run para cartuchos (`OneClickRunROM`, `BuildOpenMSXROMArgs`, `LaunchOpenMSXCart`) no pacote `pkg/runner`.
+  - [x] Atualização da interface gráfica desktop Fyne (`ExportView` e `ProjectState`) com botão dedicado "🕹️ Testar Cartucho MegaROM (.ROM)" e exportação direta com log detalhado de bancos.
+  - [x] Adição das flags CLI no binário `zrealm`: `-export-rom <arquivo.rpgproj>`, `-run-rom <arquivo.rpgproj>` e `-pad-size <KB>`.
+  - [x] Validação automatizada em malha fechada no emulador openMSX (`sub52_test.tcl`) comprovando com 5 screenshots sequenciais: spawn inicial no cartucho com HUD e SCREEN 4, aproximação do NPC Guardião, diálogo interativo na tela, recebimento da Chave de Bronze no inventário com atualização do HUD, e transição cardeal para a Sala 2 (Câmara dos Pilares) carregada e renderizada a partir do banco MegaROM.
 - [ ] **Subfase 5.3 — Jogo de Referência:**
   - [ ] Mini-cRPG demonstrador com masmorra de 20 salas, enigmas, NPCs e combate simples.
+

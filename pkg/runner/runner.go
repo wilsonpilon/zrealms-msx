@@ -240,3 +240,142 @@ func OneClickRun(proj *project.Project, opts RunOptions) (*RunResult, error) {
 
 	return res, nil
 }
+
+// RunROMOptions parametriza a exportação e execução de cartuchos .ROM no openMSX.
+type RunROMOptions struct {
+	OutputDir   string   // Diretório para onde o .ROM exportado irá
+	ROMFilename string   // Nome do arquivo .ROM (padrão: <nome_projeto>.rom)
+	EmulatorExe string   // Caminho customizado para o executável openmsx (opcional)
+	Machine     string   // Nome da máquina MSX no openMSX (padrão: "Philips_NMS_8250")
+	ExtraArgs   []string // Argumentos adicionais repassados ao openMSX
+	TclScript   string   // Script TCL opcional a ser passado com -script
+	Async       bool     // Se true, não bloqueia o processo (para uso em GUI)
+	AutoRun     bool     // Se true, inicia o openMSX após gerar o .ROM (padrão: true)
+	PadSizeKB   int      // Tamanho padrão do cartucho em KB (128, 256, 512, etc.)
+	BaseROMPath string   // Caminho customizado para o binário base do motor
+}
+
+// RunROMResult sintetiza o cartucho ROM gerado e o processo do emulador disparado.
+type RunROMResult struct {
+	ExportResult *exporter.ROMExportResult
+	ROMPath      string
+	ROMSize      int64
+	EmulatorExe  string
+	CommandLine  []string
+	Cmd          *exec.Cmd
+	Process      *os.Process
+}
+
+// BuildOpenMSXROMArgs monta a lista de parâmetros de linha de comando para rodar o cartucho no openMSX.
+func BuildOpenMSXROMArgs(romPath string, opts RunROMOptions) []string {
+	machine := opts.Machine
+	if machine == "" {
+		machine = "Philips_NMS_8250"
+	}
+
+	args := []string{"-machine", machine}
+
+	if len(opts.ExtraArgs) > 0 {
+		args = append(args, opts.ExtraArgs...)
+	}
+
+	absROM, err := filepath.Abs(romPath)
+	if err != nil {
+		absROM = romPath
+	}
+	args = append(args, "-cart", absROM)
+
+	if opts.TclScript != "" {
+		absScript, err := filepath.Abs(opts.TclScript)
+		if err != nil {
+			absScript = opts.TclScript
+		}
+		args = append(args, "-script", absScript)
+	}
+
+	return args
+}
+
+// LaunchOpenMSXCart inicializa o emulador openMSX com o cartucho ROM inserido no slot 1 (-cart).
+func LaunchOpenMSXCart(romPath string, opts RunROMOptions) (*exec.Cmd, error) {
+	emuPath, err := FindOpenMSX(opts.EmulatorExe)
+	if err != nil {
+		return nil, err
+	}
+
+	args := BuildOpenMSXROMArgs(romPath, opts)
+	cmd := exec.Command(emuPath, args...)
+
+	if opts.Async {
+		if err := cmd.Start(); err != nil {
+			return nil, fmt.Errorf("falha ao iniciar openmsx com cartucho: %w", err)
+		}
+	} else {
+		if err := cmd.Run(); err != nil {
+			return nil, fmt.Errorf("erro na execução do openmsx com cartucho: %w", err)
+		}
+	}
+
+	return cmd, nil
+}
+
+// OneClickRunROM coordena de ponta a ponta o pipeline: Exportação SQLite -> MegaROM ASCII-16 -> Boot instantâneo no openMSX (-cart).
+func OneClickRunROM(proj *project.Project, opts RunROMOptions) (*RunROMResult, error) {
+	if proj == nil {
+		return nil, fmt.Errorf("nenhum projeto fornecido para execução")
+	}
+
+	outDir := opts.OutputDir
+	if outDir == "" {
+		outDir = "./build_msx"
+	}
+	if err := os.MkdirAll(outDir, 0755); err != nil {
+		return nil, fmt.Errorf("falha ao criar pasta de saída %s: %w", outDir, err)
+	}
+
+	// 1. Exporta e monta a imagem MegaROM
+	expRes, err := exporter.ExportROM(proj, exporter.ExportROMOptions{
+		OutputDir:   outDir,
+		ROMFilename: opts.ROMFilename,
+		BaseROMPath: opts.BaseROMPath,
+		PadSizeKB:   opts.PadSizeKB,
+	})
+	if err != nil {
+		return nil, fmt.Errorf("falha na geração do cartucho MegaROM: %w", err)
+	}
+
+	fi, err := os.Stat(expRes.ROMPath)
+	var romSize int64
+	if err == nil {
+		romSize = fi.Size()
+	}
+
+	res := &RunROMResult{
+		ExportResult: expRes,
+		ROMPath:      expRes.ROMPath,
+		ROMSize:      romSize,
+	}
+
+	// 2. Executa no openMSX (se solicitado)
+	if opts.AutoRun {
+		emuPath, err := FindOpenMSX(opts.EmulatorExe)
+		if err != nil {
+			return res, fmt.Errorf("cartucho gerado em %s, mas o emulador não pôde ser iniciado: %w", expRes.ROMPath, err)
+		}
+
+		res.EmulatorExe = emuPath
+		res.CommandLine = append([]string{emuPath}, BuildOpenMSXROMArgs(expRes.ROMPath, opts)...)
+
+		cmd, err := LaunchOpenMSXCart(expRes.ROMPath, opts)
+		if err != nil {
+			return res, err
+		}
+		res.Cmd = cmd
+		if cmd.Process != nil {
+			res.Process = cmd.Process
+		}
+	}
+
+	return res, nil
+}
+

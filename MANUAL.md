@@ -84,7 +84,7 @@ O editor abrirá com o tema retrô escuro do MSX 2 e abas integradas:
 * **🗺️ Salas (32x18 SCREEN 4):** Matriz contígua de 576 bytes com carimbo contínuo, flood fill, borracha, conta-gotas, conexões cardeais automáticas e posicionamento de entidades/atores.
 * **⚔️ Regras & RPG:** Gestão de classes de personagens (HP, MP, Ataque, Defesa) e catálogo de itens/equipamentos.
 * **📜 Scripts & Diálogos:** Editor com compilador e desassemblador de scripts para a Bytecode VM do Z80 e simulador de caixa de diálogo com proporção nativa MSX (32x4 caracteres).
-* **💾 Exportar & One-Click Run:** Compilação dos dados para binários nativos (`HEADER.BIN`, `GAME.DAT`), empacotamento em disco MSX-DOS 2 (`.dsk` de 720 KB) e execução com 1 clique no openMSX (`[F5]` ou menu *Ferramentas -> 🚀 Executar no openMSX (F5)*).
+* **💾 Exportar & One-Click Run:** Compilação dos dados para binários nativos (`HEADER.BIN`, `GAME.DAT`), cartuchos MegaROM (`.ROM` ASCII-16), empacotamento em disco MSX-DOS 2 (`.dsk` de 720 KB) e execução com 1 clique no openMSX (`[F5]` ou menu *Ferramentas -> 🚀 Executar no openMSX (F5)*).
 
 ---
 
@@ -97,8 +97,8 @@ O utilitário `zrealm.exe` também opera em modo de linha de comando para automa
 ```
 *Saída esperada:*
 ```text
-Z-Realm (zrealm-msx) - v0.5.1
-O ZZT dos cRPGs para MSX (MSX 2 / MSX-DOS 2)
+Z-Realm (zrealm-msx) - v0.5.2
+O ZZT dos cRPGs para MSX (MSX 2 / MSX-DOS 2 / MegaROM)
 ```
 
 #### 3.2.2. Criar um Novo Projeto
@@ -115,55 +115,75 @@ Para checar a integridade estrutural física do SQLite e a integridade de todas 
 *Saída esperada:*
 ```text
 Verificando integridade do projeto: meu_jogo.rpgproj...
-Projeto: A Lenda de Valdor (v0.5.1)
+Projeto: A Lenda de Valdor (v0.5.2)
 Plataforma Alvo: MSX2_MSXDOS2
 Status de Integridade: OK (Integridade física e Foreign Keys válidas)
 ```
 
-#### 3.2.4. Exportar Projeto para Binários do MSX 2
+#### 3.2.4. Exportar Projeto para Binários do MSX 2 (MSX-DOS 2)
 Para compilar o banco SQLite para as estruturas binárias nativas alinhadas à Página 2 do MSX-DOS 2 (`HEADER.BIN`, `GAME.DAT` e `SEGxx.BNK`):
 ```bash
 ./bin/zrealm.exe -export meu_jogo.rpgproj -out ./build_msx
 ```
+
+#### 3.2.5. Exportar Projeto para Cartucho MegaROM (.ROM ASCII-16)
+Para compilar o banco SQLite e montar um cartucho MegaROM `.ROM` pronto para rodar em emuladores ou gravar em FlashROM/EPROM física:
+```bash
+./bin/zrealm.exe -export-rom meu_jogo.rpgproj -out ./build_msx -pad-size 128
+```
 *Saída esperada:*
 ```text
-Exportando projeto para formato nativo MSX 2: meu_jogo.rpgproj...
-Exportação concluída com sucesso!
-  Tabela Mestra:    ./build_msx/HEADER.BIN
-  Dados (GAME.DAT): ./build_msx/GAME.DAT (16384 bytes em 1 segmentos de 16KB)
+Exportando projeto para Cartucho MegaROM ASCII-16 (.ROM): meu_jogo.rpgproj...
+Exportação MegaROM concluída com sucesso!
+  Arquivo .ROM:     ./build_msx/meu_jogo.rom (131072 bytes / 128 KB)
+  Tipo de Mapper:   ASCII16 (8 bancos de 16KB)
+  Segmentos Jogo:   1 banco(s)
   Total Recursos:   9 catalogados
 ```
 
-#### 3.2.5. Automação "One-Click Run" via CLI
+#### 3.2.6. Automação "One-Click Run" via Disquete (MSX-DOS 2)
 Para compilar, gerar o disco virtual `.dsk` inicializável de 720 KB e disparar o openMSX em um único comando:
 ```bash
 ./bin/zrealm.exe -run meu_jogo.rpgproj
 ```
+
+#### 3.2.7. Automação "One-Click Run" via Cartucho MegaROM (.ROM)
+Para compilar, montar o cartucho `.ROM` e disparar o openMSX diretamente com `-cart`:
+```bash
+./bin/zrealm.exe -run-rom meu_jogo.rpgproj -machine Philips_NMS_8250
+```
+
 Opções adicionais de emulação via linha de comando:
 * `-machine <perfil>`: Seleciona o perfil de hardware (`Philips_NMS_8250` [padrão] ou `Panasonic_FS-A1GT`).
 * `-emu <caminho>`: Especifica o executável do emulador (caso não esteja no `PATH`).
 * `-script <arquivo.tcl>`: Executa um script de automação TCL do openMSX (ideal para testes de regressão e CI/CD).
+* `-pad-size <KB>`: Fixa o tamanho do cartucho ROM gerado (128, 256, 512, 1024, etc.; padrão 0 = automático).
 
-Exemplo avançado:
+Exemplo avançado com script de teste:
 ```bash
-./bin/zrealm.exe -run demo.rpgproj -machine Panasonic_FS-A1GT -script engine_msx/sub51_test.tcl
+./bin/zrealm.exe -run-rom demo.rpgproj -script engine_msx/sub52_test.tcl
 ```
 
-#### 3.2.6. Gerar Projeto Demonstrativo Completo
+#### 3.2.8. Gerar Projeto Demonstrativo Completo
 Para gerar automaticamente um projeto pronto com masmorra, tileset customizado e 2 salas conectadas:
 ```bash
 ./bin/zrealm.exe -demo demo.rpgproj
 ```
 
-#### 3.2.7. Execução Manual no openMSX
-Caso deseje montar e executar manualmente a imagem gerada no openMSX:
-```bash
-openmsx -machine Philips_NMS_8250 -ext msxdos2 -ext ram512k -diska build_msx/zrealm.dsk
-```
+#### 3.2.9. Execução Manual no openMSX
+Caso deseje montar e executar manualmente no openMSX:
+* **Modo Disquete DOS2:**
+  ```bash
+  openmsx -machine Philips_NMS_8250 -ext msxdos2 -ext ram512k -diska build_msx/zrealm.dsk
+  ```
+* **Modo Cartucho MegaROM:**
+  ```bash
+  openmsx -machine Philips_NMS_8250 -cart build_msx/meu_jogo.rom
+  ```
 * **Controles na Engine:**
   * `[Setas]` / `[WASD]`: Movimentação do herói pelo grid de 32x18 tiles (SCREEN 4).
   * `[ESPAÇO]`: Interação com NPCs, baús e avanço de diálogos.
-  * `[ESC]`: Encerra a sessão da engine e retorna com o modo de texto e memória restaurados ao prompt `A:\>`.
+  * `[ESC]`: Encerra a sessão da engine (retorna ao DOS 2 em disquete ou reinicia na sala inicial em cartucho).
 
 ---
 
@@ -217,20 +237,35 @@ Cada sala possui uma matriz contígua de exatamente **576 bytes** (`tile_matrix`
 
 ## 5. Estratégia de Paginação na Memória do MSX (Página 2)
 
-O Z80 enxerga apenas 64 KB de endereçamento por vez. Sob o **MSX-DOS 2**, o Z-Realm utiliza a seguinte divisão fixa:
+O Z80 enxerga apenas 64 KB de endereçamento por vez. O Z-Realm implementa uma estratégia simétrica e elegante tanto no ambiente de disco (MSX-DOS 2) quanto em cartucho (MegaROM):
 
+### 5.1. Ambiente MSX-DOS 2 (Memory Mapper)
 ```
 0000h - 3FFFh (Página 0): Kernel MSX-DOS 2 e tratadores de interrupção
 4000h - 7FFFh (Página 1): Núcleo da Engine FIXO (Game Loop, VM de eventos, áudio)
 8000h - BFFFh (Página 2): JANELA DINÂMICA DE PAGINAÇÃO (16 KB)
 C000h - FFFFh (Página 3): Estado global do jogador, RAM de variáveis e EXTBIO
 ```
-
-### O Chaveamento de Segmentos de 16 KB
 1. Os dados do jogo são empacotados em **Segmentos lógicos de 16 KB** (16.384 bytes).
 2. Um único segmento de 16 KB comporta confortavelmente **28 salas completas** com seus cabeçalhos.
-3. Ao mover o herói para uma nova sala, a engine chama a rotina `PUT_P2` do MSX-DOS 2, chaveando o segmento desejado para o endereço `8000h` em questão de microsegundos, com **zero leitura mecânica de disco**.
+3. Ao mover o herói para uma nova sala, a engine chama a rotina `PUT_P2` do MSX-DOS 2 via `MAPPER_SetPage2`, chaveando o segmento desejado para o endereço `8000h` em questão de microsegundos, com **zero leitura mecânica de disco**.
 4. Em máquinas com 256 KB de Memory Mapper, um cache LRU gerencia os 10 a 12 segmentos livres. Em máquinas com 512 KB ou mais, 100% do mundo reside em RAM.
+
+### 5.2. Ambiente Cartucho MegaROM (ASCII-16)
+No formato de cartucho MegaROM padrão **ASCII-16**, a organização de memória é otimizada para execução em hardware puro:
+```
+0000h - 3FFFh (Página 0): MSX BIOS / Sistema Operacional
+4000h - 7FFFh (Página 1): Banco 0 FIXO do Cartucho (Código da Engine + Tabela Mestra em 7C00h)
+8000h - BFFFh (Página 2): JANELA DINÂMICA DE BANCOS DO CARTUCHO (Bancos 1 a N)
+C000h - FFFFh (Página 3): Memória RAM do MSX (Estado global, variáveis de jogo e stack)
+```
+1. **Banco 0 Fixo (`4000h..7FFFh`):** Contém o ponto de entrada do cartucho (`4000h` assinatura `AB`), o código compilado da engine e a **Tabela Mestra** (`MasterHeader`) gravada estaticamente no endereço `7C00h` (offset `0x3C00` do arquivo ROM).
+2. **Chaveamento por Hardware ASCII-16:** A comutação de banco na Página 2 é realizada escrevendo o número do banco desejado no registrador de controle em `0x77FF`:
+   ```c
+   Poke(0x77FF, logicalSegment + 1);
+   ```
+3. **Desempenho Instantâneo:** Ao cruzar um portal de sala, a nova sala e seus recursos tornam-se imediatamente visíveis na CPU em um único ciclo de escrita I/O (`OUT`/`POKE`), sem custo de transferência ou alocação de RAM.
+4. **Padronização Comercial:** O exportador Go (`pkg/exporter/megarom.go`) alinha o cartucho com padding `0xFF` para os tamanhos físicos comerciais: 128 KB, 256 KB, 512 KB, 1 MB, 2 MB ou 4 MB.
 
 ---
 

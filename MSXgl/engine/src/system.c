@@ -81,7 +81,9 @@ SetExpendedSlot:
 	ld		a, c				// A=[X000SSPP]	Retreive input slotId 
 	and		#0b00000011			// A=[000000PP]	Keep input primary slot
 	ld		d, a				// D=[000000PP]	Store input primary slot (page 0)
-	LShift(6)					// A=[PP000000] Shift primary slot (page 3)
+	rrca
+	rrca
+	and a, #0xC0					// A=[PP000000] Shift primary slot (page 3)
 	or		d					// A=[PP0000PP] Merge (page 0 & 3)
 	ld		d, a				// D=[PP0000PP]	Store input primary slot 
 	
@@ -94,7 +96,9 @@ SetExpendedSlot:
 
 	// SET SECONDARY SLOT
 	ld		a, c				// A=[X000SSPP]	Retreive input slotId 
-	RShift(2)					// A=[00X000SS] Shift input secondary slot
+	rrca
+	rrca
+	and a, #0x3F					// A=[00X000SS] Shift input secondary slot
 	and		#0b00000011			// A=[000000SS]	Keep input secondary slot
 	ld		d, a				// D=[000000SS]	Store input secondary slot (page 0)
 	

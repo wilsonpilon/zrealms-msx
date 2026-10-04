@@ -34,7 +34,11 @@ ProjModules = [ ProjName, "mapper", "vdp_screen4", "loader", "world", "hero", "e
 ProjSegments = ProjName;
 
 // Módulos da biblioteca MSXgl necessários para a Engine
-LibModules = [ "dos", "dos_mapper", "vdp", "system", "bios", "keyboard", "joystick" ];
+if (Target && Target.startsWith("ROM")) {
+	LibModules = [ "vdp", "system", "bios", "keyboard", "joystick", "memory" ];
+} else {
+	LibModules = [ "dos", "dos_mapper", "vdp", "system", "bios", "keyboard", "joystick" ];
+}
 
 //*****************************************************************************
 // TARGET & HARDWARE SETTINGS

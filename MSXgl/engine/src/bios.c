@@ -254,7 +254,9 @@ void BIOS_SwitchSlot(u8 page, u8 slot)
 	slot; // H
 
 	__asm
-		LShift(6)					// A << 6
+		rrca
+		rrca
+		and a, #0xC0					// A << 6
 		ld		b, h				// 
 		ld		h, a
 		ld		a, b

@@ -1,0 +1,18 @@
+Cartucho MegaROM carregado. Reativando throttle e sincronizando a 60 fps...
+=== (1/5) Boot do Cartucho MegaROM - Spawn Inicial na Sala 1 ===
+Spawn Inicial ROM                | Hero:(16, 9) Dir:2 | F1:0 F2:0 | InvCnt:0 (It0:0) | HP:75 | StrID:65535 | SFX:0
+Navegando a Oeste em direcao ao Guardiao em (12, 9)...
+=== (2/5) Heroi Diante do Guardiao em (13, 9) ===
+Diante do Guardiao               | Hero:(13, 9) Dir:3 | F1:0 F2:0 | InvCnt:0 (It0:0) | HP:75 | StrID:65535 | SFX:0
+Acionando dialogo via tecla ESPACO...
+=== (3/5) Caixa de Dialogo Renderizada em SCREEN 4 ===
+Dialogo Ativo                    | Hero:(13, 9) Dir:3 | F1:1 F2:0 | InvCnt:1 (It0:1) | HP:75 | StrID:2 | SFX:1
+Avancando dialogo para receber a Chave de Bronze...
+=== (4/5) Chave de Bronze Recebida no Inventario ===
+Item Recebido                    | Hero:(13, 9) Dir:3 | F1:1 F2:0 | InvCnt:1 (It0:1) | HP:75 | StrID:2 | SFX:1
+Caminhando em direcao ao Leste para transicao de sala...
+=== (5/5) Transicao Concluida - Heroi na Sala 2 (Camara dos Pilares) ===
+Sala 2 Atingida                  | Hero:( 0, 9) Dir:1 | F1:1 F2:0 | InvCnt:1 (It0:1) | HP:75 | StrID:2 | SFX:1
+=================================================================
+   VALIDACAO SUBFASE 5.2 (MEGAROM .ROM) CONCLUIDA COM SUCESSO!   
+=================================================================

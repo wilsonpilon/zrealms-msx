@@ -195,3 +195,70 @@ func TestOneClickRunPipeline(t *testing.T) {
 		t.Errorf("arquivo DSK não encontrado no caminho indicado: %v", err)
 	}
 }
+
+func TestBuildOpenMSXROMArgs(t *testing.T) {
+	rom := "c:/caminho/meu_jogo.rom"
+
+	args := BuildOpenMSXROMArgs(rom, RunROMOptions{
+		Machine:   "Philips_NMS_8250",
+		TclScript: "c:/scripts/test.tcl",
+	})
+
+	foundCart := false
+	foundScript := false
+	for i, a := range args {
+		if a == "-cart" && i+1 < len(args) {
+			foundCart = true
+		}
+		if a == "-script" && i+1 < len(args) {
+			foundScript = true
+		}
+	}
+
+	if !foundCart {
+		t.Errorf("argumento -cart ausente em args: %v", args)
+	}
+	if !foundScript {
+		t.Errorf("argumento -script ausente em args: %v", args)
+	}
+}
+
+func TestOneClickRunROMPipeline(t *testing.T) {
+	tmpDir, err := os.MkdirTemp("", "test_oneclick_rom_*")
+	if err != nil {
+		t.Fatalf("falha ao criar pasta temporária: %v", err)
+	}
+	defer os.RemoveAll(tmpDir)
+
+	projPath := filepath.Join(tmpDir, "demo.rpgproj")
+	proj, err := project.CreateDemoProject(projPath)
+	if err != nil {
+		t.Fatalf("erro ao criar projeto demo: %v", err)
+	}
+	defer proj.Close()
+
+	// Testa execução com AutoRun=false (apenas pipeline de build/export/rom)
+	res, err := OneClickRunROM(proj, RunROMOptions{
+		OutputDir: filepath.Join(tmpDir, "rom_out"),
+		AutoRun:   false,
+		PadSizeKB: 128,
+	})
+	if err != nil {
+		t.Fatalf("OneClickRunROM falhou: %v", err)
+	}
+
+	if res.ExportResult == nil {
+		t.Error("ExportResult ausente no resultado do OneClickRunROM")
+	}
+	if res.ROMPath == "" {
+		t.Error("ROMPath vazio no resultado do OneClickRunROM")
+	}
+	if res.ROMSize != 128*1024 {
+		t.Errorf("ROMSize incorreto: obtido %d, esperado 131072", res.ROMSize)
+	}
+
+	if _, err := os.Stat(res.ROMPath); err != nil {
+		t.Errorf("arquivo ROM não encontrado no caminho indicado: %v", err)
+	}
+}
+

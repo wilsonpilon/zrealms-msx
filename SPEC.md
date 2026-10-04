@@ -3,9 +3,9 @@
 ### (Editor Desktop em Go/Fyne/SQLite + Engine MSX2/MSX-DOS 2 em C/MSXgl)
 
 **Projeto Oficial:** Z-Realm (`zrealm-msx`)  
-**Versão:** 0.5.1  
+**Versão:** 0.5.2  
 **Data:** 04 de Outubro de 2026  
-**Status:** Fases 1 a 4 Concluídas; Subfase 5.1 (One-Click Run) Concluída com Sucesso — Rumo à Subfase 5.2 (Backend MegaROM)  
+**Status:** Fases 1 a 4 Concluídas; Subfase 5.1 (One-Click Run) e Subfase 5.2 (Backend MegaROM .ROM) Concluídas com Sucesso — Rumo à Subfase 5.3 (Jogo de Referência)  
 **Autor:** Equipe de Arquitetura de Software & Retrocomputação  
 
 ---

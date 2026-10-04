@@ -5,7 +5,12 @@
 #pragma once
 
 #include "core.h"
+#include "system.h"
+#if (TARGET_TYPE == TYPE_DOS)
 #include "dos_mapper.h"
+#elif (TARGET_TYPE == TYPE_ROM)
+#include "rom_mapper.h"
+#endif
 
 // Máximo de segmentos gerenciados pelo cache em RAM (32 x 16KB = 512KB de RAM)
 #define MAPPER_MAX_SEGMENTS 32
