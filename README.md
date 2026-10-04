@@ -93,6 +93,7 @@ zrealm-msx/
 │   ├── gui/               # Editor gráfico Desktop em Fyne (Tiles, Sprites, Salas, Regras e Scripts)
 │   ├── models/            # Modelos de domínio e cálculos de hardware MSX 2 (V9938)
 │   ├── project/           # Gerenciador de projetos (.rpgproj), migrações e demo seeder
+│   ├── runner/            # Automação One-Click Run (montagem de DSK MSX-DOS 2 e boot no openMSX)
 │   ├── storage/           # Repositórios de persistência CRUD com SQLite
 │   └── version/           # Controle dinâmico de versão semântica (X.Y.Z)
 ├── engine_msx/            # Runtime C do MSX 2 (V9938 SCREEN 4, Mapper Page 2, Disk Loader)
