@@ -168,3 +168,32 @@ func TestExportROMIntegration(t *testing.T) {
 		t.Errorf("Header ZR01 ausente no offset 0x3C00 do arquivo")
 	}
 }
+
+func TestExportDemoROMForMSX(t *testing.T) {
+	tmpDir, err := os.MkdirTemp("", "zrealm_demo_rom_*")
+	if err != nil {
+		t.Fatalf("falha ao criar pasta temporária: %v", err)
+	}
+	defer os.RemoveAll(tmpDir)
+
+	projPath := filepath.Join(tmpDir, "demo.rpgproj")
+	p, err := project.CreateDemoProject(projPath)
+	if err != nil {
+		t.Fatalf("falha ao criar projeto demo: %v", err)
+	}
+	defer p.Close()
+
+	romDir := filepath.Join("..", "..", "engine_msx", "emul", "rom")
+	_ = os.MkdirAll(romDir, 0755)
+
+	res, err := ExportROM(p, ExportROMOptions{
+		OutputDir:   romDir,
+		ROMFilename: "zrealm_demo.rom",
+		PadSizeKB:   128,
+	})
+	if err != nil {
+		t.Fatalf("ExportROM falhou ao exportar demo: %v", err)
+	}
+
+	t.Logf("Demo MegaROM exportado com sucesso para %s (%d bytes, %d recursos)", res.ROMPath, res.TotalROMBytes, res.ResourceCount)
+}

@@ -9,6 +9,7 @@
 #include "keyboard.h"
 #include "joystick.h"
 #include "dos.h"
+#include "audio.h"
 #include "font/font_tsm9900.h"
 
 // Padrões dos tiles de moldura e ícones (8 bytes por tile, 10 tiles no total)
@@ -338,8 +339,9 @@ void UI_ShowDialogue(const c8* message)
 	s_DialogueActive = TRUE;
 	s_DialogueDebounce = TRUE; // Evita que a tecla que acionou feche imediatamente
 
-	// 3. Desenha a primeira página na tela
+	// 3. Desenha a primeira página na tela e emite blip sonoro
 	UI_DrawCurrentPage();
+	AUDIO_PlaySFX(4);
 }
 
 static void UI_DrawCurrentPage(void)
@@ -436,7 +438,7 @@ void UI_UpdateDialogue(void)
 			{
 				s_CurrentPage++;
 				UI_DrawCurrentPage();
-				DOS_Beep();
+				AUDIO_PlaySFX(4);
 			}
 			else
 			{

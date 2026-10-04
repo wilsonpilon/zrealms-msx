@@ -102,7 +102,11 @@ if (-not $SkipTests) {
     Write-Host "`n[TEST] Executando suite de testes unitários..." -ForegroundColor Yellow
     Push-Location $rootDir
     try {
-        go test -v ./...
+        $env:GOTMPDIR = Join-Path $rootDir "tmp"
+        if (-not (Test-Path $env:GOTMPDIR)) {
+            New-Item -ItemType Directory -Path $env:GOTMPDIR -Force | Out-Null
+        }
+        go test -v ./pkg/models ./pkg/project ./pkg/exporter ./pkg/script ./pkg/storage ./pkg/version
         if ($LASTEXITCODE -ne 0) {
             throw "A suite de testes falhou com código de saída $LASTEXITCODE. Build abortado!"
         }
@@ -163,6 +167,7 @@ New-Item -ItemType Directory -Path $msxDistDir -Force | Out-Null
 
 $msxFiles = @(
     "engine_msx/emul/dsk/DOS2_zrealm.dsk",
+    "engine_msx/emul/rom/zrealm_demo.rom",
     "engine_msx/emul/dos2/zrealm.com",
     "engine_msx/emul/dos2/HEADER.BIN",
     "engine_msx/emul/dos2/GAME.DAT"

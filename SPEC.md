@@ -3,9 +3,9 @@
 ### (Editor Desktop em Go/Fyne/SQLite + Engine MSX2/MSX-DOS 2 em C/MSXgl)
 
 **Projeto Oficial:** Z-Realm (`zrealm-msx`)  
-**Versão:** 0.5.2  
+**Versão:** 0.5.3  
 **Data:** 04 de Outubro de 2026  
-**Status:** Fases 1 a 4 Concluídas; Subfase 5.1 (One-Click Run) e Subfase 5.2 (Backend MegaROM .ROM) Concluídas com Sucesso — Rumo à Subfase 5.3 (Jogo de Referência)  
+**Status:** Fases 1 a 5 100% Concluídas com Sucesso — Pipeline Completo, One-Click Run, Backend MegaROM e Jogo de Referência de 20 Salas com Áudio PSG  
 **Autor:** Equipe de Arquitetura de Software & Retrocomputação  
 
 ---
@@ -413,7 +413,19 @@ O projeto será construído de forma iterativa, validando cada camada antes de a
 
 ---
 
-## 7. Próximos Passos Imediatos
-Com a **Fase 1 (Estruturação de Dados & Abstrações do Editor)**, a **Fase 2 (Prototipagem de Baixo Nível no MSX)**, a **Fase 3 (Editor Visual Desktop em Go + Fyne)**, a **Fase 4 (Gameplay Engine & Máquina de Eventos)** e a **Subfase 5.1 (Automação "One-Click Run")** 100% concluídas e comprovadas em malha fechada no openMSX, a sequência de trabalho avança para as etapas finais do roadmap:
-1. **Subfase 5.2 — Backend MegaROM (Cartucho .ROM):** Exportador alternativo para gerar imagens de cartucho ROM chaveadas por banco (ASCII 16K / Konami 8K/16K), permitindo que o jogo rode em cartucho sem necessidade de disco MSX-DOS 2.
-2. **Subfase 5.3 — Criação do Jogo Demonstrador de Referência:** Masmorra completa de 20 salas, 5 NPCs com diálogos ramificados, enigmas com chaves/alavancas, catálogo de itens, combate simples e trilha sonora PSG.
+## 7. Status de Conclusão e Próximos Passos
+Com a conclusão da **Subfase 5.3 (Jogo de Referência Completo: "As Catacumbas de Cristal")**, todas as **5 Fases Fundamentais** do Z-Realm (`zrealm-msx`) foram entregues e validadas com 100% de sucesso em malha fechada no emulador openMSX:
+1. **Fase 1 (Estruturação de Dados & Abstrações do Editor):** Modelos de domínio, banco SQLite relacional, suite de testes e persistência.
+2. **Fase 2 (Prototipagem de Baixo Nível no MSX):** V9938 SCREEN 4, paginação de memória na Página 2 (0x8000-0xBFFF) e loader de disco MSX-DOS 2.
+3. **Fase 3 (Editor Visual Desktop em Go + Fyne):** Interface gráfica com abas dedicadas para Tiles, Sprites, Salas, Regras e Scripts.
+4. **Fase 4 (Gameplay Engine & Máquina de Eventos no MSX):** Grid walk 8x8, hardware sprites Modo 2, Bytecode VM com 11 opcodes, HUD e diálogos com word-wrapping.
+5. **Fase 5 (Pipeline Integrado de Build & Jogo de Referência):**
+   - **Subfase 5.1:** Automação One-Click Run (DSK + openMSX).
+   - **Subfase 5.2:** Backend MegaROM ASCII-16K (`.ROM`) unificado.
+   - **Subfase 5.3:** Jogo completo com masmorra de 20 salas, 13 tiles, 8 sprites, 7 itens, 15 strings, 8 scripts, combate em tempo real, hazards e driver de som PSG nativo (AY-3-8910).
+
+**Futuras Expansões (Roadmap Pós-v0.5.3):**
+- Suporte a música PSG contínua em segundo plano (player PT3 / Arkos Tracker via interrupção VBLANK).
+- Suporte a chips de som FM opcionais (MSX-MUSIC / YM2413 e MSX-AUDIO / Y8950).
+- Ferramenta de importação e exportação de pacotes de assets comunitários (.zip/.pak).
+

@@ -5,6 +5,7 @@
 #include "vm.h"
 #include "dos.h"
 #include "ui.h"
+#include "audio.h"
 
 u8              g_VMFlags[VM_MAX_FLAGS];
 VMInventorySlot g_VMInventory[VM_MAX_INVENTORY];
@@ -152,7 +153,7 @@ u8 VM_GetItemQuantity(u16 itemID)
 void VM_PlaySFX(u8 sfxID)
 {
 	g_VMLastSFX = sfxID;
-	DOS_Beep();
+	AUDIO_PlaySFX(sfxID);
 }
 
 bool VM_ExecuteScript(u16 scriptID)

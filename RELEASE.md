@@ -1,65 +1,88 @@
 # RELEASE.md — Detalhamento do Release Oficial
 
-**Versão Atual:** 0.5.2  
+**Versão Atual:** 0.5.3  
 **Data:** 04 de Outubro de 2026  
-**Status do Release:** Phase 5 em Andamento (Subfase 5.2 — Backend MegaROM .ROM Concluída com Sucesso)  
-**Alvo:** Windows (x64) para o Toolkit & GUI / MSX 2, MSX-DOS 2 e Cartucho MegaROM (ASCII-16) para a Engine  
+**Status do Release:** Phase 5 Concluída com Sucesso (Subfase 5.3 — Jogo de Referência Completo Concluída)  
+**Alvo:** Windows (x64) para o Toolkit & GUI Desktop / MSX 2, MSX-DOS 2 (.COM / .DSK) e Cartucho MegaROM ASCII-16 (.ROM) para a Engine  
 
 ---
 
-## 1. Resumo Executivo do Release v0.5.2
+## 1. Resumo Executivo do Release v0.5.3
 
-O release **v0.5.2** conclui a **Subfase 5.2 (Backend MegaROM - Cartucho .ROM)**, expandindo o Z-Realm para suportar nativamente tanto o ambiente de disco **MSX-DOS 2 (`.COM`)** quanto cartuchos **MegaROM (`.ROM`)** no formato padrão da indústria **ASCII-16**.
+O release **v0.5.3** conclui com excelência a **Subfase 5.3 (Jogo de Referência Completo)** e coroa a entrega da **Fase 5 (Pipeline Integrado de Build & Jogo de Referência)** do Z-Realm.
 
-Com esta entrega, os criadores de jogos no Z-Realm podem exportar e testar seus cRPGs em formato de cartucho com inicialização instantânea no MSX, sem depender de leitor de disquetes ou sistema operacional em disco.
+Apresentamos **"As Catacumbas de Cristal: O Desafio do Rei Esquecido"**, um cRPG completo e funcional para o padrão MSX 2 demonstrando todas as capacidades tecnológicas desenvolvidas ao longo do projeto:
+- Masmorra profunda com **20 salas interligadas em grid 4x5** com transições cardeais contínuas (Norte, Sul, Leste, Oeste).
+- Driver nativo de som **PSG AY-3-8910** com efeitos sonoros em tempo real nos registradores `0xA0`/`0xA1`.
+- Mecânicas de **combate em tempo real com IA hostil** (`BEHAVIOR_HOSTILE`), perseguição inteligente, dano de combate (-8 HP com SFX 2 e atualização do HUD) e golpe de espada do herói.
+- Dano de perigo em tiles de espinho (`COLLISION_DAMAGE`).
+- Enigmas em cadeia, NPCs com inteligência artificial errante e de patrulha, resgate de prisioneiro, decifração de profecia, restauração em fonte sagrada e conquista do **Cristal Primordial** de vitória.
 
-### Principais Inovações da Subfase 5.2:
-
-1. **Engine C Multi-Target (`engine_msx`):**
-   - Suporte nativo e transparente para compilação multi-alvo:
-     - `target=DOS2 make package`: gera `zrealm.com` e imagem `DOS2_zrealm.dsk` para MSX-DOS 2.
-     - `target=ROM_ASCII16 make package`: gera `zrealm.rom` para cartuchos MegaROM ASCII-16.
-   - Chaveamento de bancos MegaROM ASCII-16 implementado em `mapper.c`: escrita no endereço `0x77FF` para chavear o banco de 16 KB correspondente na Página 2 (`0x8000..0xBFFF`), mapeando `logicalSegment + 1`.
-   - Carregador de ROM direto em `loader.c` (`LOADER_LoadROM`): mapeamento imediato da Tabela Mestra (`MasterHeader`) e Diretório de Recursos diretamente a partir do endereço de CPU `0x7C00` (offset `0x3C00` do arquivo ROM), sem necessidade de cópias intermediárias em RAM.
-   - Ponto de entrada dedicado para cartucho em `zrealm.c` inicializando VDP em SCREEN 4, entidades, VM de eventos, herói e loop de 60 fps sincronizado via `halt` e V-Blank.
-   - Ajustes de compatibilidade em `MSXgl` (`vdp.c`, `system.c`, `bios.c`, `compiler.js`) expandindo macros com quebras de linha e adicionando flag `-g` ao assembler `sdasz80` para tratamento automático de símbolos de runtime como globais.
-
-2. **Exportador Go MegaROM (`pkg/exporter/megarom.go`):**
-   - Embutimento da imagem base de cartucho de 16 KB compilada (`zrealm_base.rom`).
-   - Injeção atômica da Tabela Mestra compilada (`HEADER.BIN`) na janela reservada de 1 KB em `0x3C00` (CPU `0x7C00`).
-   - Concatenação sequencial dos segmentos de 16 KB empacotados (`GAME.DAT`) a partir do Banco 1 (`0x4000` em diante).
-   - Preenchimento padronizado (*padding*) com `0xFF` através da função `CalculateStandardROMSize` para as capacidades comerciais clássicas de cartucho: 128 KB (8 bancos), 256 KB (16 bancos), 512 KB (32 bancos), 1024 KB (64 bancos), 2048 KB (128 bancos) e 4096 KB (256 bancos).
-   - Suíte abrangente de testes unitários e de integração em `megarom_test.go`.
-
-3. **Automação One-Click Run para Cartuchos (`pkg/runner`):**
-   - Adição dos métodos `BuildOpenMSXROMArgs`, `LaunchOpenMSXCart` e `OneClickRunROM`.
-   - Disparo do emulador openMSX com argumento `-cart <caminho.rom>`.
-
-4. **Interface Gráfica Desktop Fyne (`pkg/gui`):**
-   - Novo botão de destaque **"🕹️ Testar Cartucho MegaROM (.ROM)"** na aba Exportar.
-   - Suporte à exportação manual de cartuchos `.ROM` com relatório visual detalhado de tamanho total, quantidade de bancos de 16 KB e contagem de recursos.
-
-5. **Interface de Linha de Comando (CLI - `cmd/zrealm/main.go`):**
-   - `-export-rom <arquivo.rpgproj>`: exporta o projeto diretamente para cartucho `.ROM`.
-   - `-run-rom <arquivo.rpgproj>`: pipeline completo de exportação e inicialização instantânea no openMSX.
-   - `-pad-size <KB>`: opção para forçar o tamanho exato do cartucho (ex.: 128, 256, 512).
+Ambos os alvos de distribuição — **Disquete MSX-DOS 2 (`DOS2_zrealm.dsk`)** e **Cartucho MegaROM ASCII-16 (`zrealm_demo.rom`)** — estão gerados, validados e inclusos no pacote oficial de release.
 
 ---
 
-## 2. Validação Automatizada de Malha Fechada no openMSX
+## 2. Destaques Técnicos da Subfase 5.3
 
-A conformidade do cartucho MegaROM gerado (`demo.rom`) foi validada em malha fechada via script de controle TCL (`engine_msx/sub52_test.tcl`) no emulador openMSX (modelo `Philips_NMS_8250`), gerando 5 screenshots sequenciais em SCREEN 4:
+### 2.1 Masmorra Completa de 20 Salas em Grid 4x5 (`pkg/project/demo.go`)
+- **Topologia Espacial 4x5:**
+  - Linha 0: Armaria dos Antigos (4), Corredor das Sombras (3), Entrada das Catacumbas (1), Câmara dos Pilares (2), Salão dos Reis (5).
+  - Linha 1: Galeria Subterrânea (8), Cripta dos Heróis (7), Vale das Almas (6), Labirinto de Pedra (9), Fosso de Espinhos (10).
+  - Linha 2: Fonte Sagrada (12), Refúgio do Eremita (11), Celas Subterrâneas (13), Cárcere do Prisioneiro (14), Câmara de Tortura (15).
+  - Linha 3: Esgotos da Cidadela (16), Pórtico Antigo (17), Caverna de Cristais (18), Antecâmara Real (19), Santuário do Rei Esquecido (20).
+- **Corredores Desobstruídos:** Ajustes arquiteturais nos portais (Eixos X=15..16 e Y=8..9) permitindo navegação cardeal fluida sem colisões acidentais em paredes de salas vizinhas.
 
-1. `sub52_01_spawn_cart.png`: Inicialização do cartucho MegaROM na máquina virtual, ativação do modo SCREEN 4 (Graphic 3 do V9938), herói no ponto de partida `(16, 9)` da Sala 1 (Catacumbas), baú de tesouro em `(8, 4)`, NPC Guardião em `(12, 9)` e HUD funcional (`♥ 075/100`, `★ 030/030`, `LV:01`, `🗝:0`).
-2. `sub52_02_facing_guardian_cart.png`: Navegação contínua no grid para oeste até a posição `(13, 9)`, ficando em frente ao Guardião.
-3. `sub52_03_dialogue_cart.png`: Interação via barra de espaço acionando a Bytecode VM; caixa de diálogo emoldurada nas linhas 19-23 com o texto do Guardião: `"GUARDIAO: AS PROFUNDEZAS SAO PERIGOSAS. PEGUE A CHAVE DE FERRO! [ESPACO]"`.
-4. `sub52_04_item_received_cart.png`: Avanço do diálogo, execução dos opcodes `GIVE_ITEM 1`, `SET_FLAG 1 1` e `PLAY_SFX 1`; restauração do painel de repouso e atualização dinâmica do HUD para `🗝:1`.
-5. `sub52_05_room2_cart.png`: Travessia do portal Leste da Sala 1; acionamento do chaveamento de banco MegaROM via `0x77FF`; carga instantânea e renderização da Sala 2 (Câmara dos Pilares), com estrutura central em cruz, 4 pilares de pedra, baú místico, NPC errante e herói na entrada Oeste `(0, 9)` mantendo os dados de inventário.
+### 2.2 Catálogo Expandido de Recursos
+- **13 Tiles Customizados:** Chão Limpo (Passable), Alvenaria (Solid), Portais de Arco (Trigger), Água e Canais (Water), Espinhos (Damage), Tochas Acesa (Solid), Estátuas Antigas (Solid), Altar Místico (Solid), Grades de Ferro (Solid), Lajotas Antigas (Passable), Cristais Azuis (Solid), Fonte de Água Benta (Solid) e Alavancas de Bronze (Solid).
+- **8 Sprites Modo 2 (16x16 pixels):** Herói Guerreiro, Guardião Sentinela, Baú com Ferragens, Eremita Sábio, Esqueleto Guerreiro, Prisioneiro Trancafiado, Cristal Primordial (Ciano e Azul Místico) e Goblin Ladino.
+- **7 Itens de RPG e Progressão:** Chave de Bronze, Poção de Vida (+25 HP), Chave de Ferro, Chave Real Dourada, Amuleto de Cristal, Elixir Mágico (+30 MP) e Cristal Primordial do Rei.
+- **15 Strings de Diálogo:** Textos contextuais com moldura estética, quebra automática inteligente de linha e paginação dinâmica.
+- **8 Bytecode Event Scripts:** Cadeia completa de quests e eventos gerenciados pela Bytecode VM.
+
+### 2.3 Driver de Áudio PSG Nativo AY-3-8910 (`engine_msx/audio.h` e `audio.c`)
+- Acesso de baixo nível aos registradores do PSG através das portas de I/O SDCC:
+  - `__sfr __at(0xA0) g_PSG_RegPort;`
+  - `__sfr __at(0xA1) g_PSG_DataPort;`
+- **Banco de 4 Efeitos Sonoros:**
+  - `SFX 1` (Item / Chime / Vitória): Arpejo brilhante ascendente com envelope suave (baús, itens recebidos, cura e triunfo).
+  - `SFX 2` (Dano / Combate): Ruído percussivo de impacto com decaimento rápido (golpe recebido de monstro ou dano de espinho).
+  - `SFX 3` (Porta / Mecanismo): Ruído mecânico de baixa frequência para destrancamento de selos e portas de pedra.
+  - `SFX 4` (Diálogo / Blip): Pulso curto e suave emitido na abertura de janelas de texto e transição de páginas.
+- Totalmente integrado na VM (`VM_PlaySFX`), na interface (`ui.c`) e nos loops principais da engine (`AUDIO_Update()`).
+
+### 2.4 Combate em Tempo Real e Dano de Piso
+- **IA Hostil (`BEHAVIOR_HOSTILE`, tipo 6):**
+  - Detecção do herói dentro de raio de visão de 7 tiles.
+  - Perseguição com aproximação Manhattan inteligente.
+  - Ataque corpo a corpo automático desferindo -8 HP ao herói com SFX 2 e atualização instantânea do HUD.
+- **Contra-Ataque do Herói:**
+  - Pressionar a tecla de Ação (Espaço ou Gatilho do joystick) desfere golpe de espada no inimigo adjacente.
+  - Abate imediato do monstro, ocultação do sprite de hardware no VDP, emissão do SFX 1 e execução do script de drop de quest (Chave Real Dourada).
+- **Dano de Piso em Espinhos (`COLLISION_DAMAGE`):**
+  - Penalidade de -5 HP ao pisar sobre armadilhas, com alerta sonoro e sincronização no HUD.
 
 ---
 
-## 3. Próximos Passos (Fase 5: Pipeline Integrado de Build & Jogo de Referência)
+## 3. Validação Automatizada em Malha Fechada no openMSX
 
-1. **Subfase 5.1 — Automação "One-Click Run" (Disquete DOS2):** [CONCLUÍDA ✅]
-2. **Subfase 5.2 — Backend MegaROM (Cartucho .ROM ASCII-16):** [CONCLUÍDA ✅]
-3. **Subfase 5.3 — Jogo de Referência Completo:** Masmorra de demonstração com 20 salas interligadas, quebra-cabeças de chaves e alavancas, múltiplos tipos de NPCs, combate simples em tempo real e trilha sonora em PSG.
+A integridade do jogo de referência e do pipeline de compilação foi verificada através da suite automatizada de testes `engine_msx/sub53_test.tcl`, executada no emulador openMSX sobre o cartucho MegaROM compilado (`zrealm_demo.rom`).
+
+### Capturas de Tela Comprovatórias (SCREEN 4 - V9938):
+1. **`sub53_01_spawn.png`**: Spawn inicial na Sala 1 (Entrada das Catacumbas) com tochas iluminando a masmorra, sprites do Herói e do Guardião ativos, portas abertas e HUD funcional (`♥ 075/100`, `★ 030/030`, `LV:01`, `🗝:0`).
+2. **`sub53_02_dialogue.png`**: Abordagem ao Guardião Real em `(14, 7)` e interação via ESPAÇO; caixa de diálogo emoldurada nas linhas 19-23 com a fala do Guardião e concessão da Chave de Bronze (HUD atualizado para `🗝:1` e SFX 1 emitido).
+3. **`sub53_03_armory.png`**: Travessia pelas Salas 1 e 3 até a Armaria dos Antigos (Sala 4); abordagem ao Baú de Tesouro em `(8, 5)` com estatua decorativa ao norte e sentinela patrulhando; abertura do baú recebendo Chave de Ferro e Poção de Vida com cura de +25 HP.
+4. **`sub53_04_fountain.png`**: Descida pelas galerias até a Fonte Sagrada (Sala 12); tanque de águas cristalinas com fonte sagrada; ingestão das águas curativas restaurando a vida do herói para `♥ 100/100`.
+5. **`sub53_05_combat.png`**: Jornada pelas celas até a Câmara de Tortura (Sala 15); confronto e combate em tempo real com o Esqueleto Guerreiro hostil; golpe de espada do herói destruindo a criatura e conquistando a Chave Real Dourada entre os ossos.
+6. **`sub53_06_victory.png`**: Acesso ao Santuário do Rei Esquecido (Sala 20); santuário iluminado com cristais azuis cintilantes e altar central contendo o Cristal Primordial; heroica conquista do cristal com mensagem triunfal de vitória: `"VITORIA! VOCE ERGUEU O CRISTAL PRIMORDIAL E SALVOU O REINO DE Z-REALM!"`.
+
+---
+
+## 4. Pacote de Distribuição Oficial
+
+O pacote oficial para download é gerado pelo script `build.ps1` e inclui:
+- `dist/bin/zrealm.exe`: Utilitário executável de linha de comando para Windows x64 assinado digitalmente.
+- `dist/msx/zrealm_demo.rom`: Cartucho MegaROM ASCII-16 completo (128 KB) pronto para gravação em FlashROM ou execução direta em emuladores.
+- `dist/msx/DOS2_zrealm.dsk`: Imagem de disquete de 720 KB para MSX-DOS 2 com boot automático via `autoexec.bat`.
+- `dist/msx/zrealm.com`, `HEADER.BIN`, `GAME.DAT`: Binários avulsos do jogo.
+- `dist/tools/msxtar.exe`: Ferramenta para manipulação de imagens DSK.
+- `dist/zrealm-msx-v0.5.3-windows-amd64.zip`: Arquivo compactado com todos os binários e documentação completa.

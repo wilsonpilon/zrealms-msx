@@ -4,6 +4,7 @@
 #include "hero.h"
 #include "entity.h"
 #include "ui.h"
+#include "vm.h"
 
 Hero g_Hero;
 
@@ -235,6 +236,21 @@ void HERO_Update(void)
 			g_Hero.StepCooldown = HERO_STEP_COOLDOWN_FRAMES;
 			g_Hero.Moved = TRUE;
 			HERO_Draw();
+
+			// Se o tile for de dano (espinhos, lava, armadilha), reduz HP do herói e emite som de perigo
+			if (col == COLLISION_DAMAGE)
+			{
+				if (g_HeroStats.HP > 5)
+				{
+					g_HeroStats.HP -= 5;
+				}
+				else
+				{
+					g_HeroStats.HP = 1;
+				}
+				UI_UpdateHUD();
+				VM_PlaySFX(2); // Dano / perigo
+			}
 
 			// Checa se pisou em gatilho invisível (BEHAVIOR_TRIGGER)
 			ENTITY_CheckStepTrigger(g_Hero.TileX, g_Hero.TileY);

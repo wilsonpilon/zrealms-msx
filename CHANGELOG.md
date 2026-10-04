@@ -7,6 +7,49 @@ O formato baseia-se em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0
 * **Y (Minor / Feature):** Incrementado a cada nova feature concluída e integrada ao projeto.
 * **X (Major):** Incrementado a cada transição estrutural ou conclusão de uma grande fase (ex.: finalização da Camada de Dados, conclusão do Editor Gráfico, etc.).
 
+## [0.5.3] - 2026-10-04
+
+### Adicionado (Added)
+- **Subfase 5.3: Jogo de Referência Completo ("As Catacumbas de Cristal: O Desafio do Rei Esquecido"):**
+  - **Masmorra Completa de 20 Salas em Grid 4x5 (`pkg/project/demo.go`):**
+    - Criação de 20 salas temáticas interligadas com travessias cardeais contínuas (Norte, Sul, Leste, Oeste) sem emendas ou paredes bloqueando corredores principais.
+    - Salas de exploração, quebra-cabeças e combate: Entrada das Catacumbas, Câmara dos Pilares, Corredor das Sombras, Armaria dos Antigos, Salão dos Reis, Vale das Almas, Cripta dos Heróis, Galeria Subterrânea, Labirinto de Pedra, Fosso de Espinhos, Refúgio do Eremita, Fonte Sagrada, Celas Subterrâneas, Cárcere do Prisioneiro, Câmara de Tortura, Esgotos da Cidadela, Pórtico Antigo, Caverna de Cristais, Antecâmara Real e Santuário do Rei Esquecido.
+  - **Catálogo Expandido de Tiles, Sprites e Itens:**
+    - 13 tipos de tiles customizados cobrindo todas as classes de física de colisão: Chão Limpo (Passable), Alvenaria (Solid), Portais de Arco (Trigger), Água Cristalina e Canais (Water), Espinhos no Chão (Damage), Tochas Acesa (Solid), Estátuas Antigas (Solid), Altar Místico (Solid), Grades de Ferro da Cela (Solid), Lajotas Antigas (Passable), Cristais Azuis (Solid), Fonte de Água Benta (Solid) e Alavancas de Bronze (Solid).
+    - 8 sprites Modo 2 (16x16 pixels) com paletas autênticas do TMS9918/V9938: Herói Guerreiro, Guardião Sentinela, Baú com Ferragens, Eremita Sábio, Esqueleto Guerreiro, Prisioneiro Trancafiado, Cristal Primordial (Ciano e Azul Místico) e Goblin Ladino.
+    - 7 itens de RPG e progressão: Chave de Bronze, Poção de Vida (+25 HP), Chave de Ferro, Chave Real Dourada, Amuleto de Cristal, Elixir Mágico (+30 MP) e Cristal Primordial do Rei.
+    - 15 strings contextuais de narrativa e diálogos com paginação inteligente e quebra automática de linha.
+  - **Driver de Áudio PSG Nativo (`engine_msx/audio.h` e `audio.c`):**
+    - Driver direto aos registradores do processador sonoro PSG AY-3-8910 via portas I/O SDCC `__sfr __at(0xA0)` e `__sfr __at(0xA1)`.
+    - Banco de 4 efeitos sonoros essenciais:
+      - `SFX 1` (Chime/Item/Vitória): Tom brilhante de duas notas com arpejo ascendente e envelope suave.
+      - `SFX 2` (Dano/Combate): Ruído percussivo de impacto com decaimento rápido simulando golpe ou ferimento.
+      - `SFX 3` (Porta/Mecanismo): Ruído mecânico de baixa frequência para destrancamento de selos e portas de pedra.
+      - `SFX 4` (Diálogo/Blip): Pulso curto e sutil emitido durante a abertura de caixas de texto e avanços de página.
+    - Integração transparente na VM de eventos (`VM_PlaySFX`), no controlador de interface (`UI_ShowMessage`, `UI_DrawCurrentPage`) e nos loops principais da engine (`AUDIO_Update()`).
+  - **Mecânicas de Combate em Tempo Real e Dano no Piso:**
+    - IA Hostil em tempo real (`BEHAVIOR_HOSTILE`, tipo 6) em `entity.c`: detecção do herói em raio de 7 tiles, perseguição com aproximação Manhattan, ataque corpo a corpo desferindo -8 HP ao herói (com SFX 2 e atualização instantânea do HUD).
+    - Mecânica de contra-ataque do herói: tecla de Ação (Espaço ou Gatilho do joystick) golpeia o monstro hostil, abates a criatura, oculta o sprite no VDP, emite SFX 1 e executa o script de evento vinculado para dropar itens de quest (Chave Real Dourada).
+    - Dano de piso em tempo real em tiles de perigo (`COLLISION_DAMAGE`, tipo 3) em `hero.c`: penalidade de -5 HP, atualização do HUD e áudio de alerta.
+  - **Cadeia de Quebra-Cabeças Progressiva e Eventos Bytecode:**
+    - 8 scripts compilados para a Máquina Virtual de Eventos formando o arco narrativo completo:
+      1. Script Guardião (dá Chave de Bronze).
+      2. Script Baú da Armaria (dá Chave de Ferro e Poção de Vida, cura +25 HP).
+      3. Script Esqueleto da Câmara de Tortura (abate e drop da Chave Real Dourada).
+      4. Script Prisioneiro nas Celas (resgate com Chave de Ferro, dá Amuleto de Cristal).
+      5. Script Eremita Sábio (decifra profecia com Amuleto).
+      6. Script Fonte Sagrada (restaura vida com +100 HP).
+      7. Script Porta Real (destranca Antecâmara com Chave Real, SFX 3).
+      8. Script Cristal Primordial (conquista do artefato, mensagem de vitória e encerramento heroico).
+  - **Validação Automatizada de Ponta a Ponta no openMSX (`sub53_test.tcl`):**
+    - Suite automatizada com 6 capturas de tela comprovando a jornada completa no MSX 2:
+      1. `sub53_01_spawn.png`: Spawn inicial na Sala 1 com tochas, masmorra, HUD e sprites.
+      2. `sub53_02_dialogue.png`: Diálogo com o Guardião Real e concessão da Chave de Bronze (HUD `🗝:1`).
+      3. `sub53_03_armory.png`: Exploração da Armaria dos Antigos (Sala 4) e abertura do Baú de Tesouro.
+      4. `sub53_04_fountain.png`: Restauração da vida na Fonte Sagrada (Sala 12, HP 100/100).
+      5. `sub53_05_combat.png`: Combate em tempo real com o Esqueleto Guerreiro na Câmara de Tortura (Sala 15) e conquista da Chave Real Dourada.
+      6. `sub53_06_victory.png`: Santuário do Rei Esquecido (Sala 20), altar místico com cristais reluzentes e conquista do Cristal Primordial com mensagem final de vitória.
+
 ## [0.5.2] - 2026-10-04
 
 ### Adicionado (Added)

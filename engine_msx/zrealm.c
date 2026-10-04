@@ -19,6 +19,7 @@
 #include "entity.h"
 #include "vm.h"
 #include "ui.h"
+#include "audio.h"
 
 #define Halt() __asm__("halt")
 
@@ -59,9 +60,10 @@ void main(void)
 	ENTITY_Init();
 	VM_Init();
 
-	// 3. Inicializa o processador de vídeo V9938 em SCREEN 4 (Graphic 3)
+	// 3. Inicializa o processador de vídeo V9938 em SCREEN 4 (Graphic 3) e PSG
 	VDP_InitScreen4();
 	UI_Init(); // Carrega fonte e molduras no Banco 2 e desenha HUD inicial
+	AUDIO_Init();
 
 	// 4. Carrega a sala inicial no Memory Mapper e desenha na tela
 	if (!WORLD_LoadRoom(header->InitialRoomID))
@@ -82,6 +84,9 @@ void main(void)
 	{
 		// Aguarda o próximo ciclo de interrupção vertical (V-Blank)
 		Halt();
+
+		// Atualiza envelopes de som PSG a cada quadro
+		AUDIO_Update();
 
 		// Se a caixa de diálogo estiver ativa, processa leitura/paginação
 		if (UI_IsDialogueActive())
@@ -105,6 +110,9 @@ void main(void)
 	}
 
 cleanup:
+	// Silencia áudio PSG
+	AUDIO_Init();
+
 	// Oculta o sprite do herói e todas as entidades ativas
 	VDP_Screen4_HideSprite(0);
 	ENTITY_Cleanup();
@@ -139,9 +147,10 @@ void main(void)
 	ENTITY_Init();
 	VM_Init();
 
-	// 3. Inicializa o processador de vídeo V9938 em SCREEN 4 (Graphic 3)
+	// 3. Inicializa o processador de vídeo V9938 em SCREEN 4 (Graphic 3) e PSG
 	VDP_InitScreen4();
 	UI_Init();
+	AUDIO_Init();
 
 	// 4. Carrega a sala inicial no Memory Mapper e desenha na tela
 	if (!WORLD_LoadRoom(header->InitialRoomID))
@@ -160,6 +169,7 @@ void main(void)
 	while (TRUE)
 	{
 		Halt();
+		AUDIO_Update();
 
 		if (UI_IsDialogueActive())
 		{

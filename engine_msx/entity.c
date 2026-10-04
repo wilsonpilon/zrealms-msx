@@ -6,6 +6,7 @@
 #include "world.h"
 #include "hero.h"
 #include "vm.h"
+#include "ui.h"
 
 EntityInstance g_Entities[MAX_ACTIVE_ENTITIES];
 u8 g_ActiveEntityCount = 0;
@@ -172,6 +173,13 @@ bool ENTITY_InteractAt(u8 tileX, u8 tileY)
 			ent->State = 1;
 			break;
 
+		case BEHAVIOR_HOSTILE:
+			// Herói ataca e derrota a criatura hostil com a tecla de Ação
+			ent->Active = FALSE;
+			VDP_Screen4_HideSprite(ent->VdpSpriteSlot);
+			VM_PlaySFX(1); // Som de vitória / abate
+			break;
+
 		default:
 			break;
 	}
@@ -332,6 +340,78 @@ void ENTITY_Update(void)
 							else if (ent->Direction == 3) ent->Direction = 1;
 							else if (ent->Direction == 0) ent->Direction = 2;
 							else ent->Direction = 0;
+						}
+					}
+				}
+				break;
+			}
+
+			case BEHAVIOR_HOSTILE:
+			{
+				if (ent->Timer > 0)
+				{
+					ent->Timer--;
+				}
+				else
+				{
+					i8 hx = (i8)HERO_GetTileX();
+					i8 hy = (i8)HERO_GetTileY();
+					i8 ex = (i8)ent->TileX;
+					i8 ey = (i8)ent->TileY;
+					i8 dx = (hx > ex) ? (hx - ex) : (ex - hx);
+					i8 dy = (hy > ey) ? (hy - ey) : (ey - hy);
+					i8 dist = dx + dy;
+
+					ent->Timer = 35; // Cadência de ação do monstro
+
+					// Ataque do monstro: Se o herói estiver adjacente (distância Manhattan == 1)
+					if (dist == 1)
+					{
+						if (g_HeroStats.HP > 8)
+						{
+							g_HeroStats.HP -= 8;
+						}
+						else
+						{
+							g_HeroStats.HP = 1;
+						}
+						UI_UpdateHUD();
+						VM_PlaySFX(2); // Dano de combate
+					}
+					// Perseguição: Se o herói estiver dentro do raio de visão (distância <= 7)
+					else if (dist <= 7)
+					{
+						i8 stepX = 0;
+						i8 stepY = 0;
+
+						if (dx >= dy)
+						{
+							stepX = (hx > ex) ? 1 : -1;
+						}
+						else
+						{
+							stepY = (hy > ey) ? 1 : -1;
+						}
+
+						i8 targetX = ex + stepX;
+						i8 targetY = ey + stepY;
+
+						if (targetX >= 1 && targetX < (VIEWPORT_WIDTH - 1) &&
+						    targetY >= 1 && targetY < (VIEWPORT_HEIGHT - 1))
+						{
+							if (WORLD_GetCollision((u8)targetX, (u8)targetY) == COLLISION_PASSABLE &&
+							    !(targetX == hx && targetY == hy) &&
+							    !ENTITY_IsSolidAt((u8)targetX, (u8)targetY))
+							{
+								ent->TileX = (u8)targetX;
+								ent->TileY = (u8)targetY;
+								ent->PixelX = ent->TileX * 8;
+								ent->PixelY = ent->TileY * 8;
+								if (ent->SpriteID != 0xFF)
+								{
+									VDP_SetSpritePos(ent->VdpSpriteSlot, ent->PixelX, ent->PixelY);
+								}
+							}
 						}
 					}
 				}

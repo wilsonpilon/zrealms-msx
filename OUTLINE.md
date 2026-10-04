@@ -153,6 +153,13 @@ Este documento serve como mapa de bordo vivo do projeto, refletindo o roadmap es
   - [x] Atualização da interface gráfica desktop Fyne (`ExportView` e `ProjectState`) com botão dedicado "🕹️ Testar Cartucho MegaROM (.ROM)" e exportação direta com log detalhado de bancos.
   - [x] Adição das flags CLI no binário `zrealm`: `-export-rom <arquivo.rpgproj>`, `-run-rom <arquivo.rpgproj>` e `-pad-size <KB>`.
   - [x] Validação automatizada em malha fechada no emulador openMSX (`sub52_test.tcl`) comprovando com 5 screenshots sequenciais: spawn inicial no cartucho com HUD e SCREEN 4, aproximação do NPC Guardião, diálogo interativo na tela, recebimento da Chave de Bronze no inventário com atualização do HUD, e transição cardeal para a Sala 2 (Câmara dos Pilares) carregada e renderizada a partir do banco MegaROM.
-- [ ] **Subfase 5.3 — Jogo de Referência:**
-  - [ ] Mini-cRPG demonstrador com masmorra de 20 salas, enigmas, NPCs e combate simples.
+- [x] **Subfase 5.3 — Jogo de Referência Completo ("As Catacumbas de Cristal: O Desafio do Rei Esquecido"):**
+  - [x] Criação do jogo de referência completo em `pkg/project/demo.go` com masmorra de 20 salas interligadas em grid 4x5 com travessias cardeais contínuas (Norte, Sul, Leste, Oeste).
+  - [x] Catálogo rico de assets: 13 tipos de tiles (Passable, Solid, Trigger, Water, Damage), 8 sprites Modo 2 (Herói, Guardião, Baú, Eremita, Esqueleto, Prisioneiro, Cristal, Goblin), 7 itens e 15 strings de diálogo.
+  - [x] Driver de Áudio PSG Nativo (`engine_msx/audio.h` e `audio.c`) para o processador de som AY-3-8910 utilizando acesso direto via portas SDCC `__sfr __at(0xA0)` e `__sfr __at(0xA1)`, com 4 canais de SFX (Item/Chime, Combate/Dano, Porta/Teleporte, Diálogo/Blip).
+  - [x] Mecânicas de Combate em Tempo Real (`BEHAVIOR_HOSTILE` tipo 6) em `entity.c`: IA com detecção do herói dentro de raio de 7 tiles, perseguição com pathing Manhattan, ataque corpo a corpo contra o herói (-8 HP com SFX 2 e atualização imediata do HUD), e golpe de espada do herói desferido pela tecla de Ação (abate do inimigo, ocultação do sprite, SFX 1 de vitória e execução do script de drop).
+  - [x] Dano de piso em tiles perigosos (`COLLISION_DAMAGE` tipo 3) em `hero.c`: penalidade de -5 HP, atualização do HUD e SFX de perigo.
+  - [x] Cadeia de quebra-cabeças progressiva e eventos da Bytecode VM: Guardião Sentinela -> Baú da Armaria (Chave de Ferro e Poção) -> Resgate do Prisioneiro -> Enigma do Eremita -> Fonte Sagrada de Cura (+100 HP) -> Combate na Câmara de Tortura (Chave Real Dourada) -> Santuário do Rei Esquecido (Cristal Primordial de Vitória).
+  - [x] Validação automatizada em malha fechada no emulador openMSX (`sub53_test.tcl`) comprovando com 6 capturas de tela em alta fidelidade: spawn na Sala 1, diálogo e chave do Guardião, abertura do baú na Armaria (Sala 4), restauração na Fonte Sagrada (Sala 12), combate em tempo real com o Esqueleto Guerreiro (Sala 15) e conquista do Cristal Primordial no Santuário (Sala 20).
+  - [x] **Conclusão da Fase 5 (Pipeline Integrado de Build & Jogo de Referência):** 100% das subfases concluídas com excelência e validação empírica no MSX 2.
 

@@ -7,7 +7,7 @@
 // BUILD STEPS
 //*****************************************************************************
 DoClean   = false;
-DoCompile = false;
+DoCompile = true;
 DoMake    = true;
 DoPackage = true;
 DoDeploy  = true;
@@ -30,7 +30,7 @@ Emulator  = "openmsx";
 // PROJECT SETTINGS
 //*****************************************************************************
 ProjName = "zrealm";
-ProjModules = [ ProjName, "mapper", "vdp_screen4", "loader", "world", "hero", "entity", "vm", "ui" ];
+ProjModules = [ ProjName, "mapper", "vdp_screen4", "loader", "world", "hero", "entity", "vm", "ui", "audio" ];
 ProjSegments = ProjName;
 
 // Módulos da biblioteca MSXgl necessários para a Engine

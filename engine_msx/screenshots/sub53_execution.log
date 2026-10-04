@@ -1,0 +1,40 @@
+Cartucho MegaROM carregado. Iniciando suite automatizada da Subfase 5.3...
+-> Entrou na Sala  1 em (16,  9)
+=== (1/6) Spawn Inicial no Jogo de Referencia ===
+Spawn Inicial Sala 1             | Room: 1 | Hero:(16, 9) Dir:2 | F1:0 F2:0 F5:0 F7:0 | Inv:0 (It0:0) | HP: 75 | Str:65535 | SFX:0
+Aproximando-se do Guardiao Real em (14, 7)...
+=== (2/6) Dialogo com Guardiao e Chave de Bronze ===
+Diante do Guardiao               | Room: 1 | Hero:(14, 8) Dir:0 | F1:0 F2:0 F5:0 F7:0 | Inv:0 (It0:0) | HP: 75 | Str:65535 | SFX:0
+Dialogo Ativo / Chave Recebida   | Room: 1 | Hero:(14, 8) Dir:0 | F1:1 F2:0 F5:0 F7:0 | Inv:1 (It0:1) | HP: 75 | Str:2 | SFX:1
+Descendo para Y=9 e caminhando para Oeste rumo a Armaria (Salas 3 e 4)...
+-> Entrou na Sala  3 em ( 0,  9)
+-> Entrou na Sala  4 em ( 0,  9)
+=== (3/6) Armaria dos Antigos e Bau de Tesouro ===
+Diante do Bau Armaria            | Room: 4 | Hero:( 8, 6) Dir:0 | F1:1 F2:0 F5:0 F7:0 | Inv:1 (It0:1) | HP: 75 | Str:2 | SFX:1
+Bau Aberto / Chave de Ferro e Pocao | Room: 4 | Hero:( 8, 6) Dir:0 | F1:1 F2:1 F5:0 F7:0 | Inv:3 (It0:1) | HP:100 | Str:4 | SFX:1
+Caminhando para o Sul rumo a Fonte Sagrada (Salas 8 e 12)...
+-> Entrou na Sala  8 em (15, 17)
+-> Entrou na Sala 12 em (15, 17)
+=== (4/6) Fonte Sagrada e Aguas Curativas ===
+Fonte Sagrada                    | Room:12 | Hero:(15,11) Dir:2 | F1:1 F2:1 F5:0 F7:0 | Inv:3 (It0:1) | HP:100 | Str:4 | SFX:1
+Vida Restaurada na Fonte         | Room:12 | Hero:(15,11) Dir:2 | F1:1 F2:1 F5:0 F7:0 | Inv:3 (It0:1) | HP:100 | Str:12 | SFX:1
+Caminhando a Leste rumo a Camara de Tortura (Salas 11, 13, 14, 15)...
+-> Entrou na Sala 11 em (31,  9)
+-> Entrou na Sala 13 em (31,  9)
+-> Entrou na Sala 14 em (31,  9)
+-> Entrou na Sala 15 em (31,  9)
+=== (5/6) Combate em Tempo Real com Esqueleto Hostil ===
+Monstro em Combate               | Room:15 | Hero:(14, 9) Dir:1 | F1:1 F2:1 F5:0 F7:0 | Inv:3 (It0:1) | HP:100 | Str:12 | SFX:1
+Esqueleto Destruido / Chave Real Dourada | Room:15 | Hero:(14, 9) Dir:1 | F1:1 F2:1 F5:1 F7:0 | Inv:4 (It0:1) | HP:100 | Str:6 | SFX:1
+Descendo ao Sul para o Santuario do Rei Esquecido (Sala 20)...
+-> Entrou na Sala 20 em (15, 17)
+=== (6/6) Santuario do Rei Esquecido e Cristal Primordial ===
+Diante do Cristal Primordial     | Room:20 | Hero:(15, 7) Dir:2 | F1:1 F2:1 F5:1 F7:0 | Inv:4 (It0:1) | HP:100 | Str:6 | SFX:1
+VITORIA TOTAL DAS CATACUMBAS     | Room:20 | Hero:(15, 7) Dir:2 | F1:1 F2:1 F5:1 F7:1 | Inv:5 (It0:1) | HP:100 | Str:15 | SFX:1
+=================================================================
+   VALIDACAO SUBFASE 5.3: JOGO DE REFERENCIA COMPLETO CONCLUIDO! 
+   - 20 Salas Interligadas Operacionais no Grid 4x5              
+   - Driver PSG de SFX Nativo Validado com Sucesso               
+   - Combate Hostil, Dano em Tiles e Enigmas Verificados         
+   - Cristal Primordial Erguido com Sucesso                      
+=================================================================
