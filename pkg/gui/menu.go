@@ -59,7 +59,7 @@ func BuildMainMenu(state *ProjectState, win fyne.Window, onExportTabSelect func(
 			if err := state.OpenDemoProject(""); err != nil {
 				dialog.ShowError(err, win)
 			} else {
-				dialog.ShowInformation("Demo Aberta", "A masmorra de teste com 2 salas e tileset padrão foi carregada!", win)
+				dialog.ShowInformation("Demo Aberta", "A masmorra de referência 'As Catacumbas de Cristal' com 20 salas, itens, puzzles e combate foi carregada com sucesso!", win)
 			}
 		}),
 		fyne.NewMenuItemSeparator(),

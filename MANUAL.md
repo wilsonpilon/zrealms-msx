@@ -88,6 +88,74 @@ O editor abrirá com o tema retrô escuro do MSX 2 e abas integradas:
 
 ---
 
+### 3.1.1. Como Abrir e Jogar o Jogo de Demonstração ("As Catacumbas de Cristal")
+O Z-Realm já vem com um cRPG completo embutido contendo **20 salas**, 13 tiles, 8 sprites, 7 itens, 15 diálogos, combate em tempo real e enigmas progressivos.
+
+Você pode abri-lo de 4 formas diferentes:
+
+1. **Pelo Editor Visual (Interface Gráfica):**
+   - Na janela principal do Z-Realm, clique em **`Arquivo`** -> **`Abrir Masmorra Demo`** (ou no botão verde *Abrir Masmorra Demo* no Painel de Início Rápido).
+   - O projeto completo será carregado na memória e você poderá inspecionar e editar todas as 20 salas, sprites e scripts.
+   - Para jogar imediatamente, basta pressionar **`[F5]`** no teclado (ou ir na aba *Exportador MSX 2* e clicar em *Testar no openMSX*).
+
+2. **Gerando um Arquivo `.rpgproj` Fixo para Edição Personalizada:**
+   - No terminal PowerShell:
+     ```powershell
+     .\zrealm.exe -demo catacumbas.rpgproj
+     ```
+   - E depois abra no editor:
+     ```powershell
+     .\zrealm.exe catacumbas.rpgproj
+     ```
+
+3. **Disparando o Jogo no openMSX em 1 Comando (One-Click Run via CLI):**
+   - **Modo Cartucho MegaROM (Recomendado):**
+     ```powershell
+     .\zrealm.exe -demo catacumbas.rpgproj
+     .\zrealm.exe -run-rom catacumbas.rpgproj
+     ```
+   - **Modo Disquete MSX-DOS 2:**
+     ```powershell
+     .\zrealm.exe -run catacumbas.rpgproj
+     ```
+
+4. **Jogando Diretamente a ROM Pré-compilada da Distribuição:**
+   - Caso deseje apenas jogar a versão final do cartucho já empacotada:
+     ```powershell
+     openmsx -machine Philips_NMS_8250 -cart dist\msx\zrealm_demo.rom
+     ```
+
+> 📖 **Tutorial Completo:** Consulte o documento [catacumbas.md](catacumbas.md) para o guia detalhado que ensina a construir exatamente cada tile, sprite, enigma e sala deste jogo do zero!
+
+---
+
+### 3.1.2. Fluxo Passo a Passo para Criar um Jogo do Zero no Editor Visual
+Para criar seu próprio RPG completo no Z-Realm:
+
+1. **Criar o Projeto:**
+   - Vá em **`Arquivo`** -> **`Novo Projeto...`**, escolha o nome e salve como `meu_jogo.rpgproj`.
+2. **Desenhar os Tilesets (Aba `Tilesets (8x8)`):**
+   - Crie tiles para chão, paredes, água, tochas, portas e armadilhas.
+   - Defina as cores de frente e fundo para cada uma das 8 linhas (paleta V9938 de 16 cores).
+   - Defina o tipo de colisão: `Passável (0)`, `Sólido (1)`, `Água (2)`, `Dano (3)` ou `Gatilho (4)`.
+3. **Desenhar os Sprites (Aba `Sprites (16x16)`):**
+   - Desenhe o Herói, NPCs, baús, portas e monstros hostis no Modo 2 do V9938 (cores independentes por scanline).
+4. **Cadastrar Itens e Estatísticas (Aba `Regras & RPG Stats`):**
+   - Adicione chaves, poções de vida (+HP), elixires de magia (+MP) e itens de missão.
+5. **Escrever Diálogos e Scripts (Aba `Diálogos & Roteiros`):**
+   - Na sub-aba *Tabela de Diálogos*, registre as mensagens do jogo.
+   - Na sub-aba *Scripts de Eventos (VM)*, programe a lógica em mnemônicos (`MSG`, `GIVE_ITEM`, `CHECK_FLAG`, `SET_FLAG`, `HEAL`, `PLAY_SFX`, `END`) e clique em **`Compilar Bytecode`**.
+6. **Construir as Salas e Interligá-las (Aba `Salas (32x18)`):**
+   - Crie as salas usando o pincel de carimbo, preenchimento e ferramentas de desenho.
+   - Deixe as aberturas das portas nas posições padrão (**Norte/Sul em X=15..16**; **Leste/Oeste em Y=8..9**).
+   - Configure as conexões cardeais na barra lateral direita (*Norte, Sul, Leste, Oeste*) ou use *Auto-Conectar por Coordenadas*.
+7. **Posicionar Entidades e Inimigos na Sala:**
+   - Na barra lateral direita da aba *Salas*, adicione entidades indicando o Sprite, a posição (X, Y), o comportamento (`NPC Estático`, `Baú`, `Porta`, `NPC Andarilho`, `NPC Patrulheiro` ou `Hostil / Inimigo`) e vincule o Script correspondente.
+8. **Testar com 1 Clique (One-Click Run):**
+   - Pressione **`[F5]`** e veja seu mundo rodando no hardware MSX 2 emulador openMSX!
+
+---
+
 ### 3.2. Linha de Comando (CLI Administrativa)
 O utilitário `zrealm.exe` também opera em modo de linha de comando para automação em pipelines CI/CD e testes rápidos:
 
@@ -97,7 +165,7 @@ O utilitário `zrealm.exe` também opera em modo de linha de comando para automa
 ```
 *Saída esperada:*
 ```text
-Z-Realm (zrealm-msx) - v0.5.2
+Z-Realm (zrealm-msx) - v0.5.3
 O ZZT dos cRPGs para MSX (MSX 2 / MSX-DOS 2 / MegaROM)
 ```
 

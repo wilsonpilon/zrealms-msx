@@ -15,7 +15,7 @@ import (
 func main() {
 	showVersion := flag.Bool("version", false, "Exibe a versão do Z-Realm")
 	newProj := flag.String("new", "", "Cria um novo arquivo de projeto .rpgproj")
-	demoProj := flag.String("demo", "", "Gera um projeto demo de teste com tileset e 2 salas conectadas")
+	demoProj := flag.String("demo", "", "Gera o projeto de referência completo ('As Catacumbas de Cristal') com 20 salas, itens e puzzles")
 	projName := flag.String("name", "Novo RPG", "Nome do projeto para a criação")
 	checkProj := flag.String("check", "", "Valida a integridade de um arquivo .rpgproj")
 	exportProj := flag.String("export", "", "Exporta o projeto SQLite para arquivos binários do MSX 2 (MSX-DOS 2)")
@@ -201,7 +201,7 @@ func main() {
 		fmt.Println("  zrealm <arquivo.rpgproj>                     Abre o arquivo diretamente no Editor Visual")
 		fmt.Println("  zrealm -version                              Exibe a versão atual")
 		fmt.Println("  zrealm -new <arquivo.rpgproj>                Cria um novo projeto SQLite")
-		fmt.Println("  zrealm -demo <arquivo.rpgproj>               Gera projeto de demonstração")
+		fmt.Println("  zrealm -demo <arquivo.rpgproj>               Gera projeto de referência ('As Catacumbas de Cristal')")
 		fmt.Println("  zrealm -check <arquivo.rpgproj>              Valida a integridade de um projeto")
 		fmt.Println("  zrealm -export <arquivo.rpgproj> [-out d]    Exporta projeto para MSX-DOS 2 (HEADER.BIN / GAME.DAT)")
 		fmt.Println("  zrealm -export-rom <arquivo.rpgproj> [-out d] Exporta projeto para Cartucho MegaROM ASCII-16 (.ROM)")

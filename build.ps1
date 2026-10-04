@@ -123,7 +123,11 @@ $distDir = Join-Path $rootDir "dist"
 $distBinDir = Join-Path $distDir "bin"
 
 if (Test-Path $distDir) {
-    Remove-Item -Path $distDir -Recurse -Force
+    try {
+        Remove-Item -Path $distDir -Recurse -Force -ErrorAction Stop
+    } catch {
+        Write-Warning "Aviso ao limpar dist/: $_"
+    }
 }
 New-Item -ItemType Directory -Path $distBinDir -Force | Out-Null
 
@@ -153,7 +157,7 @@ try {
 
 # 6. Cópia de Documentos e Binários MSX para dist/
 Write-Host "`n[DOCS] Copiando documentação para dist/..." -ForegroundColor Yellow
-$docsToCopy = @("README.md", "LICENSE", "MANUAL.md", "RELEASE.md", "SPEC.md", "OUTLINE.md", "CHANGELOG.md")
+$docsToCopy = @("README.md", "LICENSE", "MANUAL.md", "catacumbas.md", "RELEASE.md", "SPEC.md", "OUTLINE.md", "CHANGELOG.md")
 foreach ($doc in $docsToCopy) {
     $docPath = Join-Path $rootDir $doc
     if (Test-Path $docPath) {
