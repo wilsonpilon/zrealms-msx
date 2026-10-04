@@ -7,6 +7,31 @@ O formato baseia-se em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0
 * **Y (Minor / Feature):** Incrementado a cada nova feature concluída e integrada ao projeto.
 * **X (Major):** Incrementado a cada transição estrutural ou conclusão de uma grande fase (ex.: finalização da Camada de Dados, conclusão do Editor Gráfico, etc.).
 
+## [0.5.1] - 2026-10-04
+
+### Adicionado (Added)
+- **Subfase 5.1: Automação "One-Click Run" (Exportação + Montagem DSK + Boot no openMSX):**
+  - **Pacote `pkg/runner` (`runner.go`, `disk.go`, `assets.go`):**
+    - Abstração do ciclo completo de execução com `OneClickRun` e `RunOptions`.
+    - Empacotador automático de disquetes MSX-DOS 2 de 720 KB FAT12 (`PackDsk`) utilizando o utilitário nativo `msxtar`.
+    - Embutimento dos binários essenciais de sistema (`autoexec.bat`, `zrealm.com`, `COMMAND2.COM`, `MSXDOS2.SYS`) via `embed.FS`, garantindo que o toolkit seja 100% autônomo.
+    - Detector dinâmico e resiliente do executável `openmsx.exe` (`FindOpenMSX`) com busca em variáveis de ambiente, PATH, Scoop (`%USERPROFILE%\scoop\shims\openmsx.exe`) e diretórios padrão do Windows.
+    - Inspetor de conteúdo de disquete `VerifyDskContents` validando catálogo completo de arquivos do disco.
+  - **Interface Gráfica Fyne Desktop (`ExportView`, `menu.go`, `state.go`):**
+    - Nova seção de destaque **"🚀 Automação 'One-Click Run' (openMSX)"** com botão de ação rápida `[F5]` e feedback visual imediato.
+    - Seletor de hardware emulado permitindo alternar entre o perfil padrão `Philips_NMS_8250 (MSX 2 + 512KB Mapper)` e `Panasonic_FS-A1GT (MSX 2+ / MSX turbo R)`.
+    - Campo opcional para especificar caminho customizado do emulador.
+    - Item de menu "Testar no openMSX (One-Click Run)..." adicionado ao menu Ferramentas.
+    - Console de logs em tempo real na interface exibindo cada etapa do pipeline (exportação, empacotamento DSK e disparo do emulador).
+  - **Interface de Linha de Comando (CLI - `cmd/zrealm/main.go`):**
+    - Flag `-run <arquivo.rpgproj>` permitindo disparo do One-Click Run diretamente pelo terminal.
+    - Flags complementares `-machine <nome>`, `-emu <caminho>` e `-script <arquivo.tcl>` para automação e testes headless.
+  - **Validação Automatizada em Malha Fechada no openMSX (`sub51_test.tcl`):**
+    - Execução do script emulado no modelo `Panasonic_FS-A1GT` capturando 3 screenshots sequenciais:
+      1. `sub51_01_oneclick_boot.png`: Boot direto a partir do disquete `.dsk` recém-gerado pelo pipeline, com masmorra, sprites e HUD ativos.
+      2. `sub51_02_oneclick_gameplay.png`: Movimentação do herói e abertura de diálogo com o Guardião.
+      3. `sub51_03_oneclick_exit.png`: Saída limpa ao MSX-DOS 2 via tecla ESC com restauração de modo de texto e liberação total de RAM.
+
 ## [0.4.4] - 2026-10-03
 
 ### Adicionado (Added)

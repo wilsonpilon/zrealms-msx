@@ -48,6 +48,7 @@ if (-not $rootDir) {
     $rootDir = Get-Location
 }
 
+
 $versionFile = Join-Path $rootDir "VERSION"
 $pkgVersionFile = Join-Path $rootDir "pkg/version/VERSION"
 
@@ -133,6 +134,13 @@ try {
     if ($LASTEXITCODE -ne 0) {
         throw "Falha ao compilar cmd/zrealm com código de saída $LASTEXITCODE"
     }
+
+    # Assina o executável gerado para conformidade com Windows Smart App Control
+    $cert = Get-ChildItem Cert:\CurrentUser\My -CodeSigningCert -ErrorAction SilentlyContinue | Select-Object -First 1
+    if ($cert) {
+        Set-AuthenticodeSignature -Certificate $cert -FilePath $targetExe | Out-Null
+    }
+
     Write-Host "[BUILD] Executável gerado com sucesso: $targetExe" -ForegroundColor Green
     Copy-Item -Path $targetExe -Destination (Join-Path $rootDir "zrealm.exe") -Force
 } finally {
@@ -165,6 +173,15 @@ foreach ($mf in $msxFiles) {
         Copy-Item -Path $srcPath -Destination $msxDistDir -Force
         Write-Host "  -> $(Split-Path $srcPath -Leaf) copiado para dist/msx/" -ForegroundColor DarkGreen
     }
+}
+
+Write-Host "`n[TOOLS] Copiando ferramentas utilitárias (msxtar) para dist/tools/..." -ForegroundColor Yellow
+$toolsDistDir = Join-Path $distDir "tools"
+New-Item -ItemType Directory -Path $toolsDistDir -Force | Out-Null
+$msxtarSrc = Join-Path $rootDir "MSXgl/tools/build/msxtar/msxtar.exe"
+if (Test-Path $msxtarSrc) {
+    Copy-Item -Path $msxtarSrc -Destination $toolsDistDir -Force
+    Write-Host "  -> msxtar.exe copiado para dist/tools/" -ForegroundColor DarkGreen
 }
 
 # 7. Geração do Pacote ZIP para GitHub Release

@@ -8,6 +8,7 @@ import (
 	"github.com/zrealm-msx/zrealm/pkg/exporter"
 	"github.com/zrealm-msx/zrealm/pkg/gui"
 	"github.com/zrealm-msx/zrealm/pkg/project"
+	"github.com/zrealm-msx/zrealm/pkg/runner"
 	"github.com/zrealm-msx/zrealm/pkg/version"
 )
 
@@ -18,6 +19,10 @@ func main() {
 	projName := flag.String("name", "Novo RPG", "Nome do projeto para a criação")
 	checkProj := flag.String("check", "", "Valida a integridade de um arquivo .rpgproj")
 	exportProj := flag.String("export", "", "Exporta o projeto SQLite para arquivos binários do MSX 2")
+	runProj := flag.String("run", "", "Executa o ciclo completo One-Click Run (Exportar + DSK + openMSX)")
+	machineName := flag.String("machine", "Philips_NMS_8250", "Modelo de máquina MSX para o openMSX (padrão: Philips_NMS_8250)")
+	emuPath := flag.String("emu", "", "Caminho customizado para o executável openmsx")
+	tclScript := flag.String("script", "", "Script TCL opcional repassado ao openMSX")
 	outDir := flag.String("out", "", "Diretório de saída para os binários exportados (padrão: ./build_msx)")
 	exportBanks := flag.Bool("banks", true, "Gera arquivos individuais SEGxx.BNK além do GAME.DAT")
 	runCLI := flag.Bool("cli", false, "Força modo de linha de comando exibindo ajuda de comandos")
@@ -98,6 +103,36 @@ func main() {
 		return
 	}
 
+	if *runProj != "" {
+		fmt.Printf("Iniciando One-Click Run para o projeto: %s...\n", *runProj)
+		proj, err := project.Open(*runProj)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "Erro ao abrir projeto: %v\n", err)
+			os.Exit(1)
+		}
+		defer proj.Close()
+
+		res, err := runner.OneClickRun(proj, runner.RunOptions{
+			OutputDir:   *outDir,
+			EmulatorExe: *emuPath,
+			Machine:     *machineName,
+			TclScript:   *tclScript,
+			AutoRun:     true,
+			Async:       false,
+		})
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "Erro no One-Click Run: %v\n", err)
+			os.Exit(1)
+		}
+
+		fmt.Println("One-Click Run concluído com sucesso!")
+		fmt.Printf("  Tabela Mestra:    %s\n", res.ExportResult.HeaderPath)
+		fmt.Printf("  Dados (GAME.DAT): %d bytes (%d segmentos de 16KB)\n", res.ExportResult.TotalDataBytes, res.ExportResult.TotalSegments)
+		fmt.Printf("  Disquete (DSK):   %s (%d bytes / 720 KB)\n", res.DskPath, res.DskSize)
+		fmt.Printf("  Emulador openMSX: %s\n", res.EmulatorExe)
+		return
+	}
+
 	if *runCLI {
 		fmt.Printf("Z-Realm Toolkit %s\n", version.String())
 		fmt.Println("Uso:")
@@ -108,6 +143,7 @@ func main() {
 		fmt.Println("  zrealm -demo <arquivo.rpgproj>            Gera projeto de demonstração")
 		fmt.Println("  zrealm -check <arquivo.rpgproj>           Valida a integridade de um projeto")
 		fmt.Println("  zrealm -export <arquivo.rpgproj> [-out d] Exporta projeto para binários MSX 2")
+		fmt.Println("  zrealm -run <arquivo.rpgproj> [-out d]    One-Click Run: Exporta, monta DSK e executa no openMSX")
 		return
 	}
 

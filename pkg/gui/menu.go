@@ -82,6 +82,16 @@ func BuildMainMenu(state *ProjectState, win fyne.Window, onExportTabSelect func(
 	)
 
 	menuTools := fyne.NewMenu("Ferramentas",
+		fyne.NewMenuItem("Testar no openMSX (One-Click Run)...", func() {
+			if !state.IsOpen() {
+				dialog.ShowInformation("Aviso", "Abra um projeto antes de testar.", win)
+				return
+			}
+			if onExportTabSelect != nil {
+				onExportTabSelect()
+			}
+		}),
+		fyne.NewMenuItemSeparator(),
 		fyne.NewMenuItem("Validar Integridade", func() {
 			proj := state.Current()
 			if proj == nil {

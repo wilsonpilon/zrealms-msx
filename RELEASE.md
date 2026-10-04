@@ -1,49 +1,54 @@
 # RELEASE.md — Detalhamento do Release Oficial
 
-**Versão Atual:** 0.4.4  
-**Data:** 03 de Outubro de 2026  
-**Status do Release:** Phase 4 Complete (Gameplay Engine & Máquina de Eventos no MSX 100% Concluída)  
+**Versão Atual:** 0.5.1  
+**Data:** 04 de Outubro de 2026  
+**Status do Release:** Phase 5 em Andamento (Subfase 5.1 — Automação "One-Click Run" Concluída)  
 **Alvo:** Windows (x64) para o Toolkit & GUI / MSX 2 & MSX-DOS 2 para a Engine  
 
 ---
 
-## 1. Resumo Executivo do Release
+## 1. Resumo Executivo do Release v0.5.1
 
-A **Fase 4 (Gameplay Engine & Máquina de Eventos no MSX)** está **100% concluída**. Este release entrega a engine completa em C compilada com SDCC e MSXgl para **MSX-DOS 2** e chips gráficos **Yamaha V9938**, trazendo:
+O release **v0.5.1** implementa a **Subfase 5.1 (Automação "One-Click Run")**, unificando o ciclo de desenvolvimento de cRPGs para MSX 2. Agora, com um único clique no editor ou um comando no terminal, qualquer projeto `.rpgproj` é exportado para binários nativos (`HEADER.BIN`, `GAME.DAT`), empacotado em um disquete virtual MSX-DOS 2 de 720 KB (`.dsk`) e inicializado automaticamente no emulador openMSX.
 
-1. **Movimentação no Grid & Física (Subfase 4.1):** Controle discreto de 8x8 pixels na viewport 32x18 tiles (SCREEN 4), colisão contra tiles sólidos e transição cardeal contínua entre salas usando paginação dinâmica no Memory Mapper (Página 2: `0x8000-0xBFFF`).
-2. **Sistema de Entidades & IAs da Sala (Subfase 4.2):** Spawning de até 8 entidades simultâneas em Sprites Modo 2 (16x16 pixels com atributos de cor por scanline), NPCs estáticos, NPCs errantes com PRNG Z80, baús sólidos e gatilhos de piso acionados por aproximação ou tecla de ação (`ESPAÇO` / Botão A).
-3. **Máquina Virtual de Eventos (Bytecode VM) (Subfase 4.3):** Interpretador de 11 opcodes canônicos (`OP_MSG`, `OP_GIVE_ITEM`, `OP_TAKE_ITEM`, `OP_SET_FLAG`, `OP_CHECK_FLAG`, `OP_TELEPORT`, `OP_HEAL`, `OP_DAMAGE`, etc.), inventário de 16 slots, 256 flags de evento globais e atributos do herói em buffer imune a chaveamentos de memória.
-4. **Caixa de Diálogos & HUD no V9938 (Subfase 4.4):** HUD fixo em tempo real nas linhas 18-19 (`♥ HP: 075/100`, `★ MP: 030/030`, `LV: 01`, `🗝: 0..9`), caixa de diálogo emoldurada nas linhas 20-23 com *word-wrapping* automático de 30 colunas por linha, paginação com prompt `[ESPACO] ▼`, debounce seguro e painel de repouso ("Standby").
-
----
-
-## 2. Componentes da Engine MSX 2 (C / MSXgl / SDCC)
-
-* **`hero.h` & `hero.c`:** Controle do herói no grid 32x18, cooldown suave de passos, orientação direcional (Norte/Sul/Leste/Oeste) e integração de colisão física contra tiles e atores.
-* **`world.h` & `world.c`:** Gerenciador do mundo ativo e paginação transparente de salas via Memory Mapper do MSX-DOS 2 (`MAPPER_SetPage2`), com suporte a limites cardeais e transições dinâmicas.
-* **`entity.h` & `entity.c`:** Alocação de hardware para sprites 1 a 8 no V9938, rotinas de IA para NPCs errantes e interações contextuais com baús e NPCs.
-* **`vm.h` & `vm.c`:** Interpretador da Bytecode VM com buffer isolado na Página 1 (`s_VMScriptBuffer[256]`), tabela de 256 flags globais e inventário de 16 posições.
-* **`ui.h` & `ui.c`:** Gestão visual do Banco 2 da VRAM (linhas 16 a 23 da SCREEN 4), carga de fonte ASCII TMS9900 8x8 e glifos especiais de UI, renderizador de HUD em tempo real e caixa de diálogo emoldurada com paginação e word-wrapping.
-* **`mapper.h` & `mapper.c`:** Gerenciamento do Memory Mapper via `EXTBIOS` do DOS 2, com alocação dinâmica e liberação integral garantida.
-* **`vdp_screen4.h` & `vdp_screen4.c`:** Inicialização do modo Graphic 3 no V9938, bancos de padrões e cores, e viewport de 576 bytes contíguos.
+### Principais Inovações da Subfase 5.1:
+1. **Pacote `pkg/runner` Autônomo:**
+   - Recursos de sistema embutidos diretamente no binário via `//go:embed` (`COMMAND2.COM`, `MSXDOS2.SYS`, `autoexec.bat`, `zrealm.com`). O toolkit agora gera disquetes bootáveis em qualquer máquina sem dependências externas de arquivos DOS.
+   - Integração com `msxtar` para criação ultrarrápida (<10ms) de imagens FAT12 de dupla face / 80 trilhas (737.280 bytes) compatíveis com MSX-DOS 2.
+   - Detecção inteligente do executável do openMSX via `PATH`, Scoop shims (`%USERPROFILE%\scoop\shims\openmsx.exe`) e diretórios padrão de instalação do Windows (`Program Files`).
+2. **Interface Gráfica (Fyne Desktop):**
+   - Nova seção na aba **Exportar**: *🚀 Automação 'One-Click Run' (openMSX)* com atalho de teclado `[F5]` e botão proeminente.
+   - Item no menu principal: *Ferramentas -> 🚀 Executar no openMSX (F5)*.
+   - Seletor de perfil de máquina (`Philips_NMS_8250` [MSX2 clássico europeu] e `Panasonic_FS-A1GT` [MSXturboR]).
+   - Campo para override de caminho customizado do emulador e console de logs em tempo real na própria GUI.
+3. **Interface de Linha de Comando (CLI):**
+   - Flag `-run <arquivo.rpgproj>` com suporte a `-machine <perfil>`, `-emu <caminho>` e `-script <script.tcl>` para automação e pipelines CI/CD de testes.
+4. **Validação de Malha Fechada no openMSX (`sub51_test.tcl`):**
+   - Teste automatizado de inicialização, navegação pelo grid e saída limpa via `ESC` gerando screenshots comprobatórias em `engine_msx/screenshots/`.
 
 ---
 
-## 3. Validação Automatizada no Emulador openMSX
+## 2. Histórico da Engine MSX 2 (C / MSXgl / SDCC) — Fase 4
 
-Todas as 4 subfases foram submetidas a testes de malha fechada via scripts de automação TCL no openMSX (`Panasonic_FS-A1GT`, `ram512k`, `msxdos2`), capturando screenshots sequenciais e inspecionando a memória RAM:
+A engine nativa do MSX 2 segue consolidada e validada:
+* **Movimentação no Grid & Física (Subfase 4.1):** Controle discreto de 8x8 pixels na viewport 32x18 tiles (SCREEN 4), colisão contra tiles sólidos e transição cardeal contínua entre salas usando paginação dinâmica no Memory Mapper (Página 2: `0x8000-0xBFFF`).
+* **Sistema de Entidades & IAs da Sala (Subfase 4.2):** Spawning de até 8 entidades simultâneas em Sprites Modo 2 (16x16 pixels com atributos de cor por scanline), NPCs estáticos, NPCs errantes com PRNG Z80, baús sólidos e gatilhos de piso.
+* **Máquina Virtual de Eventos (Bytecode VM) (Subfase 4.3):** Interpretador de 11 opcodes canônicos (`OP_MSG`, `OP_GIVE_ITEM`, `OP_TAKE_ITEM`, `OP_SET_FLAG`, `OP_CHECK_FLAG`, etc.), inventário de 16 slots, 256 flags globais e atributos do herói.
+* **Caixa de Diálogos & HUD no V9938 (Subfase 4.4):** HUD fixo nas linhas 18-19, caixa de diálogo emoldurada nas linhas 20-23 com *word-wrapping* automático de 30 colunas, paginação com prompt `[ESPACO] ▼` e debounce seguro.
 
-* **Subfase 4.1 (`sub41_test.tcl`):** 5 capturas comprovando movimentação no grid, colisão física, transição entre Sala 1 e Sala 2 e encerramento limpo via `ESC`.
-* **Subfase 4.2 (`sub42_test.tcl`):** 6 capturas comprovando spawn de entidades, colisão contra o Guardião, interação com baú, IA errante e persistência.
-* **Subfase 4.3 (`sub43_test.tcl`):** 8 capturas comprovando quest do Guardião, obtenção de itens, branch condicional por Flag 1, cura ao abrir o baú (+25 HP) e detecção de baú esvaziado.
-* **Subfase 4.4 (`sub44_test.tcl`):** 9 capturas comprovando HUD em tempo real, abertura de caixa de diálogo com moldura ciano e word-wrapping, atualização dinâmica do contador de chaves (`🗝:1`), diálogo ramificado, cura no HUD (`♥ 100/100`), diálogo de baú vazio e saída limpa ao prompt `A:\>`.
+---
+
+## 3. Validação Automatizada de Malha Fechada
+
+* **Subfase 5.1 (`sub51_test.tcl`):**
+  - `sub51_01_oneclick_boot.png`: Inicialização do `.dsk` gerado via `msxtar`, transição de SCREEN 0 para SCREEN 4, carregamento de tileset, sala e HUD.
+  - `sub51_02_oneclick_gameplay.png`: Movimentação do herói para oeste, colisão física e acionamento de diálogo com o Guardião.
+  - `sub51_03_oneclick_exit.png`: Tecla `ESC` pressionada, finalização ordenada da engine e retorno seguro ao prompt `A:\>` com memória desalocada.
 
 ---
 
 ## 4. Próximos Passos (Fase 5: Pipeline Integrado de Build & Jogo de Referência)
 
-Com a Gameplay Engine 100% concluída, o projeto ruma à sua fase final:
-1. **Subfase 5.1 — Automação "One-Click Run":** Botão de compilação e teste automático disparando exportação de `.rpgproj`, montagem de `.DSK` e boot no openMSX.
+1. **Subfase 5.1 — Automação "One-Click Run":** [CONCLUÍDA ✅]
 2. **Subfase 5.2 — Backend MegaROM (Cartucho):** Suporte opcional à geração de arquivo `.ROM` unificado com chaveador de banco em cartucho (ASCII 16K / Konami).
 3. **Subfase 5.3 — Jogo de Referência Completo:** Masmorra de demonstração com 20 salas, enigmas, NPCs, combate simples e trilha sonora PSG.

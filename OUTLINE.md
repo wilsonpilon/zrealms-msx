@@ -12,7 +12,7 @@ Este documento serve como mapa de bordo vivo do projeto, refletindo o roadmap es
 | **Fase 2** | **Prototipagem de Baixo Nível no MSX (C + MSXgl + SDCC)** | 🟢 **100% Concluída** | MSX-DOS 2, Paging Mapper (Page 2), SCREEN 4 e Binary Loader de Disco |
 | **Fase 3** | **Desenvolvimento da GUI Desktop com Fyne (O Editor Visual)** | 🟢 **100% Concluída** | Editores de Tilesets, Sprites, Salas 32x18, Roteiros e Regras |
 | **Fase 4** | **Gameplay Engine & Máquina de Eventos (MSX)** | 🟢 **100% Concluída** | Controle no Grid, VM de Eventos, HUD e Caixas de Diálogo |
-| **Fase 5** | **Pipeline Integrado de Build & Jogo de Referência** | ⚪ *Planejado* | "One-Click Run", Teste em openMSX e Jogo Demonstrador |
+| **Fase 5** | **Pipeline Integrado de Build & Jogo de Referência** | 🟡 **Em Andamento (5.1 OK)** | "One-Click Run", Teste em openMSX e Jogo Demonstrador |
 
 ---
 
@@ -136,8 +136,14 @@ Este documento serve como mapa de bordo vivo do projeto, refletindo o roadmap es
 ---
 
 ### Fase 5: Pipeline Integrado de Build & Jogo de Referência
-- [ ] **Subfase 5.1 — Automação "One-Click Run":**
-  - [ ] Disparo automático de exportação, compilação e execução no openMSX.
+- [x] **Subfase 5.1 — Automação "One-Click Run":**
+  - [x] Criação do pacote `pkg/runner` com abstração completa do ciclo de vida de execução.
+  - [x] Empacotador de disquetes MSX-DOS 2 (`.DSK` de 720 KB FAT12) via utilitário `msxtar`.
+  - [x] Injeção e extração automática dos binários essenciais de sistema embutidos (`autoexec.bat`, `zrealm.com`, `COMMAND2.COM`, `MSXDOS2.SYS`, `HEADER.BIN` e `GAME.DAT`).
+  - [x] Detector e orquestrador dinâmico do emulador `openMSX` (`FindOpenMSX`) com busca resiliente no PATH, Scoop e diretórios convencionais do Windows.
+  - [x] Integração completa na GUI desktop Fyne (`ExportView` com botão One-Click Run `[F5]`, seletor de perfil de hardware e console de logs em tempo real).
+  - [x] Adição do comando CLI `zrealm -run <arquivo.rpgproj>` (com flags opcionais `-machine`, `-emu` e `-script`).
+  - [x] Validação automatizada em malha fechada no openMSX (`sub51_test.tcl`) comprovando com 3 screenshots sequenciais: boot do disquete gerado, gameplay interativo com HUD e saída limpa ao MSX-DOS 2 via ESC com liberação total de RAM.
 - [ ] **Subfase 5.2 — Backend MegaROM (Cartucho):**
   - [ ] Geração de arquivo `.ROM` unificado com chaveador de banco em cartucho.
 - [ ] **Subfase 5.3 — Jogo de Referência:**

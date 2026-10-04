@@ -8,6 +8,7 @@ import (
 
 	"github.com/zrealm-msx/zrealm/pkg/exporter"
 	"github.com/zrealm-msx/zrealm/pkg/project"
+	"github.com/zrealm-msx/zrealm/pkg/runner"
 )
 
 // ProjectState gerencia o estado reativo global do projeto carregado na interface Fyne.
@@ -196,6 +197,25 @@ func (s *ProjectState) Export(outDir string) (*exporter.ExportResult, error) {
 		OutputDir:       outDir,
 		ExportBankFiles: true,
 	})
+}
+
+// OneClickRun executa a exportação, empacotamento do DSK e lançamento no openMSX.
+func (s *ProjectState) OneClickRun(opts runner.RunOptions) (*runner.RunResult, error) {
+	s.mu.RLock()
+	proj := s.project
+	filePath := s.filePath
+	s.mu.RUnlock()
+
+	if proj == nil {
+		return nil, fmt.Errorf("nenhum projeto aberto para executar")
+	}
+
+	if opts.OutputDir == "" {
+		opts.OutputDir = filepath.Join(filepath.Dir(filePath), "build_msx")
+	}
+	opts.Async = true // Na GUI sempre executa openmsx de forma assíncrona
+
+	return runner.OneClickRun(proj, opts)
 }
 
 // AddRecentFile adiciona um caminho à lista de recentes.

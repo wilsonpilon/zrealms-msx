@@ -84,12 +84,12 @@ O editor abrirá com o tema retrô escuro do MSX 2 e abas integradas:
 * **🗺️ Salas (32x18 SCREEN 4):** Matriz contígua de 576 bytes com carimbo contínuo, flood fill, borracha, conta-gotas, conexões cardeais automáticas e posicionamento de entidades/atores.
 * **⚔️ Regras & RPG:** Gestão de classes de personagens (HP, MP, Ataque, Defesa) e catálogo de itens/equipamentos.
 * **📜 Scripts & Diálogos:** Editor com compilador e desassemblador de scripts para a Bytecode VM do Z80 e simulador de caixa de diálogo com proporção nativa MSX (32x4 caracteres).
-* **💾 Exportar:** Compilação dos dados para os binários nativos da Engine (`HEADER.BIN`, `GAME.DAT`).
+* **💾 Exportar & One-Click Run:** Compilação dos dados para binários nativos (`HEADER.BIN`, `GAME.DAT`), empacotamento em disco MSX-DOS 2 (`.dsk` de 720 KB) e execução com 1 clique no openMSX (`[F5]` ou menu *Ferramentas -> 🚀 Executar no openMSX (F5)*).
 
 ---
 
 ### 3.2. Linha de Comando (CLI Administrativa)
-O utilitário `zrealm.exe` também opera em modo de linha de comando para automação em pipelines CI/CD:
+O utilitário `zrealm.exe` também opera em modo de linha de comando para automação em pipelines CI/CD e testes rápidos:
 
 #### 3.2.1. Consultar a Versão do Sistema
 ```bash
@@ -97,17 +97,17 @@ O utilitário `zrealm.exe` também opera em modo de linha de comando para automa
 ```
 *Saída esperada:*
 ```text
-Z-Realm (zrealm-msx) - v0.1.0
+Z-Realm (zrealm-msx) - v0.5.1
 O ZZT dos cRPGs para MSX (MSX 2 / MSX-DOS 2)
 ```
 
-### 3.2. Criar um Novo Projeto
+#### 3.2.2. Criar um Novo Projeto
 Para inicializar um novo projeto com o schema SQLite completo, metadados de configuração e o tileset padrão `Overworld`:
 ```bash
 ./bin/zrealm.exe -new meu_jogo.rpgproj -name "A Lenda de Valdor"
 ```
 
-### 3.3. Validar a Integridade de um Projeto
+#### 3.2.3. Validar a Integridade de um Projeto
 Para checar a integridade estrutural física do SQLite e a integridade de todas as chaves estrangeiras:
 ```bash
 ./bin/zrealm.exe -check meu_jogo.rpgproj
@@ -115,12 +115,12 @@ Para checar a integridade estrutural física do SQLite e a integridade de todas 
 *Saída esperada:*
 ```text
 Verificando integridade do projeto: meu_jogo.rpgproj...
-Projeto: A Lenda de Valdor (v0.1.0)
+Projeto: A Lenda de Valdor (v0.5.1)
 Plataforma Alvo: MSX2_MSXDOS2
 Status de Integridade: OK (Integridade física e Foreign Keys válidas)
 ```
 
-### 3.4. Exportar Projeto para Binários do MSX 2
+#### 3.2.4. Exportar Projeto para Binários do MSX 2
 Para compilar o banco SQLite para as estruturas binárias nativas alinhadas à Página 2 do MSX-DOS 2 (`HEADER.BIN`, `GAME.DAT` e `SEGxx.BNK`):
 ```bash
 ./bin/zrealm.exe -export meu_jogo.rpgproj -out ./build_msx
@@ -131,23 +131,39 @@ Exportando projeto para formato nativo MSX 2: meu_jogo.rpgproj...
 Exportação concluída com sucesso!
   Tabela Mestra:    ./build_msx/HEADER.BIN
   Dados (GAME.DAT): ./build_msx/GAME.DAT (16384 bytes em 1 segmentos de 16KB)
-  Total Recursos:   5 catalogados
+  Total Recursos:   9 catalogados
 ```
 
-### 3.5. Gerar Projeto Demonstrativo Completo
+#### 3.2.5. Automação "One-Click Run" via CLI
+Para compilar, gerar o disco virtual `.dsk` inicializável de 720 KB e disparar o openMSX em um único comando:
+```bash
+./bin/zrealm.exe -run meu_jogo.rpgproj
+```
+Opções adicionais de emulação via linha de comando:
+* `-machine <perfil>`: Seleciona o perfil de hardware (`Philips_NMS_8250` [padrão] ou `Panasonic_FS-A1GT`).
+* `-emu <caminho>`: Especifica o executável do emulador (caso não esteja no `PATH`).
+* `-script <arquivo.tcl>`: Executa um script de automação TCL do openMSX (ideal para testes de regressão e CI/CD).
+
+Exemplo avançado:
+```bash
+./bin/zrealm.exe -run demo.rpgproj -machine Panasonic_FS-A1GT -script engine_msx/sub51_test.tcl
+```
+
+#### 3.2.6. Gerar Projeto Demonstrativo Completo
 Para gerar automaticamente um projeto pronto com masmorra, tileset customizado e 2 salas conectadas:
 ```bash
 ./bin/zrealm.exe -demo demo.rpgproj
 ```
 
-### 3.6. Execução e Teste no Emulador openMSX
-A imagem de disquete gerada pelo build contém o sistema de boot completo sob MSX-DOS 2. Para executar no openMSX com perfil de hardware oficial (MSX 2 com 512 KB Mapper e MSX-DOS 2):
+#### 3.2.7. Execução Manual no openMSX
+Caso deseje montar e executar manualmente a imagem gerada no openMSX:
 ```bash
-openmsx -machine Philips_NMS_8250 -ext msxdos2 -ext ram512k -diska engine_msx/emul/dsk/DOS2_zrealm.dsk
+openmsx -machine Philips_NMS_8250 -ext msxdos2 -ext ram512k -diska build_msx/zrealm.dsk
 ```
-* **Controles no Jogo:**
-  * `[ESPAÇO]`: Pula antecipadamente para a próxima sala no loop demonstrativo.
-  * `[ESC]`: Encerra a execução e retorna com o modo de texto e RAM restaurados para o prompt `A:\>`.
+* **Controles na Engine:**
+  * `[Setas]` / `[WASD]`: Movimentação do herói pelo grid de 32x18 tiles (SCREEN 4).
+  * `[ESPAÇO]`: Interação com NPCs, baús e avanço de diálogos.
+  * `[ESC]`: Encerra a sessão da engine e retorna com o modo de texto e memória restaurados ao prompt `A:\>`.
 
 ---
 
